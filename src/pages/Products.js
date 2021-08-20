@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-expressions */
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
+import { green } from '@material-ui/core/colors';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Table from 'react-bootstrap/Table'
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import '../css/Users.css'
 import {map} from 'lodash'
@@ -16,7 +19,7 @@ const Products = () => {
             const items = await Api2.getProducts();
             
             setProducts(items.products)
-            console.log(products)
+            console.log(items.products)
             setTotal(items.total)
             
          
@@ -36,11 +39,11 @@ const Products = () => {
       
                             <th>Imagen</th>
                             <th>Nombre</th>
-                            <th>Cantidad</th>
+                            <th className="text-center">Cantidad</th>
                             <th>Código</th>
                             <th>Categoría</th>
                             <th>Compañia</th>
-                            <th>Status</th>
+                            <th className="text-center">Status</th>
                             <th></th>
     </tr>
   </thead>
@@ -52,21 +55,19 @@ const Products = () => {
                 <td className="align-middle">{index + 1}</td>
                 <td className="align-middle"><img src={product.image} alt={product.name} /></td>
                 <td className="align-middle">{product.name}</td>
-                <td className="align-middle">{product.cnt}</td>
+                <td className="align-middle text-center">{product.cnt}</td>
                 <td className="align-middle">{product.code}</td>
                 <td className="align-middle">{product.category.name}</td>
                 <td className="align-middle">{product.client.company_name}</td>
-                <td className="align-middle">{ product.status ? 'Activo' : 'Inactivo'}</td>
-                <td className="align-middle">
-                    {product.status ?
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            size="sm"
-                            startIcon={<DeleteIcon />}
-                        >
-                            Borrar
-                        </Button>  : ''}
+                <td className="align-middle text-center">{ product.available ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
+                <td className="align-middle text-right">
+                <IconButton aria-label="editar" color="primary">
+                    <EditIcon />
+                </IconButton>
+                    {product.available ?
+                        <IconButton aria-label="delete" color="secondary">
+                            <DeleteIcon />
+                        </IconButton> : ''}
                 </td>
             </tr>
           )

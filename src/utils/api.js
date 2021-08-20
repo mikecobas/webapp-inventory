@@ -1,4 +1,5 @@
 const API_URL = 'http://localhost:8080'
+const DEMO = 'https://saruga.herokuapp.com'
 
 const Api2 = {};
 
@@ -20,7 +21,7 @@ const Api2 = {};
         request.body = JSON.stringify(args)
     }
    
-    return fetch(API_URL + methodName, request).then((res) => {
+    return fetch(DEMO + methodName, request).then((res) => {
 
         switch(res.status){
             case 200: 

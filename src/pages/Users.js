@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-expressions */
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
+import { green } from '@material-ui/core/colors';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Table from 'react-bootstrap/Table'
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -41,13 +43,13 @@ const Users = () => {
   </thead>
   <tbody className="h-screen" >
 
-    {map(users, (user,index) => {
+    {users && map(users, (user,index) => {
         return (
             <tr key={user._id} >
                 <td className="align-middle">{index + 1}</td>
                 <td className="align-middle">{user.name}</td>
                 <td className="align-middle">{ user.email}</td>
-                <td className="align-middle">{ user.status ? 'Activo' : 'Inactivo'}</td>
+                <td className="align-middle">{ user.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                 <td className="align-middle">{user.role.replace('_', ' ').toLowerCase()}</td>
                 <td className="align-middle">
                     {user.status ?

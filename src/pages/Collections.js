@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-expressions */
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
+import { green } from '@material-ui/core/colors';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Table from 'react-bootstrap/Table'
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -35,7 +37,7 @@ const Collections = (props) => {
       <th>#</th>
       
                             <th>Nombre</th>
-                            <th>Status</th>
+                            <th className="text-center">Status</th>
                             <th></th>
     </tr>
   </thead>
@@ -46,8 +48,8 @@ const Collections = (props) => {
             <tr key={category._id} >
                 <td className="align-middle">{index + 1}</td>
                 <td className="align-middle">{category.name}</td>
-                <td className="align-middle">{ category.status ? 'Activo' : 'Inactivo'}</td>
-                <td className="align-middle">
+                <td className="align-middle text-center">{ category.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
+                <td className="align-middle text-right">
                     {category.status ?
                         <Button
                             variant="contained"

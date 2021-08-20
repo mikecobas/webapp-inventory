@@ -52,27 +52,27 @@ const Sidebar = (props) => {
   return (
     <>
       <div className="bg-white h-full flex flex-col justify-start	border-r">
-        <div className="py-4 flex flex-row items-center justify-end ">
+        <div className={!collapse ? "py-4 flex flex-row items-center justify-end " : "py-4 flex flex-row items-center justify-center "}>
         <IconButton arial-label="menu" className="mx-4" onClick={menuCollapse}>
           <MenuIcon />
         </IconButton>
         </div>
-        <div className="bg-gray-100 pt-1 px-2 pb-2 rounded-xl flex justify-center items-center mx-4 ">
+        <div className={!collapse ? "bg-gray-100 pt-1 px-2 pb-2 rounded-xl flex justify-center items-center mx-4" : "bg-gray-100 pt-1 px-2 pb-2 rounded-xl flex justify-center items-center mx-2 "}>
           {profile.image !== '' ? <img className="rounded w-10 my-2 " src={ profile.image} alt="avatar"/> : <AccountCircleIcon fontSize='large'/>}
          
        {!collapse && <h2 className="text-lg mx-3  my-2 ">{ profile.name}</h2> }   
         </div>
         <nav className="flex flex-col pt-8 flex-1">
-          {/* <NavLink to="/dashboard" className="pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" activeClassName="text-blue-400"> <DashboardRoundedIcon /> Dashboard</NavLink> */}
-          <NavLink to="/users" className="pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" activeClassName="text-blue-400"> <GroupRoundedIcon /> {!collapse && ' Usuarios' }</NavLink>
-          <NavLink to="/collections" className="pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" activeClassName="text-blue-400"><FeaturedPlayListRoundedIcon />{!collapse &&  ' Coleciones'}</NavLink>
-          <NavLink to="/products" className="pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" activeClassName="text-blue-400"><ListAltRoundedIcon /> {!collapse && ' Products'} </NavLink>
-          <NavLink to="/clients" className="pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" activeClassName="text-blue-400"><BusinessRoundedIcon /> {!collapse && ' Clients'} </NavLink>
-          <NavLink to="/transactions" className="pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" activeClassName="text-blue-400"><SwapHorizIcon /> {!collapse && ' Transacciones'} </NavLink>
-          <NavLink to="/reports" className="pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" activeClassName="text-blue-400"><AssessmentIcon /> {!collapse && ' Reportes'} </NavLink>
+          {/* <NavLink to="/dashboard" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"> <DashboardRoundedIcon /> Dashboard</NavLink> */}
+          <NavLink to="/users" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"> <GroupRoundedIcon /> {!collapse && ' Usuarios' }</NavLink>
+          <NavLink to="/collections" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><FeaturedPlayListRoundedIcon />{!collapse &&  ' Coleciones'}</NavLink>
+          <NavLink to="/products" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><ListAltRoundedIcon /> {!collapse && ' Products'} </NavLink>
+          <NavLink to="/clients" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><BusinessRoundedIcon /> {!collapse && ' Clients'} </NavLink>
+          <NavLink to="/transactions" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><SwapHorizIcon /> {!collapse && ' Transacciones'} </NavLink>
+          <NavLink to="/reports" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><AssessmentIcon /> {!collapse && ' Reportes'} </NavLink>
        </nav>
-        <div className=" py-3 px-3 hover:bg-blue-100 flex flex-row items-center justify-end" onClick={logout}>
-          <ExitToAppRoundedIcon /> <span className="mx-2" > { !collapse && 'Cerrar sesion'}</span>
+        <div className={!collapse ? " py-3 px-3 hover:bg-blue-100 flex flex-row items-center justify-end": " py-3 px-3 hover:bg-blue-100 flex flex-row items-center justify-center" } onClick={logout}>
+          <ExitToAppRoundedIcon />{!collapse && <span className="mx-2" > Cerrar sesion</span>}
 
         </div>
     </div>

@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-expressions */
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
+import { green } from '@material-ui/core/colors';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Table from 'react-bootstrap/Table'
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -37,7 +39,7 @@ const Clients = () => {
                             <th>Dirección</th>
                             <th>Tel</th>
                             <th>Cel</th>
-                            <th>Status</th>
+                            <th className="text-center">Status</th>
                             <th>Responsable</th>
                             <th>Actualizado por</th>
                             <th></th>
@@ -54,11 +56,11 @@ const Clients = () => {
                 <td className="align-middle">{client.address}</td>
                 <td className="align-middle">{client.phone}</td>
                 <td className="align-middle">{ client.cel}</td>
-                <td className="align-middle">{client.status ? 'Activo' : 'Inactivo'}</td>
+                <td className="align-middle text-center">{client.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                 <td className="align-middle">{client.name}</td>
                 <td className="align-middle">{ client.user.name}</td>
            
-                <td className="align-middle">
+                <td className="align-middle text-right">
                     {client.status ?
                         <Button
                             variant="contained"

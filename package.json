@@ -11,6 +11,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "bootstrap": "^5.1.0",
+    "formik": "^2.2.9",
     "history": "^5.0.1",
     "loadsh": "^0.0.4",
     "md5": "^2.3.0",
@@ -24,7 +25,8 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start2": "react-scripts start",

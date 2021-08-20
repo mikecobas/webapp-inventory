@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-expressions */
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
+import { green, red } from '@material-ui/core/colors';
 import Table from 'react-bootstrap/Table'
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -23,7 +24,7 @@ const Transactions = () => {
            
             console.log(from)
             console.log(to)
-            const items = await Api2.getTransactions(from,to);
+            const items = await Api2.getTransactions('01-01-2021',to);
             
             setTransactions(items.transactions)
             console.log(transactions)
@@ -59,12 +60,12 @@ const Transactions = () => {
             <tr key={transaction._id} >
                 <td className="align-middle">{index + 1}</td>
                 <td className="align-middle">{transaction.product.name}</td>
-                <td className="align-middle">{transaction.status ? `+ ${transaction.cnt}`: `-${transaction.cnt}`}</td>
+                <td className="align-middle">{transaction.status ? <span style={{ color: green[500] }}>+ ${transaction.cnt}</span>: <span style={{ color: red[500] }}>- ${transaction.cnt}</span>}</td>
                 <td className="align-middle">{transaction.date}</td>
                 <td className="align-middle">{transaction.product.code}</td>
                 <td className="align-middle">{transaction.product.client.company_name}</td>
                 <td className="align-middle">{transaction.user.name}</td>
-                <td className="align-middle">{ transaction.status ? <ArrowUpwardIcon color="primary"/> : <ArrowDownwardIcon color="error"/>}</td>
+                <td className="align-middle">{ transaction.status ? <ArrowUpwardIcon style={{ color: green[500] }}/> : <ArrowDownwardIcon color="error"/>}</td>
 
             </tr>
           )
