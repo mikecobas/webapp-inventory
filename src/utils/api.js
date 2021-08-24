@@ -1,27 +1,30 @@
 const API_URL = 'http://localhost:8080'
-const DEMO = 'https://saruga.herokuapp.com'
+// const DEMO = 'https://saruga.herokuapp.com'
 
 const Api2 = {};
 
- Api2.request = async (method,methodName, args=null) => {
+ Api2.request = async (method, methodName, args=null, isForData=false) => {
      let tokenLogged = await localStorage.getItem('token');
-    // let dealer = await localStorage.getItem('dealer_access');
-    const  token =  methodName === 'authentication' ? "login" : tokenLogged;
-
+    const  token =  methodName === '/api/auth/login' ? "login" : tokenLogged;
+     const headers = {
+         'x-token': token,
+         'Accept': 'application/json',
+     }
+     !isForData && Object.assign(headers, {'Content-Type': 'application/json'})
     const request = {
-        method : method,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'x-token': token,
-            // 'current-dealer': dealer
-        }
+        method: method,
+        headers
     };
+
+     
     if (args){
-        request.body = JSON.stringify(args)
+        request.body = isForData ? args : JSON.stringify(args)
+        // if (isForData) {
+        //     request.files = args
+        // }
     }
    
-    return fetch(DEMO + methodName, request).then((res) => {
+    return fetch(API_URL + methodName, request).then((res) => {
 
         switch(res.status){
             case 200: 
@@ -31,7 +34,8 @@ const Api2 = {};
             case 400:
             case 401:
             case 403:
-              console.log('No autorizado');
+            
+              return res.json()
                 break;
             default: 
                // console.log(res.status)
@@ -47,15 +51,15 @@ const Api2 = {};
     return await Api2.request('POST','/api/auth/login', args);
  }
 
-Api2.getUsers = async (args) => {
-    return await Api2.request('GET', '/api/usuarios', args);
+Api2.getUsers = async () => {
+    return await Api2.request('GET', '/api/usuarios');
 }
  
  /**
   * Productos
   */
 
-  Api2.getProducts = async (args) => {
+  Api2.getProducts = async () => {
     return Api2.request('GET', '/api/products')
 }
 
@@ -65,7 +69,7 @@ Api2.getUsers = async (args) => {
   * Categorias
   */
 
-Api2.getCategories = async (args) => {
+Api2.getCategories = async () => {
      return Api2.request('GET', '/api/categories')
  }
 
@@ -74,13 +78,56 @@ Api2.getCategories = async (args) => {
   * Clientes
   */
 
-Api2.getClients = async (args) => {
+Api2.getClients = async () => {
     return Api2.request('GET', '/api/clients')
 }
 
+Api2.postProduct = async (args) => {
+    return Api2.request('POST', '/api/products', args)
+}
+
+Api2.deleteProduct = async (id) => {
+    return Api2.request('DELETE', `/api/products/${id}`)
+}
+
+
+/**
+ * IMAGENES
+ * 
+ */
+
+Api2.getImage = async (collection, id) => {
+    return Api2.request('GET', `/api/uploads/${collection}/${id}`)
+}
+// CARGA DE IMAGEN
+Api2.uploadImage = async (args) => {
+    console.log('API file:' , args.get('file'))
+    return Api2.request('post', '/api/uploads/', args, true)
+}
+//Actualizacion
+Api2.updateImage = async (collection, id, args) => {
+    return Api2.request('PUT', `/api/uploads/${collection}/${id}`, args, true)
+}
+
+Api2.deleteImage = async (id) => {
+    return Api2.request('DELETE', `/api/uploads/${id}`)
+}
+
+
+
+
+/**
+ * TRANSACCIONES
+ * @param {*} start 
+ * @param {*} end 
+ * @returns 
+ */
 
 Api2.getTransactions = async (start,end) => {
     console.log(start, end)
     return Api2.request('GET',`/api/transaction/?start=${start}&end=${end}`)
 }
+
+
+
   export default Api2 
