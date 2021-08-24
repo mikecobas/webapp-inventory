@@ -58,7 +58,7 @@ const Sidebar = (props) => {
         </IconButton>
         </div>
         <div className={!collapse ? "bg-gray-100 pt-1 px-2 pb-2 rounded-xl flex justify-center items-center mx-4" : "bg-gray-100 pt-1 px-2 pb-2 rounded-xl flex justify-center items-center mx-2 "}>
-          {profile.image !== '' ? <img className="rounded w-10 my-2 " src={ profile.image} alt="avatar"/> : <AccountCircleIcon fontSize='large'/>}
+          {profile.image !== '' ? <img className="rounded-full w-10 my-2 " src={ profile.image} alt="avatar"/> : <AccountCircleIcon fontSize='large'/>}
          
        {!collapse && <h2 className="text-lg mx-3  my-2 ">{ profile.name}</h2> }   
         </div>
