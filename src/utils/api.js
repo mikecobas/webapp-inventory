@@ -28,14 +28,16 @@ const Api2 = {};
 
         switch(res.status){
             case 200: 
-                 return res.json();
+                return res.json();
+                break;
             case 201: 
                 return res.json();
+                break;
             case 400:
             case 401:
             case 403:
             
-              return res.json()
+                 return res.json()
                 break;
             default: 
                // console.log(res.status)

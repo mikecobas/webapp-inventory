@@ -7,7 +7,7 @@ import ModalBody from 'react-bootstrap/ModalBody'
 import ModalFooter from 'react-bootstrap/ModalFooter'
 import Form from 'react-bootstrap/Form'
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import Alert from 'react-bootstrap/Alert'
 import Button from '@material-ui/core/Button'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -26,6 +26,9 @@ const ProductModal = (props) => {
     const [previewImg, setPreviewImg] = useState(null);
     const [uploadImg, setUploadImg] = useState(null);
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('')
+
     useEffect(() => {
         
         (async () => {
@@ -51,7 +54,7 @@ const ProductModal = (props) => {
     const listClients = async () => {
         const itemClients = await Api2.getClients();
             const clientOption = map(itemClients.clients, (client, index) => {
-                return <option key={ index} value={client._id}>{client.company_name }</option>
+                return <option key={ index+1} value={client._id}>{client.company_name }</option>
             })
 
             setClients(clientOption)
@@ -60,7 +63,7 @@ const ProductModal = (props) => {
     const listLocations = async () => {
         const itemLocations = await Api2.getCategories();
         const locationOption = map(itemLocations.categories, (location, index) => {
-            return <option key={ index} value={location._id}> {location.name }</option>
+            return <option key={index+1} value={location._id}> {location.name }</option>
         })
         setLocations(locationOption)
     }
@@ -120,32 +123,71 @@ const ProductModal = (props) => {
       
           
         const product = await Api2.postProduct(args)
+        if (product.msg !== 'done') {
+            showError(product.msg)
+        }
         if (product.msg === 'done') {
             onHide()
+            setError(!error);
+            setErrorMsg('')
+            resetFields()
         }
           
-	};
+    };
+    
+    const showError = (msg) => {
+        setError(true);
+        setErrorMsg(msg)
 
+        setTimeout(() => {
+            setError(false);
+            setErrorMsg('')
+        }, 5000);
+    }
+
+    const resetFields = () => {
+        setProductCode('')
+        setProductName('')
+        setProductCnt('')
+        setLocationSelected('')
+        setLocationSelected('')
+        setPreviewImg(null)
+        setUploadImg(null)
+        setErrorMsg('')
+        setError(false);
+    }
+
+    const close = () => {
+        onHide()
+        resetFields()
+    }
 
     return (
         <Modal
+     
                 {...props}
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
                 >
-                <ModalHeader closeButton>
+            <ModalHeader closeButton>
+                
                     <ModalTitle id="contained-modal-title-vcenter">
                   {item ? 'Editar ' +item.name : 'Agregar un producto'}  
                     </ModalTitle>
-                </ModalHeader>
+            </ModalHeader>
+            
                {!loading && <> <ModalBody>
-                    
+                {
+                    error &&   <Alert variant='danger'>
+                                  {  errorMsg }
+                                </Alert>
+                }
                     <Form>
                     <div className="grid grid-rows-3 grid-flow-col gap-4">
                         <Form.Group className="mb-3" controlId="producto_name">
                             <Form.Label>Nombre del producto</Form.Label>
-                            <Form.Control type="text" placeholder="Producto" value={ productName} onChange={e => setProductName(e.target.value) }/>
+                            <Form.Control type="text" placeholder="Producto"  onChange={e => setProductName(e.target.value) }/>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="product_code">
                             <Form.Label>Código del producto</Form.Label>
@@ -153,17 +195,18 @@ const ProductModal = (props) => {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="client_id">
                             <Form.Label>Cliente</Form.Label>
-                            <Form.Select data-live-search aria-label="Cliente" value={clientSelected}  onChange={(event)=> setClientSelected(event.target.value)}>
+                            <Form.Select data-live-search aria-label="Cliente" onChange={(event) => setClientSelected(event.target.value)}>
+                            <option key='0' value=''> Selecciona un cliente</option>
                                 {clients}
                             </Form.Select>
-                           <span> {clientSelected}</span>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="ubicacion">
                             <Form.Label>Ubicación</Form.Label>
-                            <Form.Select data-live-search aria-label="Ubicaciones" value={locationSelected} onChange={(event)=> setLocationSelected(event.target.value)}>
+                            <Form.Select data-live-search aria-label="Ubicaciones" onChange={(event) => setLocationSelected(event.target.value)}>
+                            <option key='0' value=''> Selecciona una ubicacion</option>
                                 {locations}
                             </Form.Select>
-                            <span> {locationSelected}</span>
+
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="cnt">
                             <Form.Label>Cantidad</Form.Label>
@@ -182,7 +225,7 @@ const ProductModal = (props) => {
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                <Button onClick={onHide}>Close</Button>
+                <Button onClick={close}>Close</Button>
                 <Button onClick={()=>handleSubmission(uploadImg)}>
                     Guardar
                 </Button>
