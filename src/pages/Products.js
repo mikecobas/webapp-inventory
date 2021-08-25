@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 /* eslint-disable no-unused-expressions */
 import React, { useState, useEffect } from 'react'
 import { green } from '@material-ui/core/colors';
@@ -21,13 +22,15 @@ const Products = () => {
     const [products, setProducts] = useState();
     const [modalShow, setModalShow] = useState(false);
     const [item, setItem] = useState(null);
-    const [loading, setLoading] = useState(false);
-
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(null)
+   
 
     useEffect(() => {
         (async () => {
+            const userInfo = await JSON.parse(localStorage.getItem('user'));
             const items = await Api2.getProducts();
-
+            setUser(userInfo)
             setProducts(items.products)
             setTotal(items.total)
 
@@ -52,7 +55,7 @@ const Products = () => {
 
     return (
         <div className="px-20 h-full">
-            <h1 className="text-3xl my-6 font-bold">Productos</h1>
+            <h1 className="text-3xl my-6 font-bold">Productos </h1>
             <h4 className="text-2xl mb-3 font-normal">Total {total}</h4>
             <div className="rounded-3xl shadow p-4 h-auto overflow-scroll my-2">
                 <div className="flex flex-row justify-end mt-2 mb-6">
@@ -72,7 +75,7 @@ const Products = () => {
                             <th>Categoría</th>
                             <th>Compañia</th>
                             <th className="text-center">Status</th>
-                            <th></th>
+                            <th></th> 
                         </tr>
                     </thead>
                     <tbody >
@@ -88,10 +91,10 @@ const Products = () => {
                                     <td className="align-middle">{product.category.name}</td>
                                     <td className="align-middle">{product.client.company_name}</td>
                                     <td className="align-middle text-center">{product.available ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
-                                    <td className="align-middle text-right">
-                                        <IconButton aria-label="editar" color="primary" onClick={() => editProduct(product)}>
+                                   <td className="align-middle text-right">
+                                        {/* <IconButton aria-label="editar" color="primary" onClick={() => editProduct(product)}>
                                             <EditIcon />
-                                        </IconButton>
+                                        </IconButton> */}
                                         {product.available ?
                                             <IconButton aria-label="delete" color="secondary" onClick={()=> deleteProduct(product._id)}>
                                                 <DeleteIcon />
