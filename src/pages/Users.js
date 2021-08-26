@@ -28,6 +28,7 @@ const Users = () => {
     return (
         <div  className="p-20 h-screen">
             <h1 className="text-3xl mb-6 font-bold">Usuarios</h1>
+            <h4 className="text-2xl mb-3 font-normal">Total {total}</h4>
             <div className="rounded-3xl shadow p-4 h-full overflow-scroll ">
             <Table hover responsive > 
   <thead>
@@ -38,6 +39,7 @@ const Users = () => {
                             <th>Correo</th>
                             <th>Status</th>
                             <th>Rol</th>
+                            <th>Compañia</th>
                             <th></th>
     </tr>
   </thead>
@@ -51,16 +53,17 @@ const Users = () => {
                 <td className="align-middle">{ user.email}</td>
                 <td className="align-middle">{ user.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                 <td className="align-middle">{user.role.replace('_', ' ').toLowerCase()}</td>
+                <td className="align-middle">{user.client ? user.client.company_name : ''}</td>
                 <td className="align-middle">
-                    {user.status ?
+                    {user.status &&
                         <Button
                             variant="contained"
                             color="secondary"
-                            size="sm"
+                            size="small"
                             startIcon={<DeleteIcon />}
                         >
                             Borrar
-                        </Button>  : ''}
+                        </Button>}
                 </td>
             </tr>
           )

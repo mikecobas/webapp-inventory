@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import {useHistory} from 'react-router-dom'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,7 +19,11 @@ import Alert from 'react-bootstrap/Alert'
 
 import Api2 from '../utils/api'
 
-function Copyright() {
+
+import AuthContext from '../Context/Auth/authContext'
+import AlertContext from '../Context/Alerta/alertContext';
+
+function Copyright () {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
@@ -62,32 +67,55 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = () => {
-  const [error, setError] = useState(false)
+const Login = (props) => {
+
   const history = useHistory()
   const classes = useStyles();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const alertContext = useContext(AlertContext);
+  const { alerta, mostrarAlerta } = alertContext;
+  const authContext = useContext(AuthContext)
+  const { registrarUsuario, autenticado, message, user } = authContext;
   
+  useEffect(() => {
+    if (autenticado) {
+      
+        history.push('/transactions')
+
+    }
+    if (message) {
+      // Context de error 
+      mostrarAlerta(message.msg,message.categoria)
+    }
+  }, [message, autenticado, history])
   
   const login = async (email, password) => {
-    console.log(md5(password))
+    
+
+    if (email.trim() === '' || password.trim() === '') {
+      
+      mostrarAlerta('Todos los campos son obligatorios', 'danger')
+    }
+
     const data = {
       email,
       password: md5(password)
     }
 
-    const resp = await Api2.auth(data)
-    if (resp) {
-       await localStorage.setItem('user', JSON.stringify(resp.user))
-       await localStorage.setItem('token', resp.token)
-       history.push("/")
-    } else {
-      setError(true)
-      setTimeout(() => {
-        setError(false)
-      },3000)
-    }
+    
+    // const resp = await Api2.auth(data)
+    // if (resp) {
+    //    await localStorage.setItem('user', JSON.stringify(resp.user))
+    //    await localStorage.setItem('token', resp.token)
+    //    history.push("/users")
+    // } else {
+    //   setError(true)
+    //   setTimeout(() => {
+    //     setError(false)
+    //   },3000)
+    // }
+     registrarUsuario(data)
    
   }
 
@@ -96,12 +124,8 @@ const Login = () => {
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-      {
-            error && <Alert variant='danger' className="mx-auto w-8/12 ">
-                    <Alert.Heading>Algo salio mal</Alert.Heading>
-            Verifica tu usuario o contraseña
-          </Alert>
-          }
+       
+
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -109,7 +133,14 @@ const Login = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          
+          {alerta ? 
+        
+        <Alert variant={alerta.categoria} className="mx-auto my-4 w-8/12 ">
+                 
+          {alerta.msg}
+        </Alert>
+      
+       : null}
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"

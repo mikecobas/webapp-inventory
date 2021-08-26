@@ -10,7 +10,7 @@ import {map} from 'lodash'
 import Api2 from '../utils/api'
 
 const Collections = (props) => {
-  const {collapse, setCollapse}= props
+  
     const [total, setTotal] = useState(0);
     const [categories, setCategories] = useState();
 
