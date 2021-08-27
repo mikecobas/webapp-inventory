@@ -26,11 +26,11 @@ const Users = () => {
 
 
     return (
-        <div  className="p-20 h-screen">
-            <h1 className="text-3xl mb-6 font-bold">Usuarios</h1>
+        <div  className="px-20  h-screen">
+            <h1 className="text-3xl my-6 font-bold">Usuarios</h1>
             <h4 className="text-2xl mb-3 font-normal">Total {total}</h4>
-            <div className="rounded-3xl shadow p-4 h-full overflow-scroll ">
-            <Table hover responsive > 
+            <div className="rounded-3xl shadow p-4 my-2  h-5/6 overflow-scroll">
+            <Table hover responsive  > 
   <thead>
     <tr>
       <th>#</th>
@@ -43,7 +43,7 @@ const Users = () => {
                             <th></th>
     </tr>
   </thead>
-  <tbody className="h-screen" >
+  <tbody className="h-5/6 overflow-scroll" >
 
     {users && map(users, (user,index) => {
         return (

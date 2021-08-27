@@ -55,16 +55,16 @@ const Products = () => {
 
 
     return (
-        <div className="px-20 h-full">
+        <div className="px-20 h-screen">
             <h1 className="text-3xl my-6 font-bold">Productos </h1>
             <h4 className="text-2xl mb-3 font-normal">Total {total}</h4>
-            <div className="rounded-3xl shadow p-4 h-auto overflow-scroll my-2">
+            <div className="rounded-3xl shadow p-4  my-2 h-5/6 overflow-scroll">
                 <div className="flex flex-row justify-end mt-2 mb-6">
                     <Button color="primary" variant="contained" onClick={() => edit()}>
                         Agregar nuevo producto
                     </Button>
                 </div>
-                <Table hover responsive size="sm">
+                <Table hover responsive size="sm" className="h-5/6 overflow-scroll">
                     <thead>
                         <tr>
                             <th>#</th>
