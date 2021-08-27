@@ -38,7 +38,7 @@ const Products = () => {
 
 
         })()
-    }, [products, loading])
+    }, [loading])
 
     const edit = (product) => {
         console.log(product)
