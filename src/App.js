@@ -22,6 +22,7 @@ import AuthState from './Context/Auth/authState';
 import AlertState from './Context/Alerta/alertState';
 import ProductState from './Context/Products/productState';
 import LocationState from './Context/Location/locationState';
+import ClientState from './Context/Client/clientState';
 
 import RutaPrivada from './components/rutas/rutaPrivada'
 
@@ -34,29 +35,31 @@ const App = () => {
       <AuthState>
         <ProductState>
           <LocationState>
-            <Router>
-              <Switch>
-                <Route exact path="/" component={Login} />
+            <ClientState>
+              <Router>
+                <Switch>
+                  <Route exact path="/" component={Login} />
 
-                <RutaPrivada exact path="/dashboard" component={Dashboard} />
+                  <RutaPrivada exact path="/dashboard" component={Dashboard} />
 
-                <RutaPrivada exact path="/users" component={Users} />
-                <RutaPrivada exact path="/users/:id" component={Users} />
+                  <RutaPrivada exact path="/users" component={Users} />
+                  <RutaPrivada exact path="/users/:id" component={Users} />
 
-                <RutaPrivada exact path="/transactions" component={Transactions} />
+                  <RutaPrivada exact path="/transactions" component={Transactions} />
 
-                <RutaPrivada exact path="/products" component={Products} />
-                <RutaPrivada exact path="/collections" component={Collections} />
+                  <RutaPrivada exact path="/products" component={Products} />
+                  <RutaPrivada exact path="/collections" component={Collections} />
 
-                <RutaPrivada exact path="/clients" component={Clients} />
+                  <RutaPrivada exact path="/clients" component={Clients} />
 
-                <RutaPrivada exact path="/reports" component={Reports} />
+                  <RutaPrivada exact path="/reports" component={Reports} />
 
-              </Switch>
+                </Switch>
 
 
 
-            </Router>
+              </Router>
+            </ClientState>
           </LocationState>
         </ProductState>
       </AuthState>

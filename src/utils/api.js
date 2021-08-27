@@ -92,6 +92,20 @@ Api2.getClients = async () => {
     return Api2.request('GET', '/api/clients')
 }
 
+Api2.postClient = async (args) => {
+     return Api2.request('POST', `/api/clients/`, args)
+}
+ 
+Api2.deleteClient = async (id) => {
+     return Api2.request('DELETE', `/api/clients/${id}`)
+}
+
+Api2.updateClient = async (id, args) => {
+     return Api2.request('PUT', `/api/clients/${id}`, args)
+}
+ 
+
+
 Api2.postProduct = async (args) => {
     return Api2.request('POST', '/api/products', args)
 }
