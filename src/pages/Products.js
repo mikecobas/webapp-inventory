@@ -20,8 +20,10 @@ import AuthContext from '../Context/Auth/authContext'
 import ProductContext from '../Context/Products/productContext';
 
 const Products = () => {
+
+
     const authContext = useContext(AuthContext)
-  const {user } = authContext;
+    const {user } = authContext;
     
     const productContext = useContext(ProductContext)
     const { products, total, loading, getProducts, deleteProduct, editProduct } = productContext;
@@ -30,13 +32,11 @@ const Products = () => {
 
 
     useEffect(() => {
+
         (async () => {
             // const userInfo = await JSON.parse(localStorage.getItem('user'));
              await getProducts()
             // setUser(userInfo)
-
-
-
         })()
     }, [loading])
 
@@ -46,7 +46,6 @@ const Products = () => {
         setModalShow(true)
     }
     const closeModal = () => {
-        ;
         setModalShow(false)
     }
     const removeProduct = async (id) => {
@@ -56,7 +55,7 @@ const Products = () => {
 
     return (
         <div className="px-20 h-screen">
-            <h1 className="text-3xl my-6 font-bold">Productos </h1>
+            <h1 className="text-3xl my-6 font-bold">Productos  </h1>
             <h4 className="text-2xl mb-3 font-normal">Total {total}</h4>
             <div className="rounded-3xl shadow p-4  my-2 h-5/6 overflow-scroll">
                 <div className="flex flex-row justify-end mt-2 mb-6">
@@ -93,6 +92,7 @@ const Products = () => {
                                     <td className="align-middle">{product.client.company_name}</td>
                                     <td className="align-middle text-center">{product.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                                     <td className="align-middle text-right">
+                                     
                                         {/* <IconButton aria-label="editar" color="primary" onClick={() => edit(product)}>
                                             <EditIcon />
                                         </IconButton> */}

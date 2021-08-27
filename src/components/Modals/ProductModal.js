@@ -228,8 +228,8 @@ const ProductModal = (props) => {
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                <Button onClick={close}>Close</Button>
-                <Button onClick={()=>handleSubmission(uploadImg)}>
+                <Button className='mx-2' variant="outlined" onClick={close}>Close</Button>
+                <Button variant="contained" color="primary" onClick={()=>handleSubmission(uploadImg)}>
                     {!item ? 'Guardar': 'Actualizar'}
                 </Button>
                 </ModalFooter> </>}
