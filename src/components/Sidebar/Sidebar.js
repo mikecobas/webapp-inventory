@@ -67,7 +67,7 @@ const Sidebar = (props) => {
             <NavLink to="/users" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"> <GroupRoundedIcon /> {!collapse && ' Usuarios'}</NavLink>
             : <></>}
           {user.role !== 'CLIENT' ?
-            <NavLink to="/collections" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><FeaturedPlayListRoundedIcon />{!collapse && ' Coleciones'}</NavLink>
+            <NavLink to="/collections" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><FeaturedPlayListRoundedIcon />{!collapse && ' Ubicaciones'}</NavLink>
             : <></>}
 
           {user.role !== 'USER' && user.role !== 'CLIENT' ?
