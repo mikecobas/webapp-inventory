@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import React, { useReducer } from 'react';
+import { useReducer } from 'react';
 import alertReducer from './alertReducer';
 import alertContext from './alertContext'
 import {

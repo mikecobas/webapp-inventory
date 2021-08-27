@@ -20,6 +20,7 @@ import './App.css'
 
 import AuthState from './Context/Auth/authState';
 import AlertState from './Context/Alerta/alertState';
+import ProductState from './Context/Products/productState';
 
 import RutaPrivada from './components/rutas/rutaPrivada'
 
@@ -30,32 +31,34 @@ const App = () => {
   return (
     <AlertState>
       <AuthState>
-        <Router>
-         
+        <ProductState>
+          <Router>
 
- 
-             
-                <Switch>
-                  <Route exact path="/" component={Login} />
 
-                  <RutaPrivada exact path="/dashboard" component={Dashboard} />
- 
-                  <RutaPrivada exact path="/users" component={Users} />
 
-                  <RutaPrivada exact path="/transactions" component={Transactions} />
 
-                  <RutaPrivada exact path="/products" component={Products} />
-                  <RutaPrivada exact path="/collections" component={Collections}/>
+            <Switch>
+              <Route exact path="/" component={Login} />
 
-                  <RutaPrivada exact path="/clients" component={Clients} />
+              <RutaPrivada exact path="/dashboard" component={Dashboard} />
 
-                  <RutaPrivada exact path="/reports" component={Reports} />
+              <RutaPrivada exact path="/users" component={Users} />
 
-                </Switch>
-       
+              <RutaPrivada exact path="/transactions" component={Transactions} />
 
-    
-        </Router>
+              <RutaPrivada exact path="/products" component={Products} />
+              <RutaPrivada exact path="/collections" component={Collections} />
+
+              <RutaPrivada exact path="/clients" component={Clients} />
+
+              <RutaPrivada exact path="/reports" component={Reports} />
+
+            </Switch>
+
+
+
+          </Router>
+        </ProductState>
       </AuthState>
     </AlertState>
   )

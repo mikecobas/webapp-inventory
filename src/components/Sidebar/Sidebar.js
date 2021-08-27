@@ -1,6 +1,6 @@
 //import useState hook to create menu collapse state
 import React, { useState, useEffect, useContext } from "react";
-import { NavLink, Redirect,useHistory }  from 'react-router-dom'
+import { NavLink, Redirect, useHistory } from 'react-router-dom'
 
 //import icons from react icons
 
@@ -19,26 +19,26 @@ import AuthContext from "../../Context/Auth/authContext";
 
 const Sidebar = (props) => {
   const authContext = useContext(AuthContext)
-  const { user , cerrarSesion} = authContext;
+  const { user, cerrarSesion } = authContext;
   const { collapse, setCollapse } = props;
   const [profile, setProfile] = useState({
     name: '',
     image: '',
   })
-  
+
   useEffect(() => {
     (async () => {
       // const user = await JSON.parse(localStorage.getItem('user'));
       // setProfile(user)
-      
+
     })()
   }, [])
 
 
   let history = useHistory();
 
-    const logout = async () => {
-    
+  const logout = async () => {
+
     await localStorage.clear()
     await history.push("/login")
 
@@ -51,29 +51,38 @@ const Sidebar = (props) => {
     <>
       <div className="bg-white h-full flex flex-col justify-start	border-r">
         <div className={!collapse ? "py-4 flex flex-row items-center justify-end " : "py-4 flex flex-row items-center justify-center "}>
-        <IconButton arial-label="menu" className="mx-4" onClick={menuCollapse}>
-          <MenuIcon />
-        </IconButton>
+          <IconButton arial-label="menu" className="mx-4" onClick={menuCollapse}>
+            <MenuIcon />
+          </IconButton>
         </div>
         <div className={!collapse ? "bg-gray-100 pt-1 px-2 pb-2 rounded-xl flex justify-center items-center mx-4" : "bg-gray-100 pt-1 px-2 pb-2 rounded-xl flex justify-center items-center mx-2 "}>
-          {user.image ? <img className="rounded-full w-10 my-2 " src={ user.image} alt="avatar"/> : <AccountCircleIcon fontSize='large'/>}
-         
-          {!collapse && <h2 className="text-lg mx-3  my-2 ">{ user.name ?  user.name : null}</h2> }
+          {user.image ? <img className="rounded-full w-10 my-2 " src={user.image} alt="avatar" /> : <AccountCircleIcon fontSize='large' />}
+
+          {!collapse && <h2 className="text-lg mx-3  my-2 ">{user.name ? user.name : null}</h2>}
         </div>
         <nav className="flex flex-col pt-8 flex-1">
           {/* <NavLink to="/dashboard" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"> <DashboardRoundedIcon /> Dashboard</NavLink> */}
-          {user.role !== 'USER' && <NavLink to="/users" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"> <GroupRoundedIcon /> {!collapse && ' Usuarios' }</NavLink>}
-          <NavLink to="/collections" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><FeaturedPlayListRoundedIcon />{!collapse &&  ' Coleciones'}</NavLink>
-          <NavLink to="/products" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><ListAltRoundedIcon /> {!collapse && ' Products'} </NavLink>
-          <NavLink to="/clients" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><BusinessRoundedIcon /> {!collapse && ' Clients'} </NavLink>
-          <NavLink to="/transactions" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><SwapHorizIcon /> {!collapse && ' Transacciones'} </NavLink>
-          <NavLink to="/reports" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><AssessmentIcon /> {!collapse && ' Reportes'} </NavLink>
-       </nav>
-        <div className={!collapse ? " py-3 px-3 hover:bg-blue-100 flex flex-row items-center justify-end": " py-3 px-3 hover:bg-blue-100 flex flex-row items-center justify-center" } onClick={cerrarSesion}>
+          <NavLink to="/products" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><ListAltRoundedIcon /> {!collapse && ' Products'} </NavLink>
+          {user.role !== 'USER' && user.role !== 'CLIENT' ?
+            <NavLink to="/users" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"> <GroupRoundedIcon /> {!collapse && ' Usuarios'}</NavLink>
+            : <></>}
+          {user.role !== 'CLIENT' ?
+            <NavLink to="/collections" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><FeaturedPlayListRoundedIcon />{!collapse && ' Coleciones'}</NavLink>
+            : <></>}
+
+          {user.role !== 'USER' && user.role !== 'CLIENT' ?
+            <NavLink to="/clients" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><BusinessRoundedIcon /> {!collapse && ' Clients'} </NavLink>
+            : <></>}
+          {user.role !== 'USER' && user.role !== 'CLIENT' ?
+            <NavLink to="/transactions" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><SwapHorizIcon /> {!collapse && ' Transacciones'} </NavLink>
+            : <></>}
+          <NavLink to="/reports" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="text-blue-400"><AssessmentIcon /> {!collapse && ' Reportes'} </NavLink>
+        </nav>
+        <div className={!collapse ? " py-3 px-3 hover:bg-blue-100 flex flex-row items-center justify-end" : " py-3 px-3 hover:bg-blue-100 flex flex-row items-center justify-center"} onClick={cerrarSesion}>
           <ExitToAppRoundedIcon />{!collapse && <span className="mx-2" > Cerrar sesion</span>}
 
         </div>
-    </div>
+      </div>
     </>
   );
 };

@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React,{useState, useEffect} from 'react'
+import React,{useState, useEffect, useContext} from 'react'
 import Modal from 'react-bootstrap/Modal'
 import ModalTitle from 'react-bootstrap/ModalTitle'
 import ModalHeader from 'react-bootstrap/ModalHeader'
@@ -13,9 +13,12 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { map } from 'lodash'
 import Api2 from '../../utils/api'
+import ProductContext from '../../Context/Products/productContext';
 
 const ProductModal = (props) => {
-    const { item, onHide, show } = props;
+    const { onHide, show } = props;
+    const productContext = useContext(ProductContext)
+    const { item, deleteProduct, editProduct } = productContext;
     const [clients, setClients] = useState([])
     const [clientSelected, setClientSelected] = useState('')
     const [locations, setLocations] = useState([])
@@ -32,21 +35,20 @@ const ProductModal = (props) => {
     useEffect(() => {
         
         (async () => {
-            // console.log('item:', item)
-            // if (item) {
-            // setClientSelected(item.client)
-            // setLocationSelected(item.category)
-            // setProductName(item.name)
-            // setProductCode(item.code)
-            // setPreviewImg(item.image)
-            // setProductCnt(item.ctn)
-            // }
+            if (item) {
+                setProductName(item.name);
+                setProductCode(item.code);
+                setProductCnt(item.cnt);
+                setPreviewImg({file:item.image});
+                setLocationSelected(item.category);
+                setClientSelected(item.client)
+           }
             await listClients();
             await listLocations()
            
             setLoading(false)
        })()
-    }, [])
+    }, [item])
 
     
 
@@ -158,6 +160,7 @@ const ProductModal = (props) => {
     }
 
     const close = () => {
+        editProduct(null)
         onHide()
         resetFields()
     }
@@ -187,7 +190,7 @@ const ProductModal = (props) => {
                     <div className="grid grid-rows-3 grid-flow-col gap-4">
                         <Form.Group className="mb-3" controlId="producto_name">
                             <Form.Label>Nombre del producto</Form.Label>
-                            <Form.Control type="text" placeholder="Producto"  onChange={e => setProductName(e.target.value) }/>
+                            <Form.Control type="text" placeholder="Producto" value={ productName} onChange={e => setProductName(e.target.value) }/>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="product_code">
                             <Form.Label>Código del producto</Form.Label>
@@ -195,14 +198,14 @@ const ProductModal = (props) => {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="client_id">
                             <Form.Label>Cliente</Form.Label>
-                            <Form.Select data-live-search aria-label="Cliente" onChange={(event) => setClientSelected(event.target.value)}>
+                            <Form.Select data-live-search aria-label="Cliente" onChange={(event) => setClientSelected(event.target.value)} value={clientSelected}>
                             <option key='0' value=''> Selecciona un cliente</option>
                                 {clients}
                             </Form.Select>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="ubicacion">
                             <Form.Label>Ubicación</Form.Label>
-                            <Form.Select data-live-search aria-label="Ubicaciones" onChange={(event) => setLocationSelected(event.target.value)}>
+                            <Form.Select data-live-search aria-label="Ubicaciones" onChange={(event) => setLocationSelected(event.target.value)} value={locationSelected}>
                             <option key='0' value=''> Selecciona una ubicacion</option>
                                 {locations}
                             </Form.Select>
@@ -210,7 +213,7 @@ const ProductModal = (props) => {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="cnt">
                             <Form.Label>Cantidad</Form.Label>
-                            <Form.Control type="number" placeholder="Cantidad" value={productCnt} onChange={(event)=> setProductCnt(event.target.value)}/>
+                            <Form.Control type="number" placeholder="Cantidad" value={productCnt} onChange={(event)=> setProductCnt(event.target.value)} value={productCnt}/>
                         </Form.Group>
 
                    
@@ -227,7 +230,7 @@ const ProductModal = (props) => {
                 <ModalFooter>
                 <Button onClick={close}>Close</Button>
                 <Button onClick={()=>handleSubmission(uploadImg)}>
-                    Guardar
+                    {!item ? 'Guardar': 'Actualizar'}
                 </Button>
                 </ModalFooter> </>}
             {loading && <>
