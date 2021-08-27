@@ -21,6 +21,7 @@ import './App.css'
 import AuthState from './Context/Auth/authState';
 import AlertState from './Context/Alerta/alertState';
 import ProductState from './Context/Products/productState';
+import LocationState from './Context/Location/locationState';
 
 import RutaPrivada from './components/rutas/rutaPrivada'
 
@@ -32,32 +33,31 @@ const App = () => {
     <AlertState>
       <AuthState>
         <ProductState>
-          <Router>
+          <LocationState>
+            <Router>
+              <Switch>
+                <Route exact path="/" component={Login} />
+
+                <RutaPrivada exact path="/dashboard" component={Dashboard} />
+
+                <RutaPrivada exact path="/users" component={Users} />
+                <RutaPrivada exact path="/users/:id" component={Users} />
+
+                <RutaPrivada exact path="/transactions" component={Transactions} />
+
+                <RutaPrivada exact path="/products" component={Products} />
+                <RutaPrivada exact path="/collections" component={Collections} />
+
+                <RutaPrivada exact path="/clients" component={Clients} />
+
+                <RutaPrivada exact path="/reports" component={Reports} />
+
+              </Switch>
 
 
 
-
-            <Switch>
-              <Route exact path="/" component={Login} />
-
-              <RutaPrivada exact path="/dashboard" component={Dashboard} />
-
-              <RutaPrivada exact path="/users" component={Users} />
-
-              <RutaPrivada exact path="/transactions" component={Transactions} />
-
-              <RutaPrivada exact path="/products" component={Products} />
-              <RutaPrivada exact path="/collections" component={Collections} />
-
-              <RutaPrivada exact path="/clients" component={Clients} />
-
-              <RutaPrivada exact path="/reports" component={Reports} />
-
-            </Switch>
-
-
-
-          </Router>
+            </Router>
+          </LocationState>
         </ProductState>
       </AuthState>
     </AlertState>

@@ -73,6 +73,14 @@ Api2.getUsers = async () => {
 
 Api2.getCategories = async () => {
      return Api2.request('GET', '/api/categories')
+}
+
+Api2.postLocation = async (args) => {
+     return Api2.request('POST', `/api/categories`, args)
+ }
+ 
+Api2.deleteCategories = async (id) => {
+     return Api2.request('DELETE', `/api/categories/${id}`)
  }
 
 
