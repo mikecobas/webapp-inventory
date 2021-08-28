@@ -3,44 +3,44 @@ const API_URL = 'http://localhost:8080'
 
 const Api2 = {};
 
- Api2.request = async (method, methodName, args=null, isForData=false) => {
-     let tokenLogged = await localStorage.getItem('token');
-    const  token =  methodName === '/api/auth/login' ? "login" : tokenLogged;
-     const headers = {
-         'x-token': token,
-         'Accept': 'application/json',
-     }
-     !isForData && Object.assign(headers, {'Content-Type': 'application/json'})
+Api2.request = async (method, methodName, args = null, isForData = false) => {
+    let tokenLogged = await localStorage.getItem('token');
+    const token = methodName === '/api/auth/login' ? "login" : tokenLogged;
+    const headers = {
+        'x-token': token,
+        'Accept': 'application/json',
+    }
+    !isForData && Object.assign(headers, { 'Content-Type': 'application/json' })
     const request = {
         method: method,
         headers
     };
 
-     
-    if (args){
+
+    if (args) {
         request.body = isForData ? args : JSON.stringify(args)
         // if (isForData) {
         //     request.files = args
         // }
     }
-   
+
     return fetch(API_URL + methodName, request).then((res) => {
 
-        switch(res.status){
-            case 200: 
+        switch (res.status) {
+            case 200:
                 return res.json();
                 break;
-            case 201: 
+            case 201:
                 return res.json();
                 break;
             case 400:
             case 401:
             case 403:
-            
-                 return res.json()
+
+                return res.json()
                 break;
-            default: 
-               // console.log(res.status)
+            default:
+            // console.log(res.status)
         }
     });
 };
@@ -49,62 +49,28 @@ const Api2 = {};
  * Autenticacion
  * @param {*} args 
  */
- Api2.auth = async (args) => {
-    return await Api2.request('POST','/api/auth/login', args);
- }
+Api2.auth = async (args) => {
+    return await Api2.request('POST', '/api/auth/login', args);
+}
 
 Api2.getUsers = async () => {
-    return await Api2.request('GET', '/api/usuarios');
+    return await Api2.request('GET', '/api/usuarios/');
 }
- 
- /**
-  * Productos
-  */
 
-  Api2.getProducts = async () => {
+Api2.postUser = async (args) => {
+    return await Api2.request('POST', '/api/usuarios/', args)
+}
+
+Api2.deleteUsers = async (id) => {
+    return await Api2.request('DELETE', `/api/usuarios/${id}`)
+}
+/**
+ * Productos
+ */
+
+Api2.getProducts = async () => {
     return Api2.request('GET', '/api/products')
 }
-
-
-
- /**
-  * Categorias
-  */
-
-Api2.getCategories = async () => {
-     return Api2.request('GET', '/api/categories')
-}
-
-Api2.postLocation = async (args) => {
-     return Api2.request('POST', `/api/categories`, args)
- }
- 
-Api2.deleteCategories = async (id) => {
-     return Api2.request('DELETE', `/api/categories/${id}`)
- }
-
-
-  /**
-  * Clientes
-  */
-
-Api2.getClients = async () => {
-    return Api2.request('GET', '/api/clients')
-}
-
-Api2.postClient = async (args) => {
-     return Api2.request('POST', `/api/clients/`, args)
-}
- 
-Api2.deleteClient = async (id) => {
-     return Api2.request('DELETE', `/api/clients/${id}`)
-}
-
-Api2.updateClient = async (id, args) => {
-     return Api2.request('PUT', `/api/clients/${id}`, args)
-}
- 
-
 
 Api2.postProduct = async (args) => {
     return Api2.request('POST', '/api/products', args)
@@ -114,6 +80,44 @@ Api2.deleteProduct = async (id) => {
     return Api2.request('DELETE', `/api/products/${id}`)
 }
 
+
+
+/**
+ * Categorias
+ */
+
+Api2.getCategories = async () => {
+    return Api2.request('GET', '/api/categories')
+}
+
+Api2.postLocation = async (args) => {
+    return Api2.request('POST', `/api/categories`, args)
+}
+
+Api2.deleteCategories = async (id) => {
+    return Api2.request('DELETE', `/api/categories/${id}`)
+}
+
+
+/**
+* Clientes
+*/
+
+Api2.getClients = async () => {
+    return Api2.request('GET', '/api/clients')
+}
+
+Api2.postClient = async (args) => {
+    return Api2.request('POST', `/api/clients/`, args)
+}
+
+Api2.deleteClient = async (id) => {
+    return Api2.request('DELETE', `/api/clients/${id}`)
+}
+
+Api2.updateClient = async (id, args) => {
+    return Api2.request('PUT', `/api/clients/${id}`, args)
+}
 
 /**
  * IMAGENES
@@ -125,7 +129,7 @@ Api2.getImage = async (collection, id) => {
 }
 // CARGA DE IMAGEN
 Api2.uploadImage = async (args) => {
-    console.log('API file:' , args.get('file'))
+    console.log('API file:', args.get('file'))
     return Api2.request('post', '/api/uploads/', args, true)
 }
 //Actualizacion
@@ -147,11 +151,11 @@ Api2.deleteImage = async (id) => {
  * @returns 
  */
 
-Api2.getTransactions = async (start,end) => {
+Api2.getTransactions = async (start, end) => {
     console.log(start, end)
-    return Api2.request('GET',`/api/transaction/?start=${start}&end=${end}`)
+    return Api2.request('GET', `/api/transaction/?start=${start}&end=${end}`)
 }
 
 
 
-  export default Api2 
+export default Api2

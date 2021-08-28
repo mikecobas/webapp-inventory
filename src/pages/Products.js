@@ -41,7 +41,6 @@ const Products = () => {
     }, [loading])
 
     const edit = (product) => {
-        console.log(product)
         editProduct(product)
         setModalShow(true)
     }

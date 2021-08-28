@@ -55,6 +55,7 @@ const ProductModal = (props) => {
    
     const listClients = async () => {
         const itemClients = await Api2.getClients();
+        
             const clientOption = map(itemClients.clients, (client, index) => {
                 return <option key={ index+1} value={client._id}>{client.company_name }</option>
             })

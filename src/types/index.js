@@ -6,6 +6,14 @@ export const LOGIN_EXITOSO= 'LOGIN_EXITOSO';
 export const LOGIN_ERROR = 'LOGIN_ERROR'
 export const CERRAR_SESION = 'CERRAR_SESION';
 
+export const GET_USERS = 'GET_USERS';
+export const GET_USER = 'GET_USER';
+export const EDIT_USER = 'EDIT_USER';
+export const ADD_USER = 'ADD_USER';
+export const DELETE_USER = 'DELETE_USER';
+export const UPDATE_USER = 'UPDATE_USER';
+export const ERROR_USER = 'ERROR_USER';
+
 
 export const MOSTRAR_ALERTA = 'MOSTRAR_ALERTA';
 export const OCULTAR_ALERTA = 'OCULTAR_ALERTA';
@@ -30,6 +38,7 @@ export const EDIT_CLIENT = 'EDIT_CLIENT';
 export const ADD_CLIENT = 'ADD_CLIENT';
 export const DELETE_CLIENT = 'DELETE_CLIENT';
 export const UPDATE_CLIENT = 'UPDATE_CLIENT';
+
 
 export const SHOW_POP = 'SHOW_POP';
 export const HIDE_POP = 'HIDE_POP';
