@@ -173,11 +173,34 @@ Api2.getTransactions = async (from, to) => {
     const newTo = moment(to, 'DD-MM-YYYY').format('YYYY-MM-DD HH:MM:ss')
     const newFrom = moment(from, 'DD-MM-YYYY').format('YYYY-MM-DD HH:MM:ss')
     console.log(from, moment(newTo).format())
-    return Api2.request('GET', `/api/transaction/?start=${moment(newFrom).toISOString()},&end=${moment(newTo).toISOString()}`)
+    return Api2.request('GET', `/api/transaction/?start=${moment(newFrom).toISOString()}&end=${moment(newTo).toISOString()}`)
 }
 
 Api2.downLoadExcel = async (from, to) => {
-    return Api2.request('GET', `/api/excel/transactions?from=${from}&to=${to}`, null, false, true )
+    const newTo = moment(to, 'DD-MM-YYYY').format('YYYY-MM-DD HH:MM:ss')
+    const newFrom = moment(from, 'DD-MM-YYYY').format('YYYY-MM-DD HH:MM:ss')
+    return Api2.request('GET', `/api/excel/transactions?from=${moment(newFrom).toISOString()}&to=${moment(newTo).toISOString()}`, null, false, true )
+}
+
+
+/**
+ * SEARCH
+ */
+
+Api2.searchByProducts = async (term) => {
+    return Api2.request('GET', `/api/search/products/${term}`)
+}
+
+Api2.searchByUsers = async (term) => {
+    return Api2.request('GET', `/api/search/users/${term}`)
+}
+
+/**
+ * 
+ * @returns COMPAÑIAS
+ */
+Api2.getCompanies = async () => {
+    return Api2.request('GET',  `/api/companies` )
 }
 
 

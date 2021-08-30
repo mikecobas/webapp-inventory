@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Form from 'react-bootstrap/Form'
 import '../css/Users.css'
 import { map } from 'lodash'
 import Alert from 'react-bootstrap/Alert'
@@ -22,15 +23,20 @@ const Users = () => {
     const authContext = useContext(AuthContext)
     const { user } = authContext;
     const userContext = useContext(UserContext)
-    const { total, users, message, loading, getUsers, deleteUser } = userContext;
+    const { total, users, message, loading, getUsers, deleteUser, searchUsers } = userContext;
 
     const alertContext = useContext(AlertContext);
     const { alerta, mostrarAlerta } = alertContext;
+    const [searchTerm, setSearchTerm ] =  useState('')
     const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
         (async () => {
-            await getUsers()
+            if (searchTerm) {
+                await searchUsers()
+            } else {
+                await getUsers()
+            }
             if (message) {
                 mostrarAlerta(message.msg, message.categoria)
             }
@@ -53,6 +59,14 @@ const Users = () => {
         await deleteUser(id)
     }
 
+    const search = async () => {
+        if (searchTerm !== '') {
+            await searchUsers(searchTerm)
+        } else {
+            await getUsers()
+       }
+    }
+
     return (
         <div className="px-20  h-screen">
             {alerta ? <div className="fixed right-8 top-0 w-auto z-10">
@@ -65,11 +79,23 @@ const Users = () => {
             <h1 className="text-3xl my-6 font-bold">Usuarios</h1>
             <h4 className="text-2xl mb-3 font-normal">Total {total}</h4>
             <div className="rounded-3xl shadow p-4 my-2  h-5/6 overflow-scroll">
+            <div className="flex flex-row justify-between mt-2 mb-6">
+                    <div>
+                        <Form className="flex flex-row">
+                        <Form.Group className="mx-2" controlId="name">
+                            <Form.Control type="text" placeholder="Buscar usuario" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                            </Form.Group>
+                            <Button color="primary" variant="outlined" onClick={() => search()}>
+                                Buscar
+                            </Button>
+                        </Form>
+                    </div>
                 <div className="flex flex-row justify-end mt-2 mb-6">
                     <Button color="primary" variant="contained" onClick={() => edit()} >
                         Agregar usuario
                     </Button>
-                </div>
+                    </div>
+                    </div>
                 <Table hover responsive  >
                     <thead>
                         <tr>
@@ -79,7 +105,8 @@ const Users = () => {
                             <th>Correo</th>
                             <th className="text-center">Status</th>
                             <th>Rol</th>
-                            <th>Compañia</th>
+                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Compañia</th> : null}
+                            <th>Cliente</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -92,7 +119,8 @@ const Users = () => {
                                     <td className="align-middle">{item.name}</td>
                                     <td className="align-middle">{item.email}</td>
                                     <td className="align-middle text-center">{item.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
-                                    <td className="align-middle">{item.role ==='CLIENT' ? 'Cliente' : item.role ==='USER'?  'Empleado' : item.role ==='ADMIN' ? 'Administrador' : 'Super Admin'}</td>
+                                    <td className="align-middle">{item.role ==='CLIENT' ? 'Cliente' : item.role ==='USER'?  'Empleado' : item.role ==='ADMIN' ? 'Administrador' : item.role ==='SUPPOT' ? 'Soporte' : 'Super Admin'}</td>
+                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{item.company_id ? item.company_id.company_name : 'N/A'}</td>: null}
                                     <td className="align-middle">{item.client ? item.client.company_name : 'N/A'}</td>
                                     <td className="align-middle">
                                         {/* <IconButton aria-label="editar" color="primary" onClick={() => edit(product)}>

@@ -11,7 +11,8 @@ import {
     ADD_USER,
     DELETE_USER,
     UPDATE_USER,
-    ERROR_USER
+    ERROR_USER,
+    SEARCH_USERS
 } from '../../types';
 
 const UserState = props => {
@@ -105,6 +106,19 @@ const UserState = props => {
             
         }
     }
+
+    const searchUsers = async (term) => {
+
+        try {
+            const res = await Api.searchByUsers(term)
+            dispatch({
+                type: SEARCH_USERS,
+                payload:res
+            })
+        } catch (error) {
+            
+        }
+    }
     
     
     return (
@@ -117,7 +131,8 @@ const UserState = props => {
                 loading: state.loading,
                 getUsers,
                 deleteUser,
-                addUser
+                addUser,
+                searchUsers
         }} 
         >
             {

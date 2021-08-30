@@ -7,6 +7,7 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Table from 'react-bootstrap/Table'
 import Button from '@material-ui/core//Button';
 import IconButton from '@material-ui/core/IconButton';
+import Form from 'react-bootstrap/Form'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SelectSearch from 'react-select-search';
@@ -26,7 +27,8 @@ const Products = () => {
     const {user } = authContext;
     
     const productContext = useContext(ProductContext)
-    const { products, total, loading, getProducts, deleteProduct, editProduct } = productContext;
+    const { products, total, loading, getProducts, deleteProduct, editProduct, searchProducts } = productContext;
+    const [searchTerm, setSearchTerm ] =  useState('')
     const [modalShow, setModalShow] = useState(false);
     
 
@@ -35,7 +37,11 @@ const Products = () => {
 
         (async () => {
             // const userInfo = await JSON.parse(localStorage.getItem('user'));
-             await getProducts()
+            if (searchTerm !== '') {
+                await searchProducts(searchTerm)
+            } else {
+                await getProducts()
+           }
             // setUser(userInfo)
         })()
     }, [loading])
@@ -51,13 +57,31 @@ const Products = () => {
         await deleteProduct(id)
     }
 
+    const search = async () => {
+        if (searchTerm !== '') {
+            await searchProducts(searchTerm)
+        } else {
+            await getProducts()
+       }
+    }
+
 
     return (
         <div className="px-20 h-screen">
             <h1 className="text-3xl my-6 font-bold">Productos  </h1>
             <h4 className="text-2xl mb-3 font-normal">Total {total}</h4>
             <div className="rounded-3xl shadow p-4  my-2 h-5/6 overflow-scroll">
-                <div className="flex flex-row justify-end mt-2 mb-6">
+                <div className="flex flex-row justify-between mt-2 mb-6">
+                    <div>
+                        <Form className="flex flex-row">
+                        <Form.Group className="mx-2" controlId="name">
+                            <Form.Control type="text" placeholder="Buscar productos" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                            </Form.Group>
+                            <Button color="primary" variant="outlined" onClick={() => search()}>
+                                Buscar
+                            </Button>
+                        </Form>
+                    </div>
                     <Button color="primary" variant="contained" onClick={() => edit()}>
                         Agregar nuevo producto
                     </Button>

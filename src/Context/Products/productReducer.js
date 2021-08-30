@@ -5,7 +5,8 @@ import {
     EDIT_PRODUCT,
     DELETE_PRODUCT,
     UPDATE_PRODUCT,
-    ADD_PRODUCT
+    ADD_PRODUCT,
+    SEARCH_PRODUCTS
 } from '../../types';
 
 
@@ -29,6 +30,14 @@ export default (state, action) => {
             return {
                 ...state,
                 item:action.payload
+            }
+        
+        case SEARCH_PRODUCTS:
+            return {
+                ...state,
+                products: action.payload.results[1],
+                total: action.payload.results[0],
+                loading: false
             }
 
 

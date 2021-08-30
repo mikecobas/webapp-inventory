@@ -16,10 +16,13 @@ import { map } from 'lodash'
 import Api from '../../utils/api'
 import md5 from 'md5';
 
+import AuthContext from "../../Context/Auth/authContext";
 import UserContext from '../../Context/User/userContext';
 
 const UserModal = (props) => {
     const { onHide, show } = props;
+    const authContext = useContext(AuthContext)
+    const { user } = authContext;
     const userContext = useContext(UserContext)
     const { usuario, addUser } = userContext;
     const [password, setPassword] = useState('')
@@ -29,6 +32,8 @@ const UserModal = (props) => {
     const [selectedRole, setRoleSelected] = useState('')
     const [clients, setClients] = useState([])
     const [clientSelected, setClientSelected] = useState('')
+    const [companies, setCompanies] = useState([])
+    const [companiesSelected, setCompaniesSelected] = useState('')
     const [email, setEmail] = useState('')
 
 
@@ -45,11 +50,15 @@ const UserModal = (props) => {
             }
             console.log('test')
             await listClients();
+            if (user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT') {
+                await listCompanies()
+            }
 
 
             setLoading(false)
         })()
     }, [usuario])
+
 
 
 
@@ -62,6 +71,16 @@ const UserModal = (props) => {
         })
 
         setClients(clientOption)
+    }
+
+    const listCompanies = async () => {
+        const itemCompanies = await Api.getCompanies();
+
+        const companyOption = map(itemCompanies.companies, (company, index) => {
+            return <option key={index + 1} value={company._id}>{company.company_name}</option>
+        })
+
+        setCompanies(companyOption)
     }
 
 
@@ -95,11 +114,14 @@ const UserModal = (props) => {
             if (selectedRole === 'CLIENT') {
                 args.client = clientSelected
             }
+            if (user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT') {
+                args.company_id = companiesSelected
+            }
 
             console.log(args)
             await addUser(args)
-           
-                close()
+
+            close()
 
         }
 
@@ -115,6 +137,7 @@ const UserModal = (props) => {
         setRepeatPassword('');
         setRoleSelected('');
         setClientSelected('')
+        setCompaniesSelected('');
     }
 
     const close = () => {
@@ -162,6 +185,7 @@ const UserModal = (props) => {
 
 
 
+
                     </div>
                     <Form.Group className="mb-3" controlId="role_id">
                         <Form.Label>Rol</Form.Label>
@@ -170,10 +194,21 @@ const UserModal = (props) => {
                             <option key='1' value='USER'>Empleado</option>
                             <option key='2' value='CLIENT'>Cliente</option>
                             <option key='3' value='ADMIN'> Administrador</option>
-                            <option key='4' value='SUPER_ADMIN'> Super Admin</option>
-
+                            {user.role === 'SUPER_ADMIN' ? <option key='4' value='SUPER_ADMIN'> Super Admin</option>
+                                : null}
                         </Form.Select>
                     </Form.Group>
+                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ?
+                        <Form.Group className="mb-3" controlId="client_id">
+                            <Form.Label>Compañia</Form.Label>
+                            <Form.Select data-live-search aria-label="Compañia" onChange={(event) => setCompaniesSelected(event.target.value)} value={companiesSelected}>
+                                <option key='0' value=''> Selecciona una compañia</option>
+                                {companies}
+                            </Form.Select>
+                        </Form.Group>
+                        :
+                        null
+                    }
                     {selectedRole === 'CLIENT' ?
                         <Form.Group className="mb-3" controlId="client_id">
                             <Form.Label>Cliente</Form.Label>

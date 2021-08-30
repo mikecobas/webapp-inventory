@@ -122,7 +122,7 @@ const Transactions = () => {
                                         <td className="align-middle">{index + 1}</td>
                                         <td className="align-middle">{transaction.product.name}</td>
                                         <td className="align-middle">{transaction.status ? <span style={{ color: green[500] }}>+ ${transaction.cnt}</span> : <span style={{ color: red[500] }}>- ${transaction.cnt}</span>}</td>
-                                        <td className="align-middle">{transaction.date}</td>
+                                        <td className="align-middle">{transaction.timestamp && moment(transaction.timestamp).format('DD/MMMM/YYYY HH:mm a')}</td>
                                         <td className="align-middle">{transaction.product.code}</td>
                                         <td className="align-middle">{transaction.product.client.company_name}</td>
                                         <td className="align-middle">{transaction.user.name}</td>

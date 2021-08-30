@@ -10,7 +10,8 @@ import {
     EDIT_PRODUCT,
     DELETE_PRODUCT,
     UPDATE_PRODUCT,
-    ADD_PRODUCT
+    ADD_PRODUCT,
+    SEARCH_PRODUCTS
 } from '../../types';
 
 const ProductState = props => {
@@ -61,6 +62,19 @@ const ProductState = props => {
                 })
     }
 
+    const searchProducts = async (term) => {
+
+        try {
+            const res = await Api.searchByProducts(term)
+            dispatch({
+                type: SEARCH_PRODUCTS,
+                payload:res
+            })
+        } catch (error) {
+            
+        }
+    }
+
     return (
         <productContext.Provider
             value={{
@@ -70,7 +84,8 @@ const ProductState = props => {
                 loading: state.loading,
                 getProducts,
                 deleteProduct,
-                editProduct
+                editProduct,
+                searchProducts
             }}
         >
             {

@@ -6,7 +6,8 @@ import {
     ADD_USER,
     DELETE_USER,
     UPDATE_USER,
-    ERROR_USER
+    ERROR_USER,
+    SEARCH_USERS
 } from '../../types';
 
 
@@ -27,6 +28,14 @@ export default (state, action) => {
                 ...state,
                 loading: true,
                 message: action.payload
+            }
+
+        case SEARCH_USERS:
+            return {
+                ...state,
+                users: action.payload.results[1],
+                total: action.payload.results[0],
+                loading: false
             }
 
         case ERROR_USER:
