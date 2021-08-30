@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 /* eslint-disable no-unused-expressions */
 import React, { useState, useEffect, useContext } from 'react'
 import { green } from '@material-ui/core/colors';
@@ -90,7 +91,7 @@ const Collections = (props) => {
                                     <td className="align-middle text-center">{location.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                                     <td className="align-middle">{location.user.name}</td>
                                     <td className="align-middle text-right">
-                                        {location.status && user.role === 'SUPER_ADMIN' || user.role === 'ADMIN' ?
+                                        {location.status && user.role === 'SUPER_ADMIN' || location.status && user.role === 'ADMIN' ?
                                             <Button
                                                 variant="contained"
                                                 color="secondary"

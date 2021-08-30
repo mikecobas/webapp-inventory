@@ -1,9 +1,11 @@
+import moment from 'moment'
 const API_URL = 'http://localhost:8080'
 // const DEMO = 'https://saruga.herokuapp.com'
 
+
 const Api2 = {};
 
-Api2.request = async (method, methodName, args = null, isForData = false) => {
+Api2.request = async (method, methodName, args = null, isForData = false, file=false, fileName=null) => {
     let tokenLogged = await localStorage.getItem('token');
     const token = methodName === '/api/auth/login' ? "login" : tokenLogged;
     const headers = {
@@ -23,26 +25,42 @@ Api2.request = async (method, methodName, args = null, isForData = false) => {
         //     request.files = args
         // }
     }
+    if (!file) {
+        return fetch(API_URL + methodName, request).then((res) => {
 
-    return fetch(API_URL + methodName, request).then((res) => {
+            switch (res.status) {
+                case 200:
+                    return res.json();
+                    break;
+                case 201:
+                    return res.json();
+                    break;
+                case 400:
+                case 401:
+                case 403:
+    
+                    return res.json()
+                    break;
+                default:
+                // console.log(res.status)
+            }
+        });
+    } else {
+        return fetch(API_URL + methodName, request,)
+            .then((res) => res.blob())
+            .then(blob => {
+                const filename = 'Reporte de transacciones'
+                const file = window.URL.createObjectURL(blob);
+                // window.location.assign(file)
+                    const link = document.createElement('a');
+                    link.href = file;
+                    link.setAttribute('download', filename);
+                    document.body.appendChild(link);
+                    link.click();
+            });
+    }
 
-        switch (res.status) {
-            case 200:
-                return res.json();
-                break;
-            case 201:
-                return res.json();
-                break;
-            case 400:
-            case 401:
-            case 403:
-
-                return res.json()
-                break;
-            default:
-            // console.log(res.status)
-        }
-    });
+  
 };
 
 /**
@@ -151,9 +169,15 @@ Api2.deleteImage = async (id) => {
  * @returns 
  */
 
-Api2.getTransactions = async (start, end) => {
-    console.log(start, end)
-    return Api2.request('GET', `/api/transaction/?start=${start}&end=${end}`)
+Api2.getTransactions = async (from, to) => {
+    const newTo = moment(to, 'DD-MM-YYYY').format('YYYY-MM-DD HH:MM:ss')
+    const newFrom = moment(from, 'DD-MM-YYYY').format('YYYY-MM-DD HH:MM:ss')
+    console.log(from, moment(newTo).format())
+    return Api2.request('GET', `/api/transaction/?start=${moment(newFrom).toISOString()},&end=${moment(newTo).toISOString()}`)
+}
+
+Api2.downLoadExcel = async (from, to) => {
+    return Api2.request('GET', `/api/excel/transactions?from=${from}&to=${to}`, null, false, true )
 }
 
 

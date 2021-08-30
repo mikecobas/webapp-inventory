@@ -95,7 +95,7 @@ const Products = () => {
                                         {/* <IconButton aria-label="editar" color="primary" onClick={() => edit(product)}>
                                             <EditIcon />
                                         </IconButton> */}
-                                        {product.status && user.role === 'ADMIN' || user.role === 'SUPER_ADMIN' ?
+                                        {product.status && user.role === 'ADMIN' || product.status && user.role === 'SUPER_ADMIN' ?
                                             <IconButton aria-label="delete" color="secondary" onClick={() => removeProduct(product._id)}>
                                                 <DeleteIcon />
                                             </IconButton> : ''}

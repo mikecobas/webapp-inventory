@@ -39,6 +39,10 @@ export const ADD_CLIENT = 'ADD_CLIENT';
 export const DELETE_CLIENT = 'DELETE_CLIENT';
 export const UPDATE_CLIENT = 'UPDATE_CLIENT';
 
+export const GET_TRANSACTIONS = 'GET_TRANSACTIONS';
+export const GET_TRANSACTION = 'GET_TRANSACTION';
+export const UPDATE_FILTERS = 'UPDATE_FILTERS';
+
 
 export const SHOW_POP = 'SHOW_POP';
 export const HIDE_POP = 'HIDE_POP';

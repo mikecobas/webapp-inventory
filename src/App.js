@@ -24,6 +24,7 @@ import UserState from './Context/User/userState';
 import ProductState from './Context/Products/productState';
 import LocationState from './Context/Location/locationState';
 import ClientState from './Context/Client/clientState';
+import TransactionState from './Context/Transaction/transactionState';
 
 import RutaPrivada from './components/rutas/rutaPrivada'
 
@@ -38,6 +39,7 @@ const App = () => {
           <ProductState>
             <LocationState>
               <ClientState>
+                <TransactionState>
                 <Router>
                   <Switch>
                     <Route exact path="/" component={Login} />
@@ -60,7 +62,8 @@ const App = () => {
 
 
 
-                </Router>
+                  </Router>
+                  </TransactionState>
               </ClientState>
             </LocationState>
           </ProductState>
