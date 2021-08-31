@@ -203,6 +203,11 @@ Api2.getCompanies = async () => {
     return Api2.request('GET',  `/api/companies` )
 }
 
+Api2.getCompanyInfo = async (id) => {
+    console.log('ID API ', id)
+    return Api2.request('GET', `/api/companies/${id}`)
+}
+
 
 
 export default Api2

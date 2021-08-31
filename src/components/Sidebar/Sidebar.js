@@ -19,7 +19,7 @@ import AuthContext from "../../Context/Auth/authContext";
 
 const Sidebar = (props) => {
   const authContext = useContext(AuthContext)
-  const { user, cerrarSesion } = authContext;
+  const { user, cerrarSesion, company } = authContext;
   const { collapse, setCollapse } = props;
   const [profile, setProfile] = useState({
     name: '',
@@ -50,7 +50,13 @@ const Sidebar = (props) => {
   return (
     <>
       <div className="bg-white h-full flex flex-col justify-start	border-r">
-        <div className={!collapse ? "py-4 flex flex-row items-center justify-end " : "py-4 flex flex-row items-center justify-center "}>
+      <div className={!collapse ? " flex flex-row items-center justify-center" : "flex flex-row items-center justify-center "}>
+          {company ?
+            company.image ? <img src={company.image} width='60px' height='auto' alt={company.name} />
+              : company.name ? <h5>{company.name}</h5> : null  : null}
+          </div>
+        <div className={!collapse ? "py-2 flex flex-row items-center justify-end " : "py-2 flex flex-row items-center justify-center "}>
+          
           <IconButton arial-label="menu" className="mx-4" onClick={menuCollapse}>
             <MenuIcon />
           </IconButton>

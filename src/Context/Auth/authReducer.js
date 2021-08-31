@@ -5,7 +5,8 @@ import {
     LOGIN_ERROR,
     LOGIN_EXITOSO,
     OBTENER_USUARIO,
-    CERRAR_SESION
+    CERRAR_SESION,
+    OBTENER_COMPANY
 } from '../../types';
 
 
@@ -41,6 +42,15 @@ export default (state, action) => {
             return {
                 ...state,
                 user: action.payload.user,
+                message: null,
+
+            }
+        
+        case OBTENER_COMPANY:
+            localStorage.setItem('company', JSON.stringify(action.payload))
+            return {
+                ...state,
+                company: action.payload,
                 message: null,
 
             }

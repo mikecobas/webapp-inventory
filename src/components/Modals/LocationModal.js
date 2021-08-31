@@ -12,24 +12,46 @@ import Button from '@material-ui/core/Button'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { map } from 'lodash'
+import Api from '../../utils/api'
+
+import AuthContext from "../../Context/Auth/authContext";
 import LocationContext from '../../Context/Location/locationContext';
 
 const LocationModal = (props) => {
     const { onHide, show } = props;
+    const authContext = useContext(AuthContext)
+    const { user, company } = authContext;
     const locationContext = useContext(LocationContext)
     const { location, addLocation } = locationContext;
-    const [locationName, setLocationName] = useState('')
+    const [locationName, setLocationName] = useState('');
+    const [companies, setCompanies] = useState([])
+    const [companySelected, setCompanySelected] = useState('');
     const [loading, setLoading] = useState(true)
 
 
     useEffect(() => {
         
         (async () => {
-
+            if (!company) {
+                console.log('no company')
+                await listCompanies()
+            } else {
+                setCompanySelected(company.id)
+            }
             setLoading(false)
        })()
     }, [])
 
+
+    const listCompanies = async () => {
+        const itemCompanies = await Api.getCompanies();
+
+        const companyOption = map(itemCompanies.companies, (company, index) => {
+            return <option key={index + 1} value={company._id}>{company.company_name}</option>
+        })
+
+        setCompanies(companyOption)
+    }
     
 
     // const formik = useFormik({
@@ -49,11 +71,18 @@ const LocationModal = (props) => {
 
 
     const handleSubmission = async () => {
-
-        if (locationName.trim !== '') {
+console.log('hola locationName ' , companySelected)
+        if (locationName.trim() !== '') {
+            console.log('hola locationName ' , locationName)
             const args = {
                 name:locationName
             }
+            if (company) {
+                args.company= company.id
+            } else {
+                args.company = companySelected
+            }
+
             await addLocation(args)
             close()
         }
@@ -94,6 +123,17 @@ const LocationModal = (props) => {
                             <Form.Control type="text" placeholder="Ubicación" value={ locationName} onChange={e => setLocationName(e.target.value) }/>
                         </Form.Group>            
                     </div>
+                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ?
+                        <Form.Group className="mb-3" controlId="client_id">
+                            <Form.Label>Compañia</Form.Label>
+                            <Form.Select data-live-search aria-label="Compañia" onChange={(event) => setCompanySelected(event.target.value)} value={companySelected}>
+                                <option key='0' value=''> Selecciona una compañia</option>
+                                {companies}
+                            </Form.Select>
+                        </Form.Group>
+                        :
+                        null
+                    }
                     </Form>
                 </ModalBody>
                 <ModalFooter>

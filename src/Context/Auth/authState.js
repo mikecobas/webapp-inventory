@@ -9,13 +9,15 @@ import {
     LOGIN_ERROR,
     LOGIN_EXITOSO,
     OBTENER_USUARIO,
-    CERRAR_SESION
+    CERRAR_SESION,
+    OBTENER_COMPANY
 } from '../../types';
 
 const AuthState = (props) => {
     //STATE INICIAL
     const initialState = {
         user: JSON.parse(localStorage.getItem('user')),
+        company: JSON.parse(localStorage.getItem('company')),
         message: null,
         token: localStorage.getItem('token'),
         autenticado: null
@@ -28,13 +30,14 @@ const AuthState = (props) => {
     const registrarUsuario = async (datos) => {
         try {
             const respuesta = await Api.auth(datos)
-            console.log(respuesta)
             if (!respuesta.msg) {
+                
                 dispatch({
                     type: REGISTRO_EXITOSO,
                     payload: respuesta
                 })
                 usuarioAutenticado(respuesta)
+                getCompany(respuesta)
             } else {
                 const alerta = {
                     msg: respuesta.msg,
@@ -49,7 +52,7 @@ const AuthState = (props) => {
                 })
             }
         } catch (error) {
-         
+
             const alerta = {
                 msg: error.respuesta.msg,
                 categoria: 'alerta-error'
@@ -69,7 +72,8 @@ const AuthState = (props) => {
     // Obtener datos de usuario
 
     const usuarioAutenticado = async (userData) => {
-         
+
+
         try {
             dispatch({
                 type: OBTENER_USUARIO,
@@ -83,9 +87,27 @@ const AuthState = (props) => {
         }
     }
 
+    const getCompany = async (data) => {
+        try {
+            const res = await Api.getCompanyInfo(data.user.company_id);
+            const companyInfo = {
+                id: res.company._id,
+                name: res.company.company_name,
+                image: res.company.image
+            }
+
+            dispatch({
+                type: OBTENER_COMPANY,
+                payload: companyInfo
+            })
+        } catch (error) {
+
+        }
+    }
+
     const cerrarSesion = () => {
         dispatch({
-            type:CERRAR_SESION
+            type: CERRAR_SESION
         })
     }
 
@@ -94,10 +116,12 @@ const AuthState = (props) => {
         <AuthContext.Provider value={{
             user: state.user,
             token: state.token,
+            company: state.company,
             autenticado: state.autenticado,
             message: state.message,
             registrarUsuario,
             usuarioAutenticado,
+            getCompany,
             cerrarSesion
 
         }}

@@ -9,7 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import '../css/Users.css'
 import { map } from 'lodash'
 import Alert from 'react-bootstrap/Alert'
-
+import moment from 'moment'
 import AuthContext from '../Context/Auth/authContext'
 import LocationContext from '../Context/Location/locationContext';
 import AlertContext from '../Context/Alerta/alertContext';
@@ -38,7 +38,7 @@ const Collections = (props) => {
 
     const edit = (location) => {
         console.log(location)
-       
+
         setModalShow(true)
     }
 
@@ -53,13 +53,13 @@ const Collections = (props) => {
     return (
         <div className="p-20 h-full relative">
 
-           {alerta ? <div className="fixed right-8 top-0 w-auto z-10">
-                <Alert variant= {alerta.categoria} className="mx-auto my-4">
+            {alerta ? <div className="fixed right-8 top-0 w-auto z-10">
+                <Alert variant={alerta.categoria} className="mx-auto my-4">
 
-                {alerta.msg}
+                    {alerta.msg}
                 </Alert>
             </div>
-            : null}
+                : null}
 
 
             <h1 className="text-3xl mb-6 font-bold">Ubicaciones</h1>
@@ -76,8 +76,13 @@ const Collections = (props) => {
                             <th>#</th>
 
                             <th>Nombre</th>
+                           
+                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="">Compañia</th> : null}
+                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="">Creado por</th> : null}
+                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="">Fecha de creación</th> : null}
+                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="">Actualizado por</th> : null}
+                            <th className="">Ultima actualización</th>
                             <th className="text-center">Status</th>
-                            <th className="">Actualizado por</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -88,8 +93,13 @@ const Collections = (props) => {
                                 <tr key={location._id} >
                                     <td className="align-middle">{index + 1}</td>
                                     <td className="align-middle">{location.name}</td>
+                                    
+                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.company ? location.company.company_name : 'N/A'}</td> : null}
+                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.created_by ? location.created_by.name : 'N/A'}</td> : null}
+                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.created_date ? `${moment(location.created_date ).format('DD/MM/YY h:mm a')}` : 'N/A'}</td> : null}
+                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.updated_by ? location.updated_by.name : 'N/A'}</td> : null}
+                                    <td className="align-middle">{location.updated_date ? `${moment(location.updated_date ).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
                                     <td className="align-middle text-center">{location.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
-                                    <td className="align-middle">{location.user.name}</td>
                                     <td className="align-middle text-right">
                                         {location.status && user.role === 'SUPER_ADMIN' || location.status && user.role === 'ADMIN' ?
                                             <Button
