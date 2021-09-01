@@ -46,5 +46,13 @@ export const GET_TRANSACTION = 'GET_TRANSACTION';
 export const UPDATE_FILTERS = 'UPDATE_FILTERS';
 
 
+export const GET_COMPANIES = 'GET_COMPANIES';
+export const GET_COMPANY = 'GET_COMPANY';
+export const EDIT_COMPANY = 'EDIT_COMPANY';
+export const ADD_COMPANY = 'ADD_COMPANY';
+export const DELETE_COMPANY = 'DELETE_COMPANY';
+export const UPDATE_COMPANY = 'UPDATE_COMPANY';
+export const ACTIVE_COMPANY = 'ACTIVE_COMPANY';
+
 export const SHOW_POP = 'SHOW_POP';
 export const HIDE_POP = 'HIDE_POP';

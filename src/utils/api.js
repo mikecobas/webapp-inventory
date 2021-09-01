@@ -204,8 +204,24 @@ Api2.getCompanies = async () => {
 }
 
 Api2.getCompanyInfo = async (id) => {
-    console.log('ID API ', id)
+
     return Api2.request('GET', `/api/companies/${id}`)
+}
+
+Api2.postCompany = async (args) => {
+    return Api2.request('POST', `/api/companies/`, args)
+}
+
+Api2.deleteCompany = async (id) => {
+    return Api2.request('DELETE', `/api/companies/${id}`)
+}
+
+Api2.updateCompany= async (id, args) => {
+    return Api2.request('PUT', `/api/companies/${id}`, args)
+}
+
+Api2.activateCompany= async (id) => {
+    return Api2.request('PUT', `/api/companies/active/${id}`)
 }
 
 

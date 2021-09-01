@@ -1,44 +1,62 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-unused-expressions */
 import React, { useState, useEffect, useContext } from 'react'
 import { green } from '@material-ui/core/colors';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import PhoneIcon from '@material-ui/icons/Phone';
+import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import Table from 'react-bootstrap/Table'
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
+import Tooltip from '@material-ui/core/Tooltip';
 import '../css/Users.css'
 import { map } from 'lodash'
 import Alert from 'react-bootstrap/Alert'
 import moment from 'moment'
 import AuthContext from '../Context/Auth/authContext'
-import LocationContext from '../Context/Location/locationContext';
+import CompanyContext from '../Context/Companies/companyContext';
 import AlertContext from '../Context/Alerta/alertContext';
 
-import LocationModal from '../components/Modals/LocationModal';
+import CompanyModal from '../components/Modals/CompanyModal'
 
 const Companies = (props) => {
     const authContext = useContext(AuthContext)
     const { user } = authContext;
-    const locationContext = useContext(LocationContext)
-    const { locations, total, message, loading, getLocations, deleteLocation } = locationContext;
+    const companyContext = useContext(CompanyContext)
+    const {
+        companies,
+        total,
+        loading,
+        message,
+        getCompanies,
+        deleteCompany,
+        editCompany,
+        activatedCompany
+    } = companyContext;
 
     const alertContext = useContext(AlertContext);
     const { alerta, mostrarAlerta } = alertContext;
 
     const [modalShow, setModalShow] = useState(false);
 
+    // companies.filter((companies) => companies.status === true) para filtartlos y hacer tabs
+
     useEffect(() => {
         (async () => {
-            await getLocations()
+            await getCompanies()
             if (message) {
                 mostrarAlerta(message.msg, message.categoria)
             }
         })()
     }, [loading, message])
 
-    const edit = (location) => {
-        console.log(location)
-
+    const edit = (company) => {
+        editCompany(company)
         setModalShow(true)
     }
 
@@ -46,8 +64,11 @@ const Companies = (props) => {
         setModalShow(false)
     }
 
-    const removeLocation = async (id) => {
-        await deleteLocation(id)
+    const removeCompany = async (id) => {
+        await deleteCompany(id)
+    }
+    const activeCompany = async (id) => {
+        await activatedCompany(id)
     }
 
     return (
@@ -62,55 +83,80 @@ const Companies = (props) => {
                 : null}
 
 
-            <h1 className="text-3xl mb-6 font-bold">Ubicaciones</h1>
+            <h1 className="text-3xl mb-6 font-bold">Compañias</h1>
             <h4 className="text-2xl mb-6 font-normal">Total {total}</h4>
-            <div className="rounded-3xl shadow p-4 h-auto overflow-scroll ">
+            <div className="rounded-3xl shadow p-4 overflow-scroll ">
                 <div className="flex flex-row justify-end mt-2 mb-6">
                     <Button color="primary" variant="contained" onClick={() => edit()} >
-                        Agregar Ubicación
+                        Agregar Compañía
                     </Button>
                 </div>
-                <Table hover responsive size="sm">
+                <Table hover responsive>
                     <thead>
                         <tr>
                             <th>#</th>
 
-                            <th>Nombre</th>
-                           
-                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="">Compañia</th> : null}
-                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="">Creado por</th> : null}
-                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="">Fecha de creación</th> : null}
-                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="">Actualizado por</th> : null}
+                            <th>Compañia</th>
+
+                            <th className="">Nombre del Cliente</th>
+                            {/* <th className="">Dirección</th> */}
+                            <th className="">Datos de contacto</th>
+                            {/* <th className="">Teléfono</th>
+                            <th className="">Celular</th>
+                            <th className="">Correo</th> */}
+                            <th className="">Fecha de creación</th>
+                            {/* <th className="">Creado por</th> */}
                             <th className="">Ultima actualización</th>
+                            {/* <th className="">Actualizado por</th> */}
                             <th className="text-center">Status</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody >
 
-                        {map(locations, (location, index) => {
+                        {map(companies, (company, index) => {
                             return (
-                                <tr key={location._id} >
+                                <tr key={company._id} >
                                     <td className="align-middle">{index + 1}</td>
-                                    <td className="align-middle">{location.name}</td>
-                                    
-                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.company ? location.company.company_name : 'N/A'}</td> : null}
-                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.created_by ? location.created_by.name : 'N/A'}</td> : null}
-                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.created_date ? `${moment(location.created_date ).format('DD/MM/YY h:mm a')}` : 'N/A'}</td> : null}
-                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.updated_by ? location.updated_by.name : 'N/A'}</td> : null}
-                                    <td className="align-middle">{location.updated_date ? `${moment(location.updated_date ).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
-                                    <td className="align-middle text-center">{location.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
+                                    <td className="align-middle">{company.company_name}</td>
+
+                                    <td className="align-middle">{company.contact_name ? company.contact_name : 'N/A'}</td>
+                                    {/* <td className="align-middle">{company.address ? company.address : 'N/A'}</td> */}
+                                    <td className="flex flex-col justify-center">
+                                       <span className="my-2"><PhoneIcon fontSize="small" /> {company.phone ? company.phone : 'N/A'}</span> 
+                                       <span className="my-2"><PhoneIphoneIcon fontSize="small" /> {company.cel ? company.cel : 'N/A'}</span> 
+                                        <span className="my-2"><MailOutlineIcon fontSize="small" />  {company.email ? company.email : 'N/A'}</span>
+                                    </td>
+                                    {/* <td className="align-middle">{company.phone ? company.phone : 'N/A'}</td>
+                                    <td className="align-middle">{company.cel ? company.cel : 'N/A'}</td>
+                                    <td className="align-middle">{company.email ? company.email : 'N/A'}</td> */}
+                                    <td className="align-middle">{company.created_date ? `${moment(company.created_date).format('DD/MM/YY')}` : 'N/A'}</td>
+                                    {/* <td className="align-middle">{company.created_by ? company.created_by.name : 'N/A'}</td> */}
+                                    <td className="align-middle">{company.updated_date ? `${moment(company.updated_date).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
+                                    {/* <td className="align-middle">{company.updated_by ? company.updated_by.name : 'N/A'}</td> */}
+                                    <td className="align-middle text-center">{company.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                                     <td className="align-middle text-right">
-                                        {location.status && user.role === 'SUPER_ADMIN' || location.status && user.role === 'ADMIN' ?
-                                            <Button
-                                                variant="contained"
-                                                color="secondary"
-                                                size="small"
-                                                onClick={() => removeLocation(location._id)}
-                                                startIcon={<DeleteIcon />}
-                                            >
-                                                Borrar
-                                            </Button> : ''}
+                                        <td className="align-middle text-right">
+                                            {user.role === 'SUPER_ADMIN' && company.status?
+                                                <Tooltip title="Editar compañía" placement="bottom">
+                                                    <IconButton aria-label="editar" color="primary" onClick={() => edit(company)}>
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+
+                                                : ''}
+                                            {company.status ?
+                                                <Tooltip title="Borrar compañía" placement="bottom">
+                                                    <IconButton aria-label="editar" color="secondary" onClick={() => removeCompany(company._id)}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+                                                : <Tooltip title="Reactivar compañía" placement="bottom">
+                                                    <IconButton aria-label="editar" color="primary" onClick={() => activeCompany(company._id)}>
+                                                        <RestoreFromTrashIcon />
+                                                    </IconButton>
+                                                </Tooltip>}
+                                        </td>
                                     </td>
                                 </tr>
                             )
@@ -119,7 +165,7 @@ const Companies = (props) => {
                     </tbody>
                 </Table>
             </div>
-            <LocationModal show={modalShow} onHide={() => closeModal()} />
+            <CompanyModal show={modalShow} onHide={() => closeModal()} />
         </div>
     )
 }

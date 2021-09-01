@@ -68,25 +68,25 @@ const Sidebar = (props) => {
           {!collapse && <h2 className="text-lg mx-3  my-2 ">{user.name ? user.name : null}</h2>}
         </div>
         <nav className="flex flex-col pt-8 flex-1">
-          <NavLink to="/dashboard" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="bg-blue-100 text-blue-500"> <DashboardRoundedIcon /> {!collapse && ' Dashboard'}</NavLink>
+          <NavLink to="/dashboard" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start":"pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"> <DashboardRoundedIcon /> {!collapse && ' Dashboard'}</NavLink>
           {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ?
-            <NavLink to="/companies" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="bg-blue-100 text-blue-500"> <HomeWork /> {!collapse && ' Compañias'}</NavLink>
+            <NavLink to="/companies" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"> <HomeWork /> {!collapse && ' Compañias'}</NavLink>
             : <></>}
-          <NavLink to="/products" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="bg-blue-100 text-blue-500"><ListAltRoundedIcon /> {!collapse && ' Productos'} </NavLink>
+          <NavLink to="/products" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"><ListAltRoundedIcon /> {!collapse && ' Productos'} </NavLink>
           {user.role !== 'USER' || user.role !== 'CLIENT' ?
-            <NavLink to="/users" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="bg-blue-100 text-blue-500"> <GroupRoundedIcon /> {!collapse && ' Usuarios'}</NavLink>
+            <NavLink to="/users" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"> <GroupRoundedIcon /> {!collapse && ' Usuarios'}</NavLink>
             : <></>}
           {user.role !== 'CLIENT' ?
-            <NavLink to="/collections" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="bg-blue-100 text-blue-500"><FeaturedPlayListRoundedIcon />{!collapse && ' Ubicaciones'}</NavLink>
+            <NavLink to="/collections" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"><FeaturedPlayListRoundedIcon />{!collapse && ' Ubicaciones'}</NavLink>
             : <></>}
 
           {user.role !== 'USER' || user.role !== 'CLIENT' ?
-            <NavLink to="/clients" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="bg-blue-100 text-blue-500"><BusinessRoundedIcon /> {!collapse && ' Clients'} </NavLink>
+            <NavLink to="/clients" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"><BusinessRoundedIcon /> {!collapse && ' Clients'} </NavLink>
             : <></>}
           {user.role !== 'USER' || user.role !== 'CLIENT' ?
-            <NavLink to="/transactions" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="bg-blue-100 text-blue-500"><SwapHorizIcon /> {!collapse && ' Transacciones'} </NavLink>
+            <NavLink to="/transactions" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"><SwapHorizIcon /> {!collapse && ' Transacciones'} </NavLink>
             : <></>}
-          <NavLink to="/reports" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500"} activeClassName="bg-blue-100 text-blue-500"><AssessmentIcon /> {!collapse && ' Reportes'} </NavLink>
+          <NavLink to="/reports" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"><AssessmentIcon /> {!collapse && ' Reportes'} </NavLink>
         </nav>
         <div className={!collapse ? " py-3 px-3 hover:bg-blue-100 flex flex-row items-center justify-end" : " py-3 px-3 hover:bg-blue-100 flex flex-row items-center justify-center"} onClick={cerrarSesion}>
           <ExitToAppRoundedIcon />{!collapse && <span className="mx-2" > Cerrar sesion</span>}

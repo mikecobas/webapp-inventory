@@ -14,6 +14,7 @@ import Products from './pages/Products'
 import Collections from './pages/Collections'
 import Reports from './pages/Reports'
 import Transactions from './pages/Transactions'
+import Companies from './pages/Companies'
 import Sidebar from './components/Sidebar/Sidebar'
 import './App.css'
 
@@ -25,8 +26,11 @@ import ProductState from './Context/Products/productState';
 import LocationState from './Context/Location/locationState';
 import ClientState from './Context/Client/clientState';
 import TransactionState from './Context/Transaction/transactionState';
+import CompanyState from './Context/Companies/companyState';
 
-import RutaPrivada from './components/rutas/rutaPrivada'
+import RutaSuperPrivada from './components/rutas/rutasSuperAdmin';
+import RutaPrivada from './components/rutas/rutaPrivada';
+
 
 const App = () => {
 
@@ -35,39 +39,41 @@ const App = () => {
   return (
     <AlertState>
       <AuthState>
-        <UserState>
-          <ProductState>
-            <LocationState>
-              <ClientState>
-                <TransactionState>
-                <Router>
-                  <Switch>
-                    <Route exact path="/" component={Login} />
+        <CompanyState>
+          <UserState>
+            <ProductState>
+              <LocationState>
+                <ClientState>
+                  <TransactionState>
+                    <Router>
+                      <Switch>
+                        <Route exact path="/" component={Login} />
 
-                    <RutaPrivada exact path="/dashboard" component={Dashboard} />
+                        <RutaPrivada exact path="/dashboard" component={Dashboard} />
+                        <RutaSuperPrivada exact path="/companies" component={Companies} />
+                        <RutaPrivada exact path="/users" component={Users} />
+                        <RutaPrivada exact path="/users/:id" component={Users} />
 
-                    <RutaPrivada exact path="/users" component={Users} />
-                    <RutaPrivada exact path="/users/:id" component={Users} />
+                        <RutaPrivada exact path="/transactions" component={Transactions} />
 
-                    <RutaPrivada exact path="/transactions" component={Transactions} />
+                        <RutaPrivada exact path="/products" component={Products} />
+                        <RutaPrivada exact path="/collections" component={Collections} />
 
-                    <RutaPrivada exact path="/products" component={Products} />
-                    <RutaPrivada exact path="/collections" component={Collections} />
+                        <RutaPrivada exact path="/clients" component={Clients} />
 
-                    <RutaPrivada exact path="/clients" component={Clients} />
+                        <RutaPrivada exact path="/reports" component={Reports} />
 
-                    <RutaPrivada exact path="/reports" component={Reports} />
-
-                  </Switch>
+                      </Switch>
 
 
 
-                  </Router>
+                    </Router>
                   </TransactionState>
-              </ClientState>
-            </LocationState>
-          </ProductState>
-        </UserState>
+                </ClientState>
+              </LocationState>
+            </ProductState>
+          </UserState>
+        </CompanyState>
       </AuthState>
     </AlertState>
   )
