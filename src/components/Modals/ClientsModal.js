@@ -11,12 +11,16 @@ import Alert from 'react-bootstrap/Alert'
 import Button from '@material-ui/core/Button'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import Api from '../../utils/api'
 import { map } from 'lodash'
 
+import AuthContext from "../../Context/Auth/authContext";
 import ClientContext from '../../Context/Client/clientContext';
 
 const ProductModal = (props) => {
     const { onHide, show } = props;
+    const authContext = useContext(AuthContext)
+    const { user, company } = authContext;
     const clientContext = useContext(ClientContext)
     const { client, deleteClient, addClient, editClient,updateClient } = clientContext;
     const [companyName, setCompanyName] = useState('')
@@ -26,6 +30,8 @@ const ProductModal = (props) => {
     const [email, setEmail] = useState('')
     const [address, setAddress] = useState('')
     const [rfc, setRfc] = useState('')
+    const [companies, setCompanies] = useState([])
+    const [companiesSelected, setCompaniesSelected] = useState('')
 
 
     const [loading, setLoading] = useState(true)
@@ -33,6 +39,9 @@ const ProductModal = (props) => {
     useEffect(() => {
 
         (async () => {
+            if (company) {
+                setCompaniesSelected(company.id)
+            }
 
             if (client) {
                 setCompanyName(client.company_name);
@@ -44,11 +53,24 @@ const ProductModal = (props) => {
                 setAddress(client.address);
             }
 
+            if (user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT') {
+                await listCompanies()
+            }
+
+            console.log(companiesSelected)
             setLoading(false)
         })()
     }, [client])
 
+    const listCompanies = async () => {
+        const itemCompanies = await Api.getCompanies();
 
+        const companyOption = map(itemCompanies.companies, (company, index) => {
+            return <option key={index + 1} value={company._id}>{company.company_name}</option>
+        })
+
+        setCompanies(companyOption)
+    }
 
 
 
@@ -74,8 +96,9 @@ const ProductModal = (props) => {
     }
 
     const handleSubmission = async () => {
-
+        console.log('preparando')
         if (companyName.trim() !== '' && email.trim() !== '' && tel.trim() !== '' && cel.trim() !== '' && address.trim() !== '' && rfc.trim() !== '' && contactName.trim() !== '') {
+            
             const args = {
                 company_name: companyName,
                 name: contactName,
@@ -83,11 +106,16 @@ const ProductModal = (props) => {
                 phone: tel,
                 cel,
                 rfc,
-                address
+                address,
+                company_id : companiesSelected
+
             }
+
+            console.log(args)
             if (client) {
                 await updateClient(client._id,args)
-          } else{
+            } else {
+                console.log('enviando')
                  await addClient(args)
           }
             
@@ -107,6 +135,7 @@ const ProductModal = (props) => {
         setCel('');
         setRfc('');
         setAddress('');
+        setCompaniesSelected('');
     }
 
     const close = () => {
@@ -165,6 +194,17 @@ const ProductModal = (props) => {
 
 
                     </div>
+                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ?
+                        <Form.Group className="mb-3" controlId="client_id">
+                            <Form.Label>Compañia</Form.Label>
+                            <Form.Select data-live-search aria-label="Compañia" onChange={(event) => setCompaniesSelected(event.target.value)} value={companiesSelected}>
+                                <option key='0' value=''> Selecciona una compañia</option>
+                                {companies}
+                            </Form.Select>
+                        </Form.Group>
+                        :
+                        null
+                    }
 
                 </Form>
             </ModalBody>

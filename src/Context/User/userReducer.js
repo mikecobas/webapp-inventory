@@ -22,6 +22,13 @@ export default (state, action) => {
                 total: action.payload.total,
                 loading: false
             }
+
+        case EDIT_USER:
+            return {
+                ...state,
+                usuario: action.payload
+            }
+        case UPDATE_USER:
         case ADD_USER:
         case DELETE_USER:
             return {

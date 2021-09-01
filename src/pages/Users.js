@@ -23,7 +23,7 @@ const Users = () => {
     const authContext = useContext(AuthContext)
     const { user } = authContext;
     const userContext = useContext(UserContext)
-    const { total, users, message, loading, getUsers, deleteUser, searchUsers } = userContext;
+    const { total, users, message, loading, getUsers, deleteUser, searchUsers, editUser } = userContext;
 
     const alertContext = useContext(AlertContext);
     const { alerta, mostrarAlerta } = alertContext;
@@ -46,7 +46,7 @@ const Users = () => {
 
     const edit = (item) => {
 
-       
+        editUser(item)
         setModalShow(true)
     }
 
@@ -82,7 +82,7 @@ const Users = () => {
             <div className="flex flex-row justify-between mt-2 mb-6">
                     <div>
                         <Form className="flex flex-row">
-                        <Form.Group className="mx-2" controlId="name">
+                        <Form.Group className="mx-2" controlId="search">
                             <Form.Control type="text" placeholder="Buscar usuario" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                             </Form.Group>
                             <Button color="primary" variant="outlined" onClick={() => search()}>
@@ -114,7 +114,7 @@ const Users = () => {
 
                         {users && map(users, (item, index) => {
                             return (
-                                <tr key={item._id} >
+                                <tr key={index + 1} >
                                     <td className="align-middle">{index + 1}</td>
                                     <td className="align-middle">{item.name}</td>
                                     <td className="align-middle">{item.email}</td>
@@ -123,9 +123,9 @@ const Users = () => {
                                     {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{item.company_id ? item.company_id.company_name : 'N/A'}</td>: null}
                                     <td className="align-middle">{item.client ? item.client.company_name : 'N/A'}</td>
                                     <td className="align-middle">
-                                        {/* <IconButton aria-label="editar" color="primary" onClick={() => edit(product)}>
+                                        <IconButton aria-label="editar" color="primary" onClick={() => edit(item)}>
                                             <EditIcon />
-                                        </IconButton> */}
+                                        </IconButton>
                                         {item.status && user.role === 'ADMIN' || user.role === 'SUPER_ADMIN' ?
                                             <IconButton aria-label="delete" color="secondary" onClick={() => removeUser(item.uid)}>
                                                 <DeleteIcon />

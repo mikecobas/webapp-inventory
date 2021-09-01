@@ -22,9 +22,9 @@ import UserContext from '../../Context/User/userContext';
 const UserModal = (props) => {
     const { onHide, show } = props;
     const authContext = useContext(AuthContext)
-    const { user } = authContext;
+    const { user, company } = authContext;
     const userContext = useContext(UserContext)
-    const { usuario, addUser } = userContext;
+    const { usuario, addUser, updateUser } = userContext;
     const [password, setPassword] = useState('')
     const [repeatPassword, setRepeatPassword] = useState('')
     const [name, setName] = useState('')
@@ -42,19 +42,23 @@ const UserModal = (props) => {
     useEffect(() => {
 
         (async () => {
+            if (company) {
+                setCompaniesSelected(company.id)
+            }
             if (usuario) {
                 setName(usuario.name);
                 setEmail(usuario.email);
                 setRoleSelected(usuario.role);
+                if (usuario.company_id) setCompaniesSelected(usuario.company_id._id);
+                if (usuario.client) setClientSelected(usuario.client._id);
 
             }
-            console.log('test')
+
             await listClients();
             if (user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT') {
                 await listCompanies()
             }
-
-
+            console.log(usuario)
             setLoading(false)
         })()
     }, [usuario])
@@ -103,25 +107,51 @@ const UserModal = (props) => {
 
 
     const handleSubmission = async () => {
-        if (password.trim() !== '' && repeatPassword.trim() !== '' && password === repeatPassword) {
+        if (usuario) {
+
             const args = {
                 name: name,
                 email: email,
-                password: md5(password),
                 role: selectedRole,
+                company_id: companiesSelected
+            }
+            if (password !== '' && repeatPassword !== '' && password === repeatPassword) {
+                args.password = md5(password)
             }
 
             if (selectedRole === 'CLIENT') {
                 args.client = clientSelected
             }
-            if (user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT') {
-                args.company_id = companiesSelected
+
+            await updateUser(usuario.uid, args)
+            close()
+        } else {
+
+            if (password.trim() !== '' && repeatPassword.trim() !== '' && password === repeatPassword) {
+                const args = {
+                    name: name,
+                    email: email,
+                    password: md5(password),
+                    role: selectedRole,
+                    company_id: companiesSelected
+                }
+
+                if (selectedRole === 'CLIENT') {
+                    args.client = clientSelected
+                }
+                // if (user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT') {
+                //     args.company_id = companiesSelected
+                // } else {
+                //     args.company_id = company.company_id
+                // }
+
+                await addUser(args)
+                close()
             }
 
-            console.log(args)
-            await addUser(args)
 
-            close()
+
+
 
         }
 

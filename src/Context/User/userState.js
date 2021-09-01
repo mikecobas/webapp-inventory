@@ -107,6 +107,42 @@ const UserState = props => {
         }
     }
 
+
+    const editUser = async (args) => {
+        try {
+
+                dispatch({
+                    type: EDIT_USER,
+                    payload: args
+                })
+
+
+        } catch (error) {
+
+        }
+    }
+
+    const updateUser = async (id,args) => {
+        try {
+            const res = await Api.updateUser(id,args)
+        
+            if (res.msg === "done") {
+                const alerta = {
+                    msg: `Se ha actualizado ${res.user.email} exitosamente`,
+                    categoria: 'success'
+                }
+                dispatch({
+                    type: UPDATE_USER,
+                    payload: alerta
+                })
+            }
+
+        } catch (error) {
+
+        }
+    }
+
+
     const searchUsers = async (term) => {
 
         try {
@@ -132,6 +168,8 @@ const UserState = props => {
                 getUsers,
                 deleteUser,
                 addUser,
+                editUser,
+                updateUser,
                 searchUsers
         }} 
         >

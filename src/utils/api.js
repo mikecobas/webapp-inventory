@@ -79,6 +79,10 @@ Api2.postUser = async (args) => {
     return await Api2.request('POST', '/api/usuarios/', args)
 }
 
+Api2.updateUser = async (id,args) => {
+    return await Api2.request('PUT', `/api/usuarios/${id}`, args)
+}
+
 Api2.deleteUsers = async (id) => {
     return await Api2.request('DELETE', `/api/usuarios/${id}`)
 }

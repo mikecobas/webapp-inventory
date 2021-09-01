@@ -104,9 +104,9 @@ const Companies = (props) => {
                             {/* <th className="">Teléfono</th>
                             <th className="">Celular</th>
                             <th className="">Correo</th> */}
-                            <th className="">Fecha de creación</th>
+                            <th className="text-center">Fecha de creación</th>
                             {/* <th className="">Creado por</th> */}
-                            <th className="">Ultima actualización</th>
+                            <th className="text-center">Ultima actualización</th>
                             {/* <th className="">Actualizado por</th> */}
                             <th className="text-center">Status</th>
                             <th></th>
@@ -130,9 +130,9 @@ const Companies = (props) => {
                                     {/* <td className="align-middle">{company.phone ? company.phone : 'N/A'}</td>
                                     <td className="align-middle">{company.cel ? company.cel : 'N/A'}</td>
                                     <td className="align-middle">{company.email ? company.email : 'N/A'}</td> */}
-                                    <td className="align-middle">{company.created_date ? `${moment(company.created_date).format('DD/MM/YY')}` : 'N/A'}</td>
+                                    <td className="align-middle text-center">{company.created_date ? `${moment(company.created_date).format('DD/MM/YY')}` : 'N/A'}</td>
                                     {/* <td className="align-middle">{company.created_by ? company.created_by.name : 'N/A'}</td> */}
-                                    <td className="align-middle">{company.updated_date ? `${moment(company.updated_date).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
+                                    <td className="align-middle text-center">{company.updated_date ? `${moment(company.updated_date).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
                                     {/* <td className="align-middle">{company.updated_by ? company.updated_by.name : 'N/A'}</td> */}
                                     <td className="align-middle text-center">{company.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                                     <td className="align-middle text-right">
