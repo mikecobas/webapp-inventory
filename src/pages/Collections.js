@@ -94,7 +94,7 @@ const Collections = (props) => {
                                     <td className="align-middle">{index + 1}</td>
                                     <td className="align-middle">{location.name}</td>
                                     
-                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.company ? location.company.company_name : 'N/A'}</td> : null}
+                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.company ? location.company.name : 'N/A'}</td> : null}
                                     {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.created_by ? location.created_by.name : 'N/A'}</td> : null}
                                     {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.created_date ? `${moment(location.created_date ).format('DD/MM/YY h:mm a')}` : 'N/A'}</td> : null}
                                     {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.updated_by ? location.updated_by.name : 'N/A'}</td> : null}

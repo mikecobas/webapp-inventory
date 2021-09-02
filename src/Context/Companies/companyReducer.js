@@ -6,7 +6,9 @@ import {
     DELETE_COMPANY,
     UPDATE_COMPANY,
     ADD_COMPANY,
-    ACTIVE_COMPANY
+    ACTIVE_COMPANY,
+    ERROR_COMPANIES,
+    SEARCH_COMPANIES
 } from '../../types';
 
 
@@ -29,11 +31,23 @@ export default (state, action) => {
         case UPDATE_COMPANY:
         case ADD_COMPANY:
         case DELETE_COMPANY:
-           
             return {
                 ...state,
                 loading: true,
                 message: action.payload
+            }
+        case ERROR_COMPANIES:
+            return {
+                ...state,
+                loading:false,
+                message:action.payload
+            }
+        case SEARCH_COMPANIES:
+            return {
+                ...state,
+                companies: action.payload.results[1],
+                total: action.payload.results[0],
+                loading:false
             }
 
         default:

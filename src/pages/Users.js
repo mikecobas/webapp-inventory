@@ -1,6 +1,7 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-unused-expressions */
 import React, { useState, useEffect, useContext } from 'react'
+import moment from 'moment'
 import { green } from '@material-ui/core/colors';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Table from 'react-bootstrap/Table'
@@ -107,6 +108,8 @@ const Users = () => {
                             <th>Rol</th>
                             {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Compañia</th> : null}
                             <th>Cliente</th>
+                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Creado por</th> : null}
+                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Fecha de creación</th> : null}
                             <th></th>
                         </tr>
                     </thead>
@@ -120,8 +123,10 @@ const Users = () => {
                                     <td className="align-middle">{item.email}</td>
                                     <td className="align-middle text-center">{item.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                                     <td className="align-middle">{item.role ==='CLIENT' ? 'Cliente' : item.role ==='USER'?  'Empleado' : item.role ==='ADMIN' ? 'Administrador' : item.role ==='SUPPOT' ? 'Soporte' : 'Super Admin'}</td>
-                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{item.company_id ? item.company_id.company_name : 'N/A'}</td>: null}
-                                    <td className="align-middle">{item.client ? item.client.company_name : 'N/A'}</td>
+                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{item.company ? item.company.name : 'N/A'}</td>: null}
+                                    <td className="align-middle">{item.client ? item.client.name : 'N/A'}</td>
+                                    <td className="align-middle">{item.created_by ? item.created_by.name : 'N/A'}</td>
+                                    <td className="align-middle">{item.created_date ? `${moment(item.created_date).format('DD/MM/YY')}` : 'N/A'}</td>
                                     <td className="align-middle">
                                         <IconButton aria-label="editar" color="primary" onClick={() => edit(item)}>
                                             <EditIcon />

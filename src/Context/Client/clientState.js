@@ -10,7 +10,8 @@ import {
     EDIT_CLIENT,
     DELETE_CLIENT,
     UPDATE_CLIENT,
-    ADD_CLIENT
+    ADD_CLIENT,
+    SEARCH_CLIENTS
 } from '../../types';
 
 
@@ -47,7 +48,7 @@ const ClientState = props => {
 
             if (res.msg === "done") {
                 const alerta = {
-                    msg: `Se ha agregado ${res.data.company_name} exitosamente`,
+                    msg: `Se ha agregado ${res.data.name} exitosamente`,
                     categoria: 'success'
                 }
                 dispatch({
@@ -67,7 +68,7 @@ const ClientState = props => {
         
             if (res.msg === "done") {
                 const alerta = {
-                    msg: `Se ha actualizado ${res.client.company_name} exitosamente`,
+                    msg: `Se ha actualizado ${res.client.name} exitosamente`,
                     categoria: 'success'
                 }
                 dispatch({
@@ -94,13 +95,33 @@ const ClientState = props => {
         }
     }
 
+    const restoreClient = async (id) => {
+        try {
+            const res = await Api.restoreClient(id)
+        
+            if (res.msg === "done") {
+                const alerta = {
+                    msg: `Se ha restaurado${res.clientRestored.name} exitosamente`,
+                    categoria: 'success'
+                }
+                dispatch({
+                    type: UPDATE_CLIENT,
+                    payload: alerta
+                })
+            }
+
+        } catch (error) {
+
+        }
+    }
+
     const deleteClient = async (id) => {
         try {
             const res = await Api.deleteClient(id)
             console.log(res)
             if (res.msg === "done") {
                 const alerta = {
-                    msg: `Se ha eliminado ${res.clientDeleted.company_name} exitosamente`,
+                    msg: `Se ha eliminado ${res.clientDeleted.name} exitosamente`,
                     categoria: 'success'
                 }
                 dispatch({
@@ -110,6 +131,18 @@ const ClientState = props => {
             }
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    const searchClients = async (term) => {
+        try {
+            const res = await Api.searchByClient(term)
+            dispatch({
+                type: SEARCH_CLIENTS,
+                payload:res
+            })
+        } catch (error) {
+            
         }
     }
 
@@ -125,7 +158,9 @@ const ClientState = props => {
                 addClient,
                 editClient,
                 updateClient,
-                deleteClient
+                deleteClient,
+                restoreClient,
+                searchClients
             }}
         >
             {props.children}

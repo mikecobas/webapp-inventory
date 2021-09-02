@@ -36,7 +36,7 @@ const ProductModal = (props) => {
         (async () => {
 
             if (company) {
-                setCompanyName(company.company_name);
+                setCompanyName(company.name);
                 setContactName(company.contact_name);
                 setEmail(company.email);
                 setTel(company.phone);
@@ -78,7 +78,7 @@ const ProductModal = (props) => {
 
         if (companyName.trim() !== '' && email.trim() !== '' && tel.trim() !== '' && cel.trim() !== '' && address.trim() !== '' && rfc.trim() !== '' && contactName.trim() !== '') {
             const args = {
-                company_name: companyName,
+                name: companyName,
                 contact_name: contactName,
                 email,
                 phone: tel,
@@ -128,7 +128,7 @@ const ProductModal = (props) => {
             <ModalHeader closeButton>
 
                 <ModalTitle id="contained-modal-title-vcenter">
-                    {company ? 'Editar ' + company.company_name : 'Agregar nueva compañía'}
+                    {company ? 'Editar ' + company.name : 'Agregar nueva compañía'}
                 </ModalTitle>
             </ModalHeader>
 

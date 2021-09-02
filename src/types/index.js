@@ -26,12 +26,14 @@ export const ADD_PRODUCT = 'ADD_PRODUCT';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const SEARCH_PRODUCTS = 'SEARCH_PRODUCTS';
+export const ERROR_PRODUCT = 'ERROR_PRODUCT';
 
 export const GET_LOCATIONS = 'GET_LOCATIONS';
 export const GET_LOCATION = 'GET_LOCATION';
 export const EDIT_LOCATION = 'EDIT_LOCATION';
 export const ADD_LOCATION = 'ADD_LOCATION';
 export const DELETE_LOCATION = 'DELETE_LOCATION';
+export const SEARCH_LOCATION = 'SEARCH_LOCATION';
 export const UPDATE_LOCATION = 'UPDATE_LOCATION';
 
 export const GET_CLIENTS = 'GET_CLIENTS';
@@ -39,6 +41,7 @@ export const GET_CLIENT = 'GET_CLIENT';
 export const EDIT_CLIENT = 'EDIT_CLIENT';
 export const ADD_CLIENT = 'ADD_CLIENT';
 export const DELETE_CLIENT = 'DELETE_CLIENT';
+export const SEARCH_CLIENTS = 'SEARCH_CLIENTS';
 export const UPDATE_CLIENT = 'UPDATE_CLIENT';
 
 export const GET_TRANSACTIONS = 'GET_TRANSACTIONS';
@@ -53,6 +56,8 @@ export const ADD_COMPANY = 'ADD_COMPANY';
 export const DELETE_COMPANY = 'DELETE_COMPANY';
 export const UPDATE_COMPANY = 'UPDATE_COMPANY';
 export const ACTIVE_COMPANY = 'ACTIVE_COMPANY';
+export const SEARCH_COMPANIES = 'SEARCH_COMPANIES';
+export const ERROR_COMPANIES = 'ERROR_COMPANIES';
 
 export const SHOW_POP = 'SHOW_POP';
 export const HIDE_POP = 'HIDE_POP';

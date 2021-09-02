@@ -141,6 +141,10 @@ Api2.updateClient = async (id, args) => {
     return Api2.request('PUT', `/api/clients/${id}`, args)
 }
 
+Api2.restoreClient= async (id) => {
+    return Api2.request('PUT', `/api/clients/restore/${id}`)
+}
+
 /**
  * IMAGENES
  * 
@@ -197,6 +201,14 @@ Api2.searchByProducts = async (term) => {
 
 Api2.searchByUsers = async (term) => {
     return Api2.request('GET', `/api/search/users/${term}`)
+}
+
+Api2.searchByCompany = async (term) => {
+    return Api2.request('GET', `/api/search/companies/${term}`)
+}
+
+Api2.searchByClient = async (term) => {
+    return Api2.request('GET', `/api/search/clients/${term}`)
 }
 
 /**

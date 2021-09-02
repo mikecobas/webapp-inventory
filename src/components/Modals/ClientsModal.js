@@ -44,7 +44,7 @@ const ProductModal = (props) => {
             }
 
             if (client) {
-                setCompanyName(client.company_name);
+                setCompanyName(client.name);
                 setContactName(client.name);
                 setEmail(client.email);
                 setTel(client.phone);
@@ -66,7 +66,7 @@ const ProductModal = (props) => {
         const itemCompanies = await Api.getCompanies();
 
         const companyOption = map(itemCompanies.companies, (company, index) => {
-            return <option key={index + 1} value={company._id}>{company.company_name}</option>
+            return <option key={index + 1} value={company._id}>{company.name}</option>
         })
 
         setCompanies(companyOption)
@@ -100,14 +100,14 @@ const ProductModal = (props) => {
         if (companyName.trim() !== '' && email.trim() !== '' && tel.trim() !== '' && cel.trim() !== '' && address.trim() !== '' && rfc.trim() !== '' && contactName.trim() !== '') {
             
             const args = {
-                company_name: companyName,
-                name: contactName,
+                name: companyName,
+                contact_name: contactName,
                 email,
                 phone: tel,
                 cel,
                 rfc,
                 address,
-                company_id : companiesSelected
+                company : companiesSelected
 
             }
 
@@ -155,7 +155,7 @@ const ProductModal = (props) => {
             <ModalHeader closeButton>
 
                 <ModalTitle id="contained-modal-title-vcenter">
-                    {client ? 'Editar ' + client.company_name : 'Agregar Cliente'}
+                    {client ? 'Editar ' + client.name : 'Agregar Cliente'}
                 </ModalTitle>
             </ModalHeader>
 
@@ -163,7 +163,7 @@ const ProductModal = (props) => {
 
                 <Form>
                     <div className="grid grid-rows-3 grid-flow-col gap-4">
-                        <Form.Group className="mb-3" controlId="company_name">
+                        <Form.Group className="mb-3" controlId="client_name">
                             <Form.Label>Nombre de la Empresa</Form.Label>
                             <Form.Control type="text" placeholder="Nombre de la empresa" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
                         </Form.Group>

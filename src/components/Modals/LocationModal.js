@@ -47,7 +47,7 @@ const LocationModal = (props) => {
         const itemCompanies = await Api.getCompanies();
 
         const companyOption = map(itemCompanies.companies, (company, index) => {
-            return <option key={index + 1} value={company._id}>{company.company_name}</option>
+            return <option key={index + 1} value={company._id}>{company.name}</option>
         })
 
         setCompanies(companyOption)

@@ -89,10 +89,10 @@ const AuthState = (props) => {
 
     const getCompany = async (data) => {
         try {
-            const res = await Api.getCompanyInfo(data.user.company_id);
+            const res = await Api.getCompanyInfo(data.user.company);
             const companyInfo = {
                 id: res.company._id,
-                name: res.company.company_name,
+                name: res.company.name,
                 image: res.company.image
             }
 

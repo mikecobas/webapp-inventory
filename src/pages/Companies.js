@@ -2,27 +2,40 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-unused-expressions */
 import React, { useState, useEffect, useContext } from 'react'
+import { map } from 'lodash'
+import moment from 'moment'
+/**
+ * MATERIAL UI
+ */
 import { green } from '@material-ui/core/colors';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import PhoneIcon from '@material-ui/icons/Phone';
 import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import Table from 'react-bootstrap/Table'
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
+import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import '../css/Users.css'
-import { map } from 'lodash'
+/**
+ * BOOTSTRAP
+ */
+import Table from 'react-bootstrap/Table'
 import Alert from 'react-bootstrap/Alert'
-import moment from 'moment'
+import Form from 'react-bootstrap/Form'
+
+/**
+ * COMPONENTES
+ */
+import CompanyModal from '../components/Modals/CompanyModal'
+/**
+ * CONTEXT
+ */
+
 import AuthContext from '../Context/Auth/authContext'
 import CompanyContext from '../Context/Companies/companyContext';
 import AlertContext from '../Context/Alerta/alertContext';
-
-import CompanyModal from '../components/Modals/CompanyModal'
 
 const Companies = (props) => {
     const authContext = useContext(AuthContext)
@@ -36,19 +49,26 @@ const Companies = (props) => {
         getCompanies,
         deleteCompany,
         editCompany,
-        activatedCompany
+        activatedCompany,
+        searchCompany,
     } = companyContext;
 
     const alertContext = useContext(AlertContext);
     const { alerta, mostrarAlerta } = alertContext;
-
+    const [searchTerm, setSearchTerm] = useState('')
     const [modalShow, setModalShow] = useState(false);
 
     // companies.filter((companies) => companies.status === true) para filtartlos y hacer tabs
 
     useEffect(() => {
         (async () => {
-            await getCompanies()
+
+            if (searchTerm !== '') {
+                await searchCompany(searchTerm)
+            } else {
+                await getCompanies()
+            }
+            
             if (message) {
                 mostrarAlerta(message.msg, message.categoria)
             }
@@ -71,6 +91,14 @@ const Companies = (props) => {
         await activatedCompany(id)
     }
 
+    const search = async () => {
+        if (searchTerm !== '') {
+            await searchCompany(searchTerm)
+        } else {
+            await getCompanies()
+        }
+    }
+
     return (
         <div className="p-20 h-full relative">
 
@@ -86,7 +114,18 @@ const Companies = (props) => {
             <h1 className="text-3xl mb-6 font-bold">Compañias</h1>
             <h4 className="text-2xl mb-6 font-normal">Total {total}</h4>
             <div className="rounded-3xl shadow p-4 overflow-scroll ">
-                <div className="flex flex-row justify-end mt-2 mb-6">
+                
+            <div className="flex flex-row justify-between mt-2 mb-6">
+                    <div>
+                        <Form className="flex flex-row">
+                            <Form.Group className="mx-2" controlId="name">
+                                <Form.Control type="text" placeholder="Buscar compañias" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                            </Form.Group>
+                            <Button color="primary" variant="outlined" onClick={() => search()}>
+                                Buscar
+                            </Button>
+                        </Form>
+                    </div>
                     <Button color="primary" variant="contained" onClick={() => edit()} >
                         Agregar Compañía
                     </Button>
@@ -118,13 +157,13 @@ const Companies = (props) => {
                             return (
                                 <tr key={company._id} >
                                     <td className="align-middle">{index + 1}</td>
-                                    <td className="align-middle">{company.company_name}</td>
+                                    <td className="align-middle">{company.name}</td>
 
                                     <td className="align-middle">{company.contact_name ? company.contact_name : 'N/A'}</td>
                                     {/* <td className="align-middle">{company.address ? company.address : 'N/A'}</td> */}
                                     <td className="flex flex-col justify-center">
-                                       <span className="my-2"><PhoneIcon fontSize="small" /> {company.phone ? company.phone : 'N/A'}</span> 
-                                       <span className="my-2"><PhoneIphoneIcon fontSize="small" /> {company.cel ? company.cel : 'N/A'}</span> 
+                                        <span className="my-2"><PhoneIcon fontSize="small" /> {company.phone ? company.phone : 'N/A'}</span>
+                                        <span className="my-2"><PhoneIphoneIcon fontSize="small" /> {company.cel ? company.cel : 'N/A'}</span>
                                         <span className="my-2"><MailOutlineIcon fontSize="small" />  {company.email ? company.email : 'N/A'}</span>
                                     </td>
                                     {/* <td className="align-middle">{company.phone ? company.phone : 'N/A'}</td>
@@ -137,7 +176,7 @@ const Companies = (props) => {
                                     <td className="align-middle text-center">{company.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                                     <td className="align-middle text-right">
                                         <td className="align-middle text-right">
-                                            {user.role === 'SUPER_ADMIN' && company.status?
+                                            {user.role === 'SUPER_ADMIN' && company.status ?
                                                 <Tooltip title="Editar compañía" placement="bottom">
                                                     <IconButton aria-label="editar" color="primary" onClick={() => edit(company)}>
                                                         <EditIcon />

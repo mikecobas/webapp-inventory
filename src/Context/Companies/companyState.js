@@ -11,7 +11,9 @@ import {
     DELETE_COMPANY,
     UPDATE_COMPANY,
     ADD_COMPANY,
-    ACTIVE_COMPANY
+    ACTIVE_COMPANY,
+    ERROR_COMPANIES,
+    SEARCH_COMPANIES
 } from '../../types';
 
 
@@ -34,6 +36,15 @@ const CompanyState = props => {
                     type: GET_COMPANIES,
                     payload: res
                 })
+            } else {
+                const alerta = {
+                    msg: 'ALGO SALIO MAL, INTENTA MAS TARDE',
+                    categoria:'warning'
+                }
+                dispatch({
+                    type: ERROR_COMPANIES,
+                    payload: alerta
+                })
             }
 
         } catch (error) {
@@ -48,11 +59,20 @@ const CompanyState = props => {
 
             if (res.msg === "done") {
                 const alerta = {
-                    msg: `Se ha agregado ${res.data.company_name} exitosamente`,
+                    msg: `Se ha agregado ${res.data.name} exitosamente`,
                     categoria: 'success'
                 }
                 dispatch({
                     type: ADD_COMPANY,
+                    payload: alerta
+                })
+            } else {
+                const alerta = {
+                    msg: 'ALGO SALIO MAL, INTENTA MAS TARDE',
+                    categoria: 'warning'
+                }
+                dispatch({
+                    type: ERROR_COMPANIES,
                     payload: alerta
                 })
             }
@@ -68,11 +88,20 @@ const CompanyState = props => {
         
             if (res.msg === "done") {
                 const alerta = {
-                    msg: `Se ha actualizado ${res.company.company_name} exitosamente`,
+                    msg: `Se ha actualizado ${res.company.name} exitosamente`,
                     categoria: 'success'
                 }
                 dispatch({
                     type: UPDATE_COMPANY,
+                    payload: alerta
+                })
+            } else {
+                const alerta = {
+                    msg: `No pudimos actualizar ${args.name}, intenta más tarde`,
+                    categoria:'warning'
+                }
+                dispatch({
+                    type: ERROR_COMPANIES,
                     payload: alerta
                 })
             }
@@ -88,7 +117,7 @@ const CompanyState = props => {
         
             if (res.msg === "done") {
                 const alerta = {
-                    msg: `Se ha reactivado ${res.companyActivated.company_name} exitosamente`,
+                    msg: `Se ha reactivado ${res.companyActivated.name} exitosamente`,
                     categoria: 'success'
                 }
                 dispatch({
@@ -122,16 +151,37 @@ const CompanyState = props => {
             console.log(res)
             if (res.msg === "done") {
                 const alerta = {
-                    msg: `La compañia ${res.companyDeleted.company_name} a sido eliminada exitosamente`,
+                    msg: `La compañia ${res.companyDeleted.name} a sido eliminada exitosamente`,
                     categoria: 'info'
                 }
                 dispatch({
                     type: DELETE_COMPANY,
                     payload: alerta
                 })
+            } else {
+                const alerta = {
+                    msg: `No se pudo eliminar la empresa`,
+                    categoria:'warning'
+                }
+                dispatch({
+                    type: ERROR_COMPANIES,
+                    payload: alerta
+                })
             }
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    const searchCompany = async (term) => {
+        try {
+            const res = await Api.searchByCompany(term)
+            dispatch({
+                type: SEARCH_COMPANIES,
+                payload:res
+            })
+        } catch (error) {
+            
         }
     }
 
@@ -148,7 +198,8 @@ const CompanyState = props => {
                 deleteCompany,
                 editCompany,
                 updateCompany,
-                activatedCompany
+                activatedCompany,
+                searchCompany
 
             }}
         >

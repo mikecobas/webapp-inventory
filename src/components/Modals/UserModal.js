@@ -49,7 +49,7 @@ const UserModal = (props) => {
                 setName(usuario.name);
                 setEmail(usuario.email);
                 setRoleSelected(usuario.role);
-                if (usuario.company_id) setCompaniesSelected(usuario.company_id._id);
+                if (usuario.company) setCompaniesSelected(usuario.company._id);
                 if (usuario.client) setClientSelected(usuario.client._id);
 
             }
@@ -58,7 +58,7 @@ const UserModal = (props) => {
             if (user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT') {
                 await listCompanies()
             }
-            console.log(usuario)
+            // console.log(usuario)
             setLoading(false)
         })()
     }, [usuario])
@@ -71,7 +71,7 @@ const UserModal = (props) => {
         const itemClients = await Api.getClients();
 
         const clientOption = map(itemClients.clients, (client, index) => {
-            return <option key={index + 1} value={client._id}>{client.company_name}</option>
+            return <option key={index + 1} value={client._id}>{client.name}</option>
         })
 
         setClients(clientOption)
@@ -81,7 +81,7 @@ const UserModal = (props) => {
         const itemCompanies = await Api.getCompanies();
 
         const companyOption = map(itemCompanies.companies, (company, index) => {
-            return <option key={index + 1} value={company._id}>{company.company_name}</option>
+            return <option key={index + 1} value={company._id}>{company.name}</option>
         })
 
         setCompanies(companyOption)
@@ -113,7 +113,7 @@ const UserModal = (props) => {
                 name: name,
                 email: email,
                 role: selectedRole,
-                company_id: companiesSelected
+                company: companiesSelected
             }
             if (password !== '' && repeatPassword !== '' && password === repeatPassword) {
                 args.password = md5(password)
@@ -133,16 +133,16 @@ const UserModal = (props) => {
                     email: email,
                     password: md5(password),
                     role: selectedRole,
-                    company_id: companiesSelected
+                    company: companiesSelected
                 }
 
                 if (selectedRole === 'CLIENT') {
                     args.client = clientSelected
                 }
                 // if (user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT') {
-                //     args.company_id = companiesSelected
+                //     args.company = companiesSelected
                 // } else {
-                //     args.company_id = company.company_id
+                //     args.company = company.company
                 // }
 
                 await addUser(args)

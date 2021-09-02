@@ -5,7 +5,8 @@ import {
     EDIT_CLIENT,
     DELETE_CLIENT,
     UPDATE_CLIENT,
-    ADD_CLIENT
+    ADD_CLIENT,
+    SEARCH_CLIENTS
 } from '../../types';
 
 
@@ -41,6 +42,13 @@ export default (state, action) => {
                 message: action.payload
             }
 
+        case SEARCH_CLIENTS:
+            return {
+                ...state,
+                total: action.payload.results[0],
+                clients: action.payload.results[1],
+                loading:false
+            } 
         default:
             console.log('default')
             return state;

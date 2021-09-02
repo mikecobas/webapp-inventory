@@ -40,7 +40,6 @@ const Transactions = () => {
     //     const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
     // const endOfMonth   = moment().endOf('month').format('YYYY-MM-DD hh:mm');
 
-    const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
 
@@ -124,7 +123,7 @@ const Transactions = () => {
                                         <td className="align-middle">{transaction.status ? <span style={{ color: green[500] }}>+ ${transaction.cnt}</span> : <span style={{ color: red[500] }}>- ${transaction.cnt}</span>}</td>
                                         <td className="align-middle">{transaction.timestamp && moment(transaction.timestamp).format('DD/MMMM/YYYY HH:mm a')}</td>
                                         <td className="align-middle">{transaction.product.code}</td>
-                                        <td className="align-middle">{transaction.product.client.company_name}</td>
+                                        <td className="align-middle">{transaction.product.client.name}</td>
                                         <td className="align-middle">{transaction.user.name}</td>
                                         <td className="align-middle">{transaction.status ? <ArrowUpwardIcon style={{ color: green[500] }} /> : <ArrowDownwardIcon color="error" />}</td>
 
