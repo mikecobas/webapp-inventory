@@ -12,6 +12,7 @@ import Users from './pages/Users'
 import Clients from './pages/Clients'
 import Products from './pages/Products'
 import Collections from './pages/Collections'
+import Locations  from  './pages/Locations'
 import Reports from './pages/Reports'
 import Transactions from './pages/Transactions'
 import Companies from './pages/Companies'
@@ -57,7 +58,7 @@ const App = () => {
                         <RutaPrivada exact path="/transactions" component={Transactions} />
 
                         <RutaPrivada exact path="/products" component={Products} />
-                        <RutaPrivada exact path="/collections" component={Collections} />
+                        <RutaPrivada exact path="/locations" component={Locations} />
 
                         <RutaPrivada exact path="/clients" component={Clients} />
 

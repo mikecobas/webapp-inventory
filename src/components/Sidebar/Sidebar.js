@@ -77,7 +77,7 @@ const Sidebar = (props) => {
             <NavLink to="/users" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"> <GroupRoundedIcon /> {!collapse && ' Usuarios'}</NavLink>
             : <></>}
           {user.role !== 'CLIENT' ?
-            <NavLink to="/collections" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"><FeaturedPlayListRoundedIcon />{!collapse && ' Ubicaciones'}</NavLink>
+            <NavLink to="/locations" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"><FeaturedPlayListRoundedIcon />{!collapse && ' Ubicaciones'}</NavLink>
             : <></>}
 
           {user.role !== 'USER' || user.role !== 'CLIENT' ?

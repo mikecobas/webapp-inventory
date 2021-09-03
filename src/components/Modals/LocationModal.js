@@ -22,7 +22,7 @@ const LocationModal = (props) => {
     const authContext = useContext(AuthContext)
     const { user, company } = authContext;
     const locationContext = useContext(LocationContext)
-    const { location, addLocation } = locationContext;
+    const { location, addLocation , updateLocation} = locationContext;
     const [locationName, setLocationName] = useState('');
     const [companies, setCompanies] = useState([])
     const [companySelected, setCompanySelected] = useState('');
@@ -32,6 +32,11 @@ const LocationModal = (props) => {
     useEffect(() => {
         
         (async () => {
+
+            if (location) {
+                setLocationName(location.name);
+                setCompanySelected(location.company._id);
+            }
             if (!company) {
                 console.log('no company')
                 await listCompanies()
@@ -40,7 +45,7 @@ const LocationModal = (props) => {
             }
             setLoading(false)
        })()
-    }, [])
+    }, [location])
 
 
     const listCompanies = async () => {
@@ -68,12 +73,22 @@ const LocationModal = (props) => {
     //         setLoading(false)
     //     }
     // })
+    const resetFields = () => {
+        setLocationName('');
+        setCompanySelected('');
+   
+    }
 
+    const close = () => {
+
+        onHide()
+        resetFields()
+    }
 
     const handleSubmission = async () => {
-console.log('hola locationName ' , companySelected)
+
         if (locationName.trim() !== '') {
-            console.log('hola locationName ' , locationName)
+    
             const args = {
                 name:locationName
             }
@@ -83,23 +98,19 @@ console.log('hola locationName ' , companySelected)
                 args.company = companySelected
             }
 
-            await addLocation(args)
+            if (location) {
+                await updateLocation(location._id,args)
+            } else {
+                await addLocation(args)
+          }
+            
             close()
         }
           
     };
 
 
-    const resetFields = () => {
-        setLocationName('')
-    }
-
-    const close = () => {
-
-        onHide()
-        resetFields()
-    }
-
+ 
     return (
         <Modal
      
