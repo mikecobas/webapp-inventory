@@ -19,14 +19,14 @@ const ProductState = props => {
     const initialState = {
         total: 0,
         products: [],
-        item: null,
+        product: null,
         loading: true,
-        message:null
+        message: null
     }
 
     const [state, dispatch] = useReducer(productReducer, initialState);
 
-    const getProducts = async () => {
+    const getProductsList = async () => {
         try {
             const res = await Api.getProducts()
             if (res.msg === 'done') {
@@ -34,7 +34,7 @@ const ProductState = props => {
                     type: GET_PRODUCTS,
                     payload: res
                 })
-            } 
+            }
 
         } catch (error) {
 
@@ -48,7 +48,7 @@ const ProductState = props => {
                 const alerta = {
                     msg: `Se eliminio ${res.productDeleted.name} exitosamente`,
                     categoria: 'success'
-                    }
+                }
                 dispatch({
                     type: DELETE_PRODUCT,
                     payload: alerta
@@ -58,7 +58,7 @@ const ProductState = props => {
                 const alerta = {
                     msg: `Algo salio mal`,
                     categoria: 'warning'
-                    }
+                }
                 dispatch({
                     type: ERROR_PRODUCT,
                     payload: alerta
@@ -70,11 +70,11 @@ const ProductState = props => {
         }
     }
 
-    const editProduct = async (item) => {
+    const editProduct = async (product) => {
         dispatch({
-                    type: EDIT_PRODUCT,
-                    payload: item
-                })
+            type: EDIT_PRODUCT,
+            payload: product
+        })
     }
 
     const addProduct = async (args) => {
@@ -84,17 +84,17 @@ const ProductState = props => {
                 const alerta = {
                     msg: `Se Agrego ${res.product.name} exitosamente`,
                     categoria: 'success'
-                    }
+                }
                 dispatch({
                     type: ADD_PRODUCT,
                     payload: alerta
                 })
-                
-            }else {
+
+            } else {
                 const alerta = {
                     msg: res.msg,
                     categoria: 'danger'
-                    }
+                }
                 dispatch({
                     type: ERROR_PRODUCT,
                     payload: alerta
@@ -102,9 +102,61 @@ const ProductState = props => {
             }
 
         } catch (error) {
-            
+
         }
     }
+
+    const updateProduct = async (id, args) => {
+
+        try {
+            const res = await Api.updateProduct(id, args)
+
+            if (res.msg === "done") {
+                const alerta = {
+                    msg: `Se ha actualizado ${res.product.name} exitosamente`,
+                    categoria: 'success'
+                }
+                dispatch({
+                    type: UPDATE_PRODUCT,
+                    payload: alerta
+                })
+            } else {
+                const alerta = {
+                    msg: `No pudimos actualizar ${args.name}, intenta más tarde`,
+                    categoria: 'warning'
+                }
+                dispatch({
+                    type: ERROR_PRODUCT,
+                    payload: alerta
+                })
+            }
+
+        } catch (error) {
+
+        }
+    }
+
+    const restoreProduct = async (id) => {
+        try {
+            const res = await Api.restoreProduct(id)
+
+            if (res.msg === "done") {
+                const alerta = {
+                    msg: `Se ha restaurado ${res.productRecovered.name} exitosamente`,
+                    categoria: 'success'
+                }
+                dispatch({
+                    type: UPDATE_PRODUCT,
+                    payload: alerta
+                })
+            }
+
+        } catch (error) {
+
+        }
+    }
+
+
 
     const searchProducts = async (term) => {
 
@@ -112,26 +164,29 @@ const ProductState = props => {
             const res = await Api.searchByProducts(term)
             dispatch({
                 type: SEARCH_PRODUCTS,
-                payload:res
+                payload: res
             })
         } catch (error) {
-            
+
         }
     }
 
+    /** TODO UPDATE y RESTORE */
 
     return (
         <productContext.Provider
             value={{
                 total: state.total,
                 products: state.products,
-                item: state.item,
+                product: state.product,
                 loading: state.loading,
-                message:state.message,
-                getProducts,
+                message: state.message,
+                getProductsList,
                 deleteProduct,
                 editProduct,
                 addProduct,
+                updateProduct,
+                restoreProduct,
                 searchProducts
             }}
         >

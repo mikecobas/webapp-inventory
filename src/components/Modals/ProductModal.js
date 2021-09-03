@@ -21,7 +21,7 @@ const ProductModal = (props) => {
     const authContext = useContext(AuthContext)
     const { user, company } = authContext;
     const productContext = useContext(ProductContext)
-    const { item, editProduct, addProduct } = productContext;
+    const { product, editProduct, addProduct, updateProduct } = productContext;
     const [clients, setClients] = useState([])
     const [clientSelected, setClientSelected] = useState('')
     const [locations, setLocations] = useState([])
@@ -34,24 +34,23 @@ const ProductModal = (props) => {
     const [companies, setCompanies] = useState([])
     const [companiesSelected, setCompaniesSelected] = useState('')
     const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(false);
-    const [errorMsg, setErrorMsg] = useState('')
 
     useEffect(() => {
 
         (async () => {
 
+           
+            if (product) {
+                setProductName(product.name);
+                setProductCode(product.code);
+                setProductCnt(product.cnt);
+                setPreviewImg({ file: product.image });
+                setLocationSelected(product.location._id);
+                setClientSelected(product.client._id)
+                setCompaniesSelected(product.company._id)
+            }
             if (company) {
                 setCompaniesSelected(company.id)
-            }
-            if (item) {
-                setProductName(item.name);
-                setProductCode(item.code);
-                setProductCnt(item.cnt);
-                setPreviewImg({ file: item.image });
-                setLocationSelected(item.category);
-                setClientSelected(item.client)
-                setCompaniesSelected(item.company.id)
             }
             await listClients();
             await listLocations()
@@ -61,7 +60,7 @@ const ProductModal = (props) => {
 
             setLoading(false)
         })()
-    }, [item])
+    }, [product])
 
 
 
@@ -79,9 +78,8 @@ const ProductModal = (props) => {
 
 
     const listLocations = async () => {
-        const itemLocations = await Api.getCategories();
-        console.log(itemLocations.categories)
-        const locationOption = map(itemLocations.categories, (location, index) => {
+        const itemLocations = await Api.getLocations();
+        const locationOption = map(itemLocations.locations, (location, index) => {
             return <option key={index + 1} value={location._id}> {location.name} - {location.company?.name}  </option>
         })
         setLocations(locationOption)
@@ -141,8 +139,8 @@ const ProductModal = (props) => {
             args.name = productName;
             args.status = true;
             args.code = productCode;
-            args.ctn = productCnt;
-            args.category = locationSelected;
+            args.cnt = productCnt;
+            args.location = locationSelected;
             args.client = clientSelected;
             args.avaliable = true;
             args.company = companiesSelected;
@@ -150,16 +148,16 @@ const ProductModal = (props) => {
         }
 
 
-        console.log('enviando')
+        if (product) {
+            await updateProduct(product._id, args)
+        } else {
+            await addProduct(args)
+        }
+   
 
-        await addProduct(args)
+       
         close()
-        // if (product.msg === 'done') {
-        //     onHide()
-        //     setError(!error);
-        //     setErrorMsg('')
-        //     resetFields()
-        // }
+
 
     };
 
@@ -187,8 +185,6 @@ const ProductModal = (props) => {
         setLocationSelected('')
         setPreviewImg(null)
         setUploadImg(null)
-        setErrorMsg('')
-        setError(false);
         setCompaniesSelected('')
     }
 
@@ -204,7 +200,7 @@ const ProductModal = (props) => {
             <ModalHeader closeButton>
 
                 <ModalTitle id="contained-modal-title-vcenter">
-                    {item ? 'Editar ' + item.name : 'Agregar un producto'}
+                    {product ? 'Editar ' + product.name : 'Agregar un producto'}
                 </ModalTitle>
             </ModalHeader>
 
@@ -270,7 +266,7 @@ const ProductModal = (props) => {
                 <ModalFooter>
                     <Button className='mx-2' variant="outlined" onClick={close}>Close</Button>
                     <Button variant="contained" color="primary" onClick={() => handleSubmission(uploadImg)}>
-                        {!item ? 'Guardar' : 'Actualizar'}
+                        {!product ? 'Guardar' : 'Actualizar'}
                     </Button>
                 </ModalFooter> </>}
             {loading && <>

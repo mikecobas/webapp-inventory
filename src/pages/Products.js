@@ -6,12 +6,14 @@ import { map } from 'lodash'
 /**
  * Material UI
  */
- import { green } from '@material-ui/core/colors';
- import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
- import Button from '@material-ui/core//Button';
- import IconButton from '@material-ui/core/IconButton';
- import EditIcon from '@material-ui/icons/Edit';
- import DeleteIcon from '@material-ui/icons/Delete';
+import { green } from '@material-ui/core/colors';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import Button from '@material-ui/core//Button';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
+import Tooltip from '@material-ui/core/Tooltip';
 /** 
  * Boostrap
  */
@@ -39,9 +41,19 @@ const Products = () => {
     const { user } = authContext;
 
     const productContext = useContext(ProductContext)
-    const { products, message, total, loading, getProducts, deleteProduct, editProduct, searchProducts } = productContext;
+    const { products,
+         message,
+         total,
+         loading,
+         getProductsList,
+         deleteProduct,
+         editProduct,
+        searchProducts,
+        restoreProduct
+    } = productContext;
     const alertContext = useContext(AlertContext);
-    const { alerta, mostrarAlerta } = alertContext;
+    const { alerta,
+         mostrarAlerta } = alertContext;
     const [searchTerm, setSearchTerm] = useState('')
     const [modalShow, setModalShow] = useState(false);
 
@@ -54,12 +66,13 @@ const Products = () => {
             if (searchTerm !== '') {
                 await searchProducts(searchTerm)
             } else {
-                await getProducts()
+                await getProductsList()
             }
             if (message) {
                 mostrarAlerta(message.msg, message.categoria)
             }
             // setUser(userInfo)
+            console.log(products)
         })()
     }, [loading, message])
 
@@ -74,11 +87,15 @@ const Products = () => {
         await deleteProduct(id)
     }
 
+    const recoverProduct = async (id) => {
+        await restoreProduct(id)
+    }
+
     const search = async () => {
         if (searchTerm !== '') {
             await searchProducts(searchTerm)
         } else {
-            await getProducts()
+            await getProductsList()
         }
     }
 
@@ -121,38 +138,50 @@ const Products = () => {
                             <tr>
                                 <th>#</th>
 
-                                <th>Imagen</th>
+                                {/* <th>Imagen</th> */}
                                 <th>Nombre</th>
                                 <th className="text-center">Cantidad</th>
                                 <th>Código</th>
-                                <th>Categoría</th>
-                                <th>Compañia</th>
+                                <th>Ubicación</th>
+                                {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Compañía</th> : null}
+                                <th>Cliente</th>
                                 <th className="text-center">Status</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody >
-
                             {map(products, (product, index) => {
                                 return (
                                     <tr key={product._id} >
                                         <td className="align-middle">{index + 1}</td>
-                                        <td className="align-middle">{product.image ? <img src={product.image} alt={product.name ? product.name : ''} width='20px' height="auto" /> : null}</td>
+                                        {/* <td className="align-middle">{product.image ? <img src={product.image} alt={product.name ? product.name : ''} width='20px' height="auto" /> : null}</td> */}
                                         <td className="align-middle">{product.name ? product.name : ''}</td>
                                         <td className="align-middle text-center">{product.cnt}</td>
                                         <td className="align-middle">{product.code}</td>
-                                        <td className="align-middle">{product.category.name}</td>
+                                        <td className="align-middle">{product.location.name}</td>
+                                        {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{product.company.name}</td> : null}
                                         <td className="align-middle">{product.client.name}</td>
                                         <td className="align-middle text-center">{product.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                                         <td className="align-middle text-right">
-
-                                            {/* <IconButton aria-label="editar" color="primary" onClick={() => edit(product)}>
-                                            <EditIcon />
-                                        </IconButton> */}
-                                            {product.status && user.role === 'ADMIN' || product.status && user.role === 'SUPER_ADMIN' ?
-                                                <IconButton aria-label="delete" color="secondary" onClick={() => removeProduct(product._id)}>
-                                                    <DeleteIcon />
-                                                </IconButton> : ''}
+                                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' || user.role === 'ADMIN' ?
+                                                <IconButton aria-label="editar" color="primary" onClick={() => edit(product)}>
+                                                    <EditIcon />
+                                                </IconButton>
+                                                : ''}
+                                            {product.status ?
+                                                <Tooltip title="Borrar producto" placement="bottom">
+                                                    <IconButton aria-label="editar" color="secondary" onClick={() => removeProduct(product._id)}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+                                                : null}
+                                            {!product.status && user.role === 'SUPER_ADMIN' || !product.status && user.role === 'SUPER_ADMIN' ?
+                                                <Tooltip title="Recuperar producto" placement="bottom">
+                                                    <IconButton aria-label="editar" color="primary" onClick={() => recoverProduct(product._id)}>
+                                                        <RestoreFromTrashIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+                                                : null}
                                         </td>
                                     </tr>
                                 )

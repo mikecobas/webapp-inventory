@@ -98,6 +98,14 @@ Api2.postProduct = async (args) => {
     return Api2.request('POST', '/api/products', args)
 }
 
+Api2.updateProduct = async (id,args) => {
+    return Api2.request('PUT', `/api/products/${id}`, args)
+}
+
+Api2.restoreProduct = async (id,args) => {
+    return Api2.request('PUT', `/api/products/restore/${id}`)
+}
+
 Api2.deleteProduct = async (id) => {
     return Api2.request('DELETE', `/api/products/${id}`)
 }

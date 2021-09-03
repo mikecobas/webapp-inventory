@@ -19,23 +19,24 @@ export default (state, action) => {
             return {
                 ...state,
                 products: action.payload.products,
-                total:action.payload.total,
-                loading:false
+                total: action.payload.total,
+                loading: false
             }
+        case UPDATE_PRODUCT:
         case ERROR_PRODUCT:
         case ADD_PRODUCT:
         case DELETE_PRODUCT:
             return {
                 ...state,
                 loading: true,
-                message:action.payload
+                message: action.payload
             }
         case EDIT_PRODUCT:
             return {
                 ...state,
-                item:action.payload
+                product: action.payload
             }
-        
+
         case SEARCH_PRODUCTS:
             return {
                 ...state,
