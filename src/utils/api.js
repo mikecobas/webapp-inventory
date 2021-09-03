@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:8080'
 
 const Api2 = {};
 
-Api2.request = async (method, methodName, args = null, isForData = false, file=false, fileName=null) => {
+Api2.request = async (method, methodName, args = null, isForData = false, file = false, fileName = null) => {
     let tokenLogged = await localStorage.getItem('token');
     const token = methodName === '/api/auth/login' ? "login" : tokenLogged;
     const headers = {
@@ -38,7 +38,7 @@ Api2.request = async (method, methodName, args = null, isForData = false, file=f
                 case 400:
                 case 401:
                 case 403:
-    
+
                     return res.json()
                     break;
                 default:
@@ -52,15 +52,15 @@ Api2.request = async (method, methodName, args = null, isForData = false, file=f
                 const filename = 'Reporte de transacciones'
                 const file = window.URL.createObjectURL(blob);
                 // window.location.assign(file)
-                    const link = document.createElement('a');
-                    link.href = file;
-                    link.setAttribute('download', filename);
-                    document.body.appendChild(link);
-                    link.click();
+                const link = document.createElement('a');
+                link.href = file;
+                link.setAttribute('download', filename);
+                document.body.appendChild(link);
+                link.click();
             });
     }
 
-  
+
 };
 
 /**
@@ -79,7 +79,7 @@ Api2.postUser = async (args) => {
     return await Api2.request('POST', '/api/usuarios/', args)
 }
 
-Api2.updateUser = async (id,args) => {
+Api2.updateUser = async (id, args) => {
     return await Api2.request('PUT', `/api/usuarios/${id}`, args)
 }
 
@@ -112,12 +112,45 @@ Api2.getCategories = async () => {
     return Api2.request('GET', '/api/categories')
 }
 
-Api2.postLocation = async (args) => {
+Api2.postCategory = async (args) => {
     return Api2.request('POST', `/api/categories`, args)
 }
 
-Api2.deleteCategories = async (id) => {
+Api2.updateCategory = async (id, args) => {
+    return Api2.request('PUT', `/api/categories/${id}`, args)
+}
+
+Api2.restoreCategory = async (id) => {
+    return Api2.request('PUT', `/api/categories/restore/${id}`)
+}
+
+Api2.deleteCategory = async (id) => {
     return Api2.request('DELETE', `/api/categories/${id}`)
+}
+
+
+/**
+ * Ubicaciones
+ */
+
+Api2.getLocations = async () => {
+    return Api2.request('GET', '/api/locations')
+}
+
+Api2.postLocation = async (args) => {
+    return Api2.request('POST', `/api/locations`, args)
+}
+
+Api2.updateLocation = async (id, args) => {
+    return Api2.request('PUT', `/api/locations/${id}`, args)
+}
+
+Api2.restoreLocation = async (id) => {
+    return Api2.request('PUT', `/api/locations/recover/${id}`)
+}
+
+Api2.deleteLocation = async (id) => {
+    return Api2.request('DELETE', `/api/locations/${id}`)
 }
 
 
@@ -141,7 +174,7 @@ Api2.updateClient = async (id, args) => {
     return Api2.request('PUT', `/api/clients/${id}`, args)
 }
 
-Api2.restoreClient= async (id) => {
+Api2.restoreClient = async (id) => {
     return Api2.request('PUT', `/api/clients/restore/${id}`)
 }
 
@@ -187,7 +220,7 @@ Api2.getTransactions = async (from, to) => {
 Api2.downLoadExcel = async (from, to) => {
     const newTo = moment(to, 'DD-MM-YYYY').format('YYYY-MM-DD HH:MM:ss')
     const newFrom = moment(from, 'DD-MM-YYYY').format('YYYY-MM-DD HH:MM:ss')
-    return Api2.request('GET', `/api/excel/transactions?from=${moment(newFrom).toISOString()}&to=${moment(newTo).toISOString()}`, null, false, true )
+    return Api2.request('GET', `/api/excel/transactions?from=${moment(newFrom).toISOString()}&to=${moment(newTo).toISOString()}`, null, false, true)
 }
 
 
@@ -210,13 +243,16 @@ Api2.searchByCompany = async (term) => {
 Api2.searchByClient = async (term) => {
     return Api2.request('GET', `/api/search/clients/${term}`)
 }
+Api2.searchByLocations = async (term) => {
+    return Api2.request('GET', `/api/search/locations/${term}`)
+}
 
 /**
  * 
  * @returns COMPAÑIAS
  */
 Api2.getCompanies = async () => {
-    return Api2.request('GET',  `/api/companies` )
+    return Api2.request('GET', `/api/companies`)
 }
 
 Api2.getCompanyInfo = async (id) => {
@@ -232,11 +268,11 @@ Api2.deleteCompany = async (id) => {
     return Api2.request('DELETE', `/api/companies/${id}`)
 }
 
-Api2.updateCompany= async (id, args) => {
+Api2.updateCompany = async (id, args) => {
     return Api2.request('PUT', `/api/companies/${id}`, args)
 }
 
-Api2.activateCompany= async (id) => {
+Api2.activateCompany = async (id) => {
     return Api2.request('PUT', `/api/companies/active/${id}`)
 }
 

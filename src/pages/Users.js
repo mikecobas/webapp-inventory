@@ -13,6 +13,7 @@ import Form from 'react-bootstrap/Form'
 import '../css/Users.css'
 import { map } from 'lodash'
 import Alert from 'react-bootstrap/Alert'
+import Spinner from 'react-bootstrap/Spinner'
 import UserModal from '../components/Modals/UserModal'
 
 import AuthContext from '../Context/Auth/authContext'
@@ -28,7 +29,7 @@ const Users = () => {
 
     const alertContext = useContext(AlertContext);
     const { alerta, mostrarAlerta } = alertContext;
-    const [searchTerm, setSearchTerm ] =  useState('')
+    const [searchTerm, setSearchTerm] = useState('')
     const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
@@ -65,7 +66,7 @@ const Users = () => {
             await searchUsers(searchTerm)
         } else {
             await getUsers()
-       }
+        }
     }
 
     return (
@@ -79,69 +80,82 @@ const Users = () => {
                 : null}
             <h1 className="text-3xl my-6 font-bold">Usuarios</h1>
             <h4 className="text-2xl mb-3 font-normal">Total {total}</h4>
-            <div className="rounded-3xl shadow p-4 my-2  h-5/6 overflow-scroll">
-            <div className="flex flex-row justify-between mt-2 mb-6">
+            <div className="rounded-3xl shadow p-4 my-2  max-h-full  overflow-scroll">
+                <div className="flex flex-row justify-between mt-2 mb-6">
                     <div>
                         <Form className="flex flex-row">
-                        <Form.Group className="mx-2" controlId="search">
-                            <Form.Control type="text" placeholder="Buscar usuario" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                            <Form.Group className="mx-2" controlId="search">
+                                <Form.Control type="text" placeholder="Buscar usuario" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                             </Form.Group>
                             <Button color="primary" variant="outlined" onClick={() => search()}>
                                 Buscar
                             </Button>
                         </Form>
                     </div>
-                <div className="flex flex-row justify-end mt-2 mb-6">
-                    <Button color="primary" variant="contained" onClick={() => edit()} >
-                        Agregar usuario
-                    </Button>
+                    <div className="flex flex-row justify-end mt-2 mb-6">
+                        <Button color="primary" variant="contained" onClick={() => edit()} >
+                            Agregar usuario
+                        </Button>
                     </div>
-                    </div>
-                <Table hover responsive  >
-                    <thead>
-                        <tr>
-                            <th>#</th>
+                </div>
 
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th className="text-center">Status</th>
-                            <th>Rol</th>
-                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Compañia</th> : null}
-                            <th>Cliente</th>
-                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Creado por</th> : null}
-                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Fecha de creación</th> : null}
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody className="h-5/6 overflow-scroll" >
+                
+                {loading && <div className=" text-center py-5">
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </div>}
+                {!loading && users &&
+                    <Table hover responsive  >
+                        <thead>
+                            <tr>
+                                <th>#</th>
 
-                        {users && map(users, (item, index) => {
-                            return (
-                                <tr key={index + 1} >
-                                    <td className="align-middle">{index + 1}</td>
-                                    <td className="align-middle">{item.name}</td>
-                                    <td className="align-middle">{item.email}</td>
-                                    <td className="align-middle text-center">{item.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
-                                    <td className="align-middle">{item.role ==='CLIENT' ? 'Cliente' : item.role ==='USER'?  'Empleado' : item.role ==='ADMIN' ? 'Administrador' : item.role ==='SUPPOT' ? 'Soporte' : 'Super Admin'}</td>
-                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{item.company ? item.company.name : 'N/A'}</td>: null}
-                                    <td className="align-middle">{item.client ? item.client.name : 'N/A'}</td>
-                                    <td className="align-middle">{item.created_by ? item.created_by.name : 'N/A'}</td>
-                                    <td className="align-middle">{item.created_date ? `${moment(item.created_date).format('DD/MM/YY')}` : 'N/A'}</td>
-                                    <td className="align-middle">
-                                        <IconButton aria-label="editar" color="primary" onClick={() => edit(item)}>
-                                            <EditIcon />
-                                        </IconButton>
-                                        {item.status && user.role === 'ADMIN' || user.role === 'SUPER_ADMIN' ?
-                                            <IconButton aria-label="delete" color="secondary" onClick={() => removeUser(item.uid)}>
-                                                <DeleteIcon />
-                                            </IconButton> : ''}
-                                    </td>
-                                </tr>
-                            )
-                        })}
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th className="text-center">Status</th>
+                                <th>Rol</th>
+                                {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Compañia</th> : null}
+                                <th>Cliente</th>
+                                {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Creado por</th> : null}
+                                {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Fecha de creación</th> : null}
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody className="h-5/6 overflow-scroll" >
 
-                    </tbody>
-                </Table>
+                            {users && map(users, (item, index) => {
+                                return (
+                                    <tr key={index + 1} >
+                                        <td className="align-middle">{index + 1}</td>
+                                        <td className="align-middle">{item.name}</td>
+                                        <td className="align-middle">{item.email}</td>
+                                        <td className="align-middle text-center">{item.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
+                                        <td className="align-middle">{item.role === 'CLIENT' ? 'Cliente' : item.role === 'USER' ? 'Empleado' : item.role === 'ADMIN' ? 'Administrador' : item.role === 'SUPPOT' ? 'Soporte' : 'Super Admin'}</td>
+                                        {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{item.company ? item.company.name : 'N/A'}</td> : null}
+                                        <td className="align-middle">{item.client ? item.client.name : 'N/A'}</td>
+                                        <td className="align-middle">{item.created_by ? item.created_by.name : 'N/A'}</td>
+                                        <td className="align-middle">{item.created_date ? `${moment(item.created_date).format('DD/MM/YY')}` : 'N/A'}</td>
+                                        <td className="align-middle">
+                                            <IconButton aria-label="editar" color="primary" onClick={() => edit(item)}>
+                                                <EditIcon />
+                                            </IconButton>
+                                            {item.status && user.role === 'ADMIN' || user.role === 'SUPER_ADMIN' ?
+                                                <IconButton aria-label="delete" color="secondary" onClick={() => removeUser(item.uid)}>
+                                                    <DeleteIcon />
+                                                </IconButton> : ''}
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+
+                        </tbody>
+                    </Table>}
+
+                {!loading && users.length === 0 && <div className="text-center py-5">
+                    <h5>No hay usuarios</h5>
+
+                </div>}
             </div>
             <UserModal show={modalShow} onHide={() => closeModal()} />
         </div>
