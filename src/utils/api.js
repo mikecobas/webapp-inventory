@@ -219,16 +219,20 @@ Api2.deleteImage = async (id) => {
  */
 
 Api2.getTransactions = async (from, to) => {
-    const newTo = moment(to, 'DD-MM-YYYY').format('YYYY-MM-DD HH:MM:ss')
-    const newFrom = moment(from, 'DD-MM-YYYY').format('YYYY-MM-DD HH:MM:ss')
-    console.log(from, moment(newTo).format())
+    const newTo = moment(to, 'DD-MM-YYYY').format('YYYY-MM-DD') + 'T23:59:59.000Z';
+    const newFrom = moment(from, 'DD-MM-YYYY').format('YYYY-MM-DD') + 'T00:00:00.000Z';
     return Api2.request('GET', `/api/transaction/?start=${moment(newFrom).toISOString()}&end=${moment(newTo).toISOString()}`)
 }
 
 Api2.downLoadExcel = async (from, to) => {
-    const newTo = moment(to, 'DD-MM-YYYY').format('YYYY-MM-DD HH:MM:ss')
-    const newFrom = moment(from, 'DD-MM-YYYY').format('YYYY-MM-DD HH:MM:ss')
-    return Api2.request('GET', `/api/excel/transactions?from=${moment(newFrom).toISOString()}&to=${moment(newTo).toISOString()}`, null, false, true)
+    const newTo = moment(to, 'DD-MM-YYYY').format('YYYY-MM-DD') + 'T23:59:59.000Z';
+    const newFrom = moment(from, 'DD-MM-YYYY').format('YYYY-MM-DD') + 'T00:00:00.000Z';
+    const args = {
+        from: moment(newFrom).toISOString(),
+        to: moment(newTo).toISOString(),
+        client: '6130eccb46c15743c31c6949'
+    }
+    return Api2.request('POST', `/api/excel/transactions`, args, false, true)
 }
 
 

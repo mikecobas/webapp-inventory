@@ -134,8 +134,8 @@ const Users = () => {
                                         <td className="align-middle">{item.role === 'CLIENT' ? 'Cliente' : item.role === 'USER' ? 'Empleado' : item.role === 'ADMIN' ? 'Administrador' : item.role === 'SUPPOT' ? 'Soporte' : 'Super Admin'}</td>
                                         {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{item.company ? item.company.name : 'N/A'}</td> : null}
                                         <td className="align-middle">{item.client ? item.client.name : 'N/A'}</td>
-                                        <td className="align-middle">{item.created_by ? item.created_by.name : 'N/A'}</td>
-                                        <td className="align-middle">{item.created_date ? `${moment(item.created_date).format('DD/MM/YY')}` : 'N/A'}</td>
+                                        {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{item.created_by ? item.created_by.name : 'N/A'}</td> : null}
+                                        {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{item.created_date ? `${moment(item.created_date).format('DD/MM/YY')}` : 'N/A'}</td> : null}
                                         <td className="align-middle">
                                             <IconButton aria-label="editar" color="primary" onClick={() => edit(item)}>
                                                 <EditIcon />

@@ -50,7 +50,7 @@ const Sidebar = (props) => {
 
   return (
     <>
-      <div className="bg-white h-full flex flex-col justify-start	border-r">
+      <div className="bg-white h-full flex flex-col justify-start	border-r print:hidden" >
       <div className={!collapse ? " flex flex-row items-center justify-center" : "flex flex-row items-center justify-center "}>
           {company ?
             company.image ? <img src={company.image} width='60px' height='auto' alt={company.name} />

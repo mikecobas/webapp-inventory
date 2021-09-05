@@ -80,6 +80,7 @@ const ProductState = props => {
     const addProduct = async (args) => {
         try {
             const res = await Api.postProduct(args)
+            console.log(res)
             if (res.msg === 'done') {
                 const alerta = {
                     msg: `Se Agrego ${res.product.name} exitosamente`,
@@ -171,7 +172,6 @@ const ProductState = props => {
         }
     }
 
-    /** TODO UPDATE y RESTORE */
 
     return (
         <productContext.Provider

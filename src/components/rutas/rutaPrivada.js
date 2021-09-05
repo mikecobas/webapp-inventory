@@ -14,11 +14,11 @@ const RutaPrivada = ({ component: Component, ...props }) => {
 
         ) : (
             <>
-                <div className="flex h-screen">
+                <div className="flex h-screen  print:text-sm">
                         <div className={!collapse ? "w-2/12" : "w-16"}>
                         <Sidebar collapse={collapse} setCollapse={setCollapse} />
                     </div>
-                    <div className={!collapse ? "w-10/12" : "w-11/12"}>
+                    <div className={!collapse ? "w-10/12 print:w-full" : "w-11/12 print:w-full"}>
                         <Component {...props} />
                     </div>
                 </div>

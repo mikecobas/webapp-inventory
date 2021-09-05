@@ -249,7 +249,7 @@ const ProductModal = (props) => {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="cnt">
                             <Form.Label>Cantidad</Form.Label>
-                            <Form.Control type="number" placeholder="Cantidad" value={productCnt} onChange={(event) => setProductCnt(event.target.value)} value={productCnt} />
+                            <Form.Control type="number" placeholder="Cantidad" value={productCnt} onChange={(event) => setProductCnt(event.target.value)} />
                         </Form.Group>
 
 

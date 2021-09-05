@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import React, { useState, useEffect, useContext } from 'react'
 import { map } from 'lodash'
+import moment from 'moment'
 /**
  * Material UI
  */
@@ -144,7 +145,12 @@ const Products = () => {
                                 <th>Código</th>
                                 <th>Ubicación</th>
                                 {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Compañía</th> : null}
-                                <th>Cliente</th>
+                            <th>Cliente</th>
+                            <th>Fecha de creación</th>
+                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Creado por</th> : null}
+                            <th>Fecha de actualización</th>
+                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Actualizado por</th> : null}
+                            
                                 <th className="text-center">Status</th>
                                 <th></th>
                             </tr>
@@ -161,6 +167,10 @@ const Products = () => {
                                         <td className="align-middle">{product.location.name}</td>
                                         {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{product.company.name}</td> : null}
                                         <td className="align-middle">{product.client.name}</td>
+                                        <td className="align-middle">{product.created_date ? `${moment(product.created_date ).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
+                                        <td className="align-middle">{product.created_by.name}</td>
+                                        <td className="align-middle">{product.updated_date ? `${moment(product.updated_date ).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
+                                        <td className="align-middle">{product.updated_by.name}</td>
                                         <td className="align-middle text-center">{product.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                                         <td className="align-middle text-right">
                                             {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' || user.role === 'ADMIN' ?
