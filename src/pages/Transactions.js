@@ -17,11 +17,13 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
+import Form from "react-bootstrap/Form";
+import InputGroup from 'react-bootstrap/InputGroup'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileExcel } from '@fortawesome/free-solid-svg-icons'
 
-import Form from "react-bootstrap/Form";
+
 
 import '../css/Users.css'
 import { map } from 'lodash'
@@ -69,12 +71,30 @@ const Transactions = () => {
             <div className="flex flex-col lg:flex-row justify-between  items-stretch sm:items-center print:items-start mb-4">
                 <div>
                     <h1 className="text-3xl font-bold">Transacciones </h1>
-                    <p >Total {total}</p>   
-               </div>
+                    <p >Total {total}</p>
+                </div>
                 <div className="flex flex-col md:flex-row justify-end mt-2 mb-6 print:hidden">
-                    <Form.Control className="mx-2 my-2 sm:my-0" type="date" name='inicio' value={newFrom} onChange={(e) => setFrom(e.target.value)} />
-                    <Form.Control className="mx-2 my-2 sm:my-0" type="date" name='fin' value={newTo} onChange={(e) => setTo(e.target.value)} />
-                    <div className="flex flex-col justify-end mx-0 sm:mx-2 my-2 sm:my-0">
+                {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <Form.Group className="mx-2 my-2 sm:my-0" controlId="startDate">
+                        <Form.Label>Compañias</Form.Label>
+                        <Form.Control type="text" name='company' value='GC COM'  />
+                    </Form.Group> : null
+                    }
+                    {user.role !== 'CLIENT' && <Form.Group className="mx-2 my-2 sm:my-0" controlId="startDate">
+                        <Form.Label>Clientes</Form.Label>
+                        <Form.Control type="text" name='client' value='CRAYOLA'  />
+                    </Form.Group>}
+                    <Form.Group className="mx-2 my-2 sm:my-0" controlId="startDate">
+                        <Form.Label>Fecha de inicio</Form.Label>
+                        <Form.Control type="date" name='inicio' value={newFrom} onChange={(e) => setFrom(e.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group className="mx-2 my-2 sm:my-0" controlId="startDate">
+                        <Form.Label>Fecha de final</Form.Label>
+                        <Form.Control type="date" name='fin' value={newTo} onChange={(e) => setTo(e.target.value)} />
+                    </Form.Group>
+
+
+                    <div className="flex flex-col justify-end mx-1 sm:mx-1 my-2 sm:my-0">
                         <Button variant="primary" onClick={() => updateDates(newFrom, newTo)} >
                             Buscar
                         </Button>
@@ -108,10 +128,10 @@ const Transactions = () => {
                                 <th className="uppercase">Producto</th>
                                 <th className="uppercase text-center">Cantidad</th>
                                 <th className="uppercase text-center" >Fecha</th>
-                            <th className="uppercase text-center">Código</th>
-                            {user.role === "SUPER_ADMIN" || user.role ==="SUPPORT" ? <th className="uppercase">Compañía</th> : null }
+                                <th className="uppercase text-center">Código</th>
+                                {user.role === "SUPER_ADMIN" || user.role === "SUPPORT" ? <th className="uppercase">Compañía</th> : null}
                                 <th className="uppercase">Cliente</th>
-                                
+
                                 <th className="uppercase">Registro</th>
                                 <th className="uppercase text-center">Status</th>
 
@@ -127,7 +147,7 @@ const Transactions = () => {
                                         <td className="align-middle text-center">{transaction.status ? <span style={{ color: green[500] }}>+ ${transaction.cnt}</span> : <span style={{ color: red[500] }}>- ${transaction.cnt}</span>}</td>
                                         <td className="align-middle text-center">{transaction.timestamp && moment(transaction.timestamp).format('DD/MM/YYYY HH:mm a')}</td>
                                         <td className="align-middle text-center">{transaction.code}</td>
-                                        {user.role === "SUPER_ADMIN" || user.role ==="SUPPORT" ? <td className="align-middle">{transaction.company.name}</td> : null}
+                                        {user.role === "SUPER_ADMIN" || user.role === "SUPPORT" ? <td className="align-middle">{transaction.company.name}</td> : null}
                                         <td className="align-middle">{transaction.client.name}</td>
                                         <td className="align-middle">{transaction.user?.name}</td>
                                         <td className="align-middle text-center">{transaction.status ? <ArrowUpwardIcon style={{ color: green[500] }} /> : <ArrowDownwardIcon color="error" />}</td>
@@ -138,11 +158,11 @@ const Transactions = () => {
 
                         </tbody>
                     </Table>
-                
-                
+
+
                 }
-                {!loading && transactions.length ===0 && <div className="text-center py-5">
-                    <h5>No hay registros para mostrar del {from} - { to }</h5>
+                {!loading && transactions.length === 0 && <div className="text-center py-5">
+                    <h5>No hay registros para mostrar del {from} - {to}</h5>
 
                 </div>}
             </div>
