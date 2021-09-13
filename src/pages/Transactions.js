@@ -34,6 +34,8 @@ import moment from 'moment'
 import AuthContext from '../Context/Auth/authContext'
 import TransactionContext from '../Context/Transaction/transactionContext'
 
+import ModalFilterClients from '../components/Modals/ModalFilterClients'
+
 const Transactions = () => {
     const authContext = useContext(AuthContext);
     const { user } = authContext;
@@ -43,7 +45,7 @@ const Transactions = () => {
     const [newTo, setTo] = useState(moment(to, 'DD-MM-YYYY').format('YYYY-MM-DD'));
     //     const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
     // const endOfMonth   = moment().endOf('month').format('YYYY-MM-DD hh:mm');
-
+    const [showModalClient, setShowModalClient] = useState(false);
 
     useEffect(() => {
 
@@ -56,6 +58,13 @@ const Transactions = () => {
         setSelectedDate(date);
     };
 
+    const closeModalClient = () => {
+        setShowModalClient(false)
+    }
+
+    const onFocusClients = () => {
+        setShowModalClient(true)
+    }
 
     const updateDates = (newFrom, newTo) => {
         updateFilters(newFrom, newTo);
@@ -74,15 +83,15 @@ const Transactions = () => {
                     <p >Total {total}</p>
                 </div>
                 <div className="flex flex-col md:flex-row justify-end mt-2 mb-6 print:hidden">
-                {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <Form.Group className="mx-2 my-2 sm:my-0" controlId="startDate">
+                {/* {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <Form.Group className="mx-2 my-2 sm:my-0" controlId="startDate">
                         <Form.Label>Compañias</Form.Label>
                         <Form.Control type="text" name='company' value='GC COM'  />
                     </Form.Group> : null
                     }
                     {user.role !== 'CLIENT' && <Form.Group className="mx-2 my-2 sm:my-0" controlId="startDate">
                         <Form.Label>Clientes</Form.Label>
-                        <Form.Control type="text" name='client' value='CRAYOLA'  />
-                    </Form.Group>}
+                        <Form.Control type="text" name='client' value='CRAYOLA' onClick={()=>onFocusClients()}  />
+                    </Form.Group>} */}
                     <Form.Group className="mx-2 my-2 sm:my-0" controlId="startDate">
                         <Form.Label>Fecha de inicio</Form.Label>
                         <Form.Control type="date" name='inicio' value={newFrom} onChange={(e) => setFrom(e.target.value)} />
@@ -166,6 +175,7 @@ const Transactions = () => {
 
                 </div>}
             </div>
+            <ModalFilterClients show={showModalClient} onHide={()=>{closeModalClient()}} />
         </div>
     )
 }

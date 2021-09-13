@@ -86,7 +86,7 @@ const Sidebar = (props) => {
           {user.role !== 'USER' || user.role !== 'CLIENT' ?
             <NavLink to="/transactions" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"><SwapHorizIcon /> {!collapse && ' Transacciones'} </NavLink>
             : <></>}
-          <NavLink to="/reports" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"><AssessmentIcon /> {!collapse && ' Reportes'} </NavLink>
+          {/* <NavLink to="/reports" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"><AssessmentIcon /> {!collapse && ' Reportes'} </NavLink> */}
         </nav>
         <div className={!collapse ? " py-3 px-3 hover:bg-blue-100 flex flex-row items-center justify-end" : " py-3 px-3 hover:bg-blue-100 flex flex-row items-center justify-center"} onClick={cerrarSesion}>
           <ExitToAppRoundedIcon />{!collapse && <span className="mx-2" > Cerrar sesion</span>}

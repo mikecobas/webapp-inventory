@@ -1,6 +1,6 @@
 import moment from 'moment'
 const API_URL = 'http://localhost:8080'
-// const DEMO = 'https://saruga.herokuapp.com'
+const DEMO = 'https://saruga.herokuapp.com'
 
 
 const Api2 = {};
@@ -286,6 +286,19 @@ Api2.updateCompany = async (id, args) => {
 
 Api2.activateCompany = async (id) => {
     return Api2.request('PUT', `/api/companies/active/${id}`)
+}
+
+
+/**
+ * Dashboard
+ */
+
+Api2.getDasboard = async () => {
+    return Api2.request('GET', '/api/dashboard')
+}
+
+Api2.getDashboardTransactions = async () => {
+    return Api2.request('GET','/api/dashboard/transactions')
 }
 
 

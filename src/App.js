@@ -6,7 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 
-import Dashboard from './pages/dashoard';
+import Dashboard from './pages/Dashoard';
 import Login from './pages/login';
 import Users from './pages/Users'
 import Clients from './pages/Clients'
