@@ -301,6 +301,10 @@ Api2.getDashboardTransactions = async () => {
     return Api2.request('GET','/api/dashboard/transactions')
 }
 
+Api2.getDashboardProductsByClients= async () => {
+    return Api2.request('GET','/api/dashboard/products-by-clients')
+}
+
 
 
 export default Api2

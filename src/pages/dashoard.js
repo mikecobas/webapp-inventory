@@ -44,13 +44,23 @@ const Dashboard = () => {
   const [newFrom, setFrom] = useState(moment().startOf('month').format('DD/MM/YYYY'));
   const [newTo, setTo] = useState(moment().format('YYYY-MM-DD'));
   const [dataPie, setDataPie] = useState([["Transactions", "Tipo de transacción"]])
+  const [dataProductsByClients, setDataProductsByClients] = useState(
+    [
+      ["Cliente", "Productos", { role: "style" }]
+    ])
   const [transactionList, setTransactionList] = useState(null)
   const [loading, setLoading] = useState(true)
 
   const data = [
-    [["Transactions", "Tipo de transacción"]]
+    ["Transactions", "Tipo de transacción"]
     ["Entrada", 0],
     ["Salida", 0],
+  ];
+
+  const dataCompany = [
+    ["Cliente", "Productos", { role: "style" }],
+    ["Compañia 1", 0, 'color:red'],
+    ["Compañia 2", 0, 'color:red']
   ];
   const options = {
 
@@ -66,12 +76,18 @@ const Dashboard = () => {
     ],
   };
 
+
+
   useEffect(() => {
     (async () => {
-      setDataPie([["Transactions", "Tipo de transacción"]])
       const res = await Api.getDasboard()
       const resTransaction = await Api.getDashboardTransactions()
+      const resTotalProducts = await Api.getDashboardProductsByClients()
       setDataPie([...dataPie, resTransaction.dataPie.enter, resTransaction.dataPie.exit])
+      setDataProductsByClients(resTotalProducts.clients)
+
+
+      console.log(dataProductsByClients)
       setTransactionList(resTransaction.transactionList)
       setTotals(res.totals)
       setLoading(false)
@@ -80,7 +96,7 @@ const Dashboard = () => {
 
 
   return (
-    <div className="px-10 h-full overflow-auto">
+    <div className="px-10 h-full overflow-auto bg-white dark:bg-red-400">
       <div className="flex flex-col lg:flex-row justify-between  items-stretch sm:items-center print:items-start mb-1">
         <div className="mt-3">
           <h1 className="text-3xl font-bold">Dashboard </h1>
@@ -222,7 +238,25 @@ const Dashboard = () => {
             /> : null}
         </div>
       </div>
- 
+
+      <div className="flex flex-col md:flex-row my-4">
+      <div className="rounded-3xl shadow mr-3 w-12/12 md:w-4/12 p-2">
+          {!loading ?
+            <Chart
+              chartType="PieChart"
+              width="100%"
+              height="100%"
+              data={!loading ? dataPie : data}
+              options={options}
+            /> : null}
+        </div>
+        <div className="rounded-3xl shadow p-4  mr-0 md:mr-3 w-12/12 md:w-8/12 right-0">
+        <div className="py-2">
+            <h1 className="text-lg font-bold">Total de productos por cliente</h1>
+          </div>
+          <Chart chartType="ColumnChart" width="100%" height="400px" data={!loading ? dataProductsByClients : dataCompany} />
+        </div>
+      </div>
     </div>
   )
 }
