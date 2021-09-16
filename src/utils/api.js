@@ -224,6 +224,11 @@ Api2.getTransactions = async (from, to) => {
     return Api2.request('GET', `/api/transaction/?start=${moment(newFrom).toISOString()}&end=${moment(newTo).toISOString()}`)
 }
 
+Api2.postTransactions = async (args) => {
+
+    return Api2.request('POST', `/api/transaction`, args)
+}
+
 Api2.downLoadExcel = async (from, to) => {
     const newTo = moment(to, 'DD-MM-YYYY').format('YYYY-MM-DD') + 'T23:59:59.000Z';
     const newFrom = moment(from, 'DD-MM-YYYY').format('YYYY-MM-DD') + 'T00:00:00.000Z';

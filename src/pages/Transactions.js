@@ -21,7 +21,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from 'react-bootstrap/InputGroup'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFileExcel } from '@fortawesome/free-solid-svg-icons'
+import { faFileExcel, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 
 
@@ -33,8 +33,8 @@ import Moment from 'react-moment'
 import moment from 'moment'
 import AuthContext from '../Context/Auth/authContext'
 import TransactionContext from '../Context/Transaction/transactionContext'
-
 import ModalFilterClients from '../components/Modals/ModalFilterClients'
+import AddTransaction from '../components/Modals/AddTransaction';
 
 const Transactions = () => {
     const authContext = useContext(AuthContext);
@@ -46,6 +46,7 @@ const Transactions = () => {
     //     const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
     // const endOfMonth   = moment().endOf('month').format('YYYY-MM-DD hh:mm');
     const [showModalClient, setShowModalClient] = useState(false);
+    const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
 
@@ -75,8 +76,18 @@ const Transactions = () => {
         console.log('RES +', res)
     }
 
+    const edit = () => {
+
+        setModalShow(true)
+    }
+
+    const closeModal = async () => {
+        await getTransactions(newFrom, newTo)
+        setModalShow(false)
+    }
+
     return (
-        <div className="p-20 h-screen">
+        <div className="px-20 pb-16 pt-4 h-full overflow-auto">
             <div className="flex flex-col lg:flex-row justify-between  items-stretch sm:items-center print:items-start mb-4">
                 <div>
                     <h1 className="text-3xl font-bold">Transacciones </h1>
@@ -118,6 +129,13 @@ const Transactions = () => {
                     <Button variant="success" onClick={() => downloadExcel()} >
                         <FontAwesomeIcon icon={faFileExcel} color='white' className="text-xl" />
                         <span className="text-white mx-1 hidden sm:contents">  Descargar Excel</span>
+                    </Button>
+                </Tooltip>
+                <Tooltip title="Agregar transacción" placement="bottom">
+
+                    <Button variant="primary" onClick={() => edit()}  className="mx-2">
+                        <FontAwesomeIcon icon={faPlus} color='white' className="text-sm" />
+                        <span className="text-white mx-1 hidden sm:contents"> Agregar transacción</span>
                     </Button>
                 </Tooltip>
 
@@ -175,7 +193,7 @@ const Transactions = () => {
 
                 </div>}
             </div>
-            <ModalFilterClients show={showModalClient} onHide={()=>{closeModalClient()}} />
+            <AddTransaction show={modalShow} onHide={()=>{closeModal()}} />
         </div>
     )
 }

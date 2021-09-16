@@ -115,8 +115,8 @@ const Companies = (props) => {
             <h4 className="text-2xl mb-6 font-normal">Total {total}</h4>
             <div className="rounded-3xl shadow p-4 overflow-scroll ">
                 
-            <div className="flex flex-row justify-between mt-2 mb-6">
-                    <div>
+            <div className="flex flex-col-reverse md:flex-row justify-between mt-2 mb-6">
+                    <div className="my-2 md:my-0">
                         <Form className="flex flex-row">
                             <Form.Group className="mx-2" controlId="name">
                                 <Form.Control type="text" placeholder="Buscar compañias" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
@@ -127,7 +127,7 @@ const Companies = (props) => {
                         </Form>
                     </div>
                     <Button color="primary" variant="contained" onClick={() => edit()} >
-                        Agregar Compañía
+                       <span > Agregar Compañía</span>
                     </Button>
                 </div>
                 <Table hover responsive>
