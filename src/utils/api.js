@@ -1,6 +1,6 @@
 import moment from 'moment'
-const API_URL = 'http://localhost:8080'
-const DEMO = 'https://saruga.herokuapp.com'
+// const API_URL = 'http://localhost:8080'
+// const DEMO = 'https://saruga.herokuapp.com'
 
 
 const Api2 = {};
@@ -26,7 +26,7 @@ Api2.request = async (method, methodName, args = null, isForData = false, file =
         // }
     }
     if (!file) {
-        return fetch(API_URL + methodName, request).then((res) => {
+        return fetch(process.env.REACT_APP_API_URL + methodName, request).then((res) => {
 
             switch (res.status) {
                 case 200:
@@ -46,7 +46,7 @@ Api2.request = async (method, methodName, args = null, isForData = false, file =
             }
         });
     } else {
-        return fetch(API_URL + methodName, request,)
+        return fetch(process.env.REACT_APP_API_URL + methodName, request,)
             .then((res) => res.blob())
             .then(blob => {
                 const filename = 'Reporte de transacciones'
