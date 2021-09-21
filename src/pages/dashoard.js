@@ -1,17 +1,15 @@
 /* eslint-disable no-mixed-operators */
 import React, { useState, useEffect, useContext } from 'react'
+import Chart from "react-google-charts";
+import moment from 'moment'
+import Api from '../utils/api'
+import { map } from 'lodash'
 /**
  * MATERIAL UI
  */
 
 import { green, red, blue, indigo, purple, yellow } from '@material-ui/core/colors';
-import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
-import GroupRoundedIcon from '@material-ui/icons/GroupRounded';
-import FeaturedPlayListRoundedIcon from '@material-ui/icons/FeaturedPlayListRounded';
-import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
-import BusinessRoundedIcon from '@material-ui/icons/BusinessRounded';
-import HomeWork from '@material-ui/icons/HomeWork'
-import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
+
 import Tooltip from '@material-ui/core/Tooltip';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
@@ -22,7 +20,12 @@ import LocalOfferTwoToneIcon from '@material-ui/icons/LocalOfferTwoTone';
 import LocationCityTwoToneIcon from '@material-ui/icons/LocationCityTwoTone';
 import ImportExportTwoToneIcon from '@material-ui/icons/ImportExportTwoTone';
 
+
 import IconButton from '@material-ui/core/IconButton';
+
+/**
+ * Bootstrap
+ */
 import Form from "react-bootstrap/Form";
 import InputGroup from 'react-bootstrap/InputGroup'
 import Table from 'react-bootstrap/Table'
@@ -30,10 +33,6 @@ import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
 
 
-import Chart from "react-google-charts";
-import moment from 'moment'
-import Api from '../utils/api'
-import { map } from 'lodash'
 
 import AuthContext from '../Context/Auth/authContext'
 

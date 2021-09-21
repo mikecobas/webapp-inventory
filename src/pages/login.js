@@ -180,7 +180,7 @@ const Login = (props) => {
               Sign In
             </Button>
             
-            <Grid container>
+            {/* <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
@@ -191,10 +191,10 @@ const Login = (props) => {
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
-            </Grid>
-            <Box mt={5}>
+            </Grid> */}
+            {/* <Box mt={5}>
               <Copyright />
-            </Box>
+            </Box> */}
           </form>
         </div>
       </Grid>

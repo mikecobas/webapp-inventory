@@ -15,6 +15,8 @@ import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 import { green, red } from '@material-ui/core/colors';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Tooltip from '@material-ui/core/Tooltip';
+import AddIcon from '@material-ui/icons/Add';
+import SearchIcon from '@mui/icons-material/Search';
 /**
  * Boostrap
  */
@@ -107,23 +109,31 @@ const Clients = () => {
                 </Alert>
             </div>
                 : null}
-                <h1 className="text-3xl mb-6 font-bold">Clientes</h1>
+            <h1 className="text-3xl mb-6 font-bold">Clientes</h1>
             <h4 className="text-2xl mb-6 font-normal">Total {total}</h4>
             <div className="rounded-3xl shadow p-4 max-h-full overflow-scroll ">
-            <div className="flex flex-row justify-between mt-2 mb-6">
+                <div className="flex flex-row justify-between mt-2 mb-6">
                     <div>
                         <Form className="flex flex-row">
                             <Form.Group className="mx-2" controlId="name">
                                 <Form.Control type="text" placeholder="Buscar clientes" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                             </Form.Group>
-                            <Button color="primary" variant="outlined" onClick={() => search()}>
-                                Buscar
-                            </Button>
+                            <Tooltip title="Buscar" placement="bottom">
+                                <Button color="primary" variant="outlined" onClick={() => search()}>
+                                    <span className="block md:hidden">  <SearchIcon /></span>
+                                    <span className="hidden md:block"> Buscar</span>
+                                </Button>
+                            </Tooltip>
                         </Form>
                     </div>
-                    <Button color="primary" variant="contained" onClick={() => edit()} >
-                        Agregar Cliente
-                    </Button>
+                    <Tooltip title="Agregar nuevo cliente" placement="bottom">
+                        <Button color="primary" variant="contained" onClick={() => edit()} >
+                            <span className="block md:hidden">
+                                <AddIcon />
+                            </span>
+                            <span className="hidden md:block">Agregar Cliente</span>
+                        </Button>
+                    </Tooltip>
                 </div>
                 {loading && <div className=" text-center py-5">
                     <Spinner animation="border" role="status">
@@ -170,9 +180,11 @@ const Clients = () => {
 
                                         <td className="align-middle text-right">
                                             {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' || user.role === 'ADMIN' ?
-                                                <IconButton aria-label="editar" color="primary" onClick={() => edit(client)}>
-                                                    <EditIcon />
-                                                </IconButton>
+                                                <Tooltip title="Editar cliente" placement="bottom">
+                                                    <IconButton aria-label="editar" color="primary" onClick={() => edit(client)}>
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                </Tooltip>
                                                 : ''}
                                             {client.status ?
                                                 <Tooltip title="Borrar cliente" placement="bottom">
@@ -196,9 +208,9 @@ const Clients = () => {
                         </tbody>
                     </Table>}
                 {!loading && clients.length === 0 && <div className="text-center py-5">
-                    {searchTerm === '' ? 
+                    {searchTerm === '' ?
                         <h5>No cuentas con clientes dados de alta</h5> :
-                        <h5 className="font-normal">No se encontro resultados de busqueda con <span className="font-bold">" { searchTerm} "</span></h5>
+                        <h5 className="font-normal">No se encontro resultados de busqueda con <span className="font-bold">" {searchTerm} "</span></h5>
                     }
 
                 </div>}

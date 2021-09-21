@@ -30,6 +30,7 @@ const AuthState = (props) => {
     const registrarUsuario = async (datos) => {
         try {
             const respuesta = await Api.auth(datos)
+        
             if (!respuesta.msg) {
                 
                 dispatch({

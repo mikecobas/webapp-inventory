@@ -2,20 +2,31 @@
 /* eslint-disable no-unused-expressions */
 import React, { useState, useEffect, useContext } from 'react'
 import moment from 'moment'
+import { map } from 'lodash'
+/**
+ * Material ui
+ */
 import { green } from '@material-ui/core/colors';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import Table from 'react-bootstrap/Table'
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import SearchIcon from '@mui/icons-material/Search';
+
+/**
+ * Bootstrap
+ */
+import Table from 'react-bootstrap/Table'
 import Form from 'react-bootstrap/Form'
-import '../css/Users.css'
-import { map } from 'lodash'
 import Alert from 'react-bootstrap/Alert'
 import Spinner from 'react-bootstrap/Spinner'
 import UserModal from '../components/Modals/UserModal'
 
+/**
+ * Contexts
+ */
 import AuthContext from '../Context/Auth/authContext'
 import UserContext from '../Context/User/userContext';
 import AlertContext from '../Context/Alerta/alertContext';
@@ -88,15 +99,16 @@ const Users = () => {
                                 <Form.Control type="text" placeholder="Buscar usuario" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                             </Form.Group>
                             <Button color="primary" variant="outlined" onClick={() => search()}>
-                                Buscar
+                            <span className="block md:hidden">  <SearchIcon /></span>
+                               <span className="hidden md:block"> Buscar</span>
                             </Button>
                         </Form>
                     </div>
-                    <div className="flex flex-row justify-end mt-2 mb-6">
+                    {user.role !== 'USER' || user.role !== 'CLIENT' ? <div className="flex flex-row justify-end mt-0 md:mt-2 mb-0 md:mb-6">
                         <Button color="primary" variant="contained" onClick={() => edit()} >
-                            Agregar usuario
+                        <span className="block md:hidden">  <AddIcon /> </span>  <span className="hidden md:block">Agregar usuario</span>
                         </Button>
-                    </div>
+                    </div>: null}
                 </div>
 
                 

@@ -196,7 +196,7 @@ Api2.getImage = async (collection, id) => {
 }
 // CARGA DE IMAGEN
 Api2.uploadImage = async (args) => {
-    console.log('API file:', args.get('file'))
+    // console.log('API file:', args.get('file'))
     return Api2.request('post', '/api/uploads/', args, true)
 }
 //Actualizacion
@@ -219,9 +219,9 @@ Api2.deleteImage = async (id) => {
  */
 
 Api2.getTransactions = async (from, to) => {
-    const newTo = moment(to, 'DD-MM-YYYY').format('YYYY-MM-DD') + 'T23:59:59.000Z';
-    const newFrom = moment(from, 'DD-MM-YYYY').format('YYYY-MM-DD') + 'T00:00:00.000Z';
-    return Api2.request('GET', `/api/transaction/?start=${moment(newFrom).toISOString()}&end=${moment(newTo).toISOString()}`)
+    const newTo = moment(to,'DD-MM-YYYY').format('YYYY-MM-DD')+'T23:59:59.000Z';
+    const newFrom = moment(from,'DD-MM-YYYY').format('YYYY-MM-DD')+'T00:00:00.000Z' ;
+    return Api2.request('GET', `/api/transaction/?start=${newFrom}&end=${newTo}`)
 }
 
 Api2.postTransactions = async (args) => {
@@ -230,14 +230,13 @@ Api2.postTransactions = async (args) => {
 }
 
 Api2.downLoadExcel = async (from, to) => {
-    const newTo = moment(to, 'DD-MM-YYYY').format('YYYY-MM-DD') + 'T23:59:59.000Z';
-    const newFrom = moment(from, 'DD-MM-YYYY').format('YYYY-MM-DD') + 'T00:00:00.000Z';
+    const newTo = to+'T23:59:59.000Z';
+    const newFrom = from+'T00:00:00.000Z' ;
     const args = {
-        from: moment(newFrom).toISOString(),
-        to: moment(newTo).toISOString(),
-        client: '6130eccb46c15743c31c6949'
+        from:newFrom,
+        to: newTo
     }
-    return Api2.request('POST', `/api/excel/transactions`, args, false, true)
+  return Api2.request('POST', `/api/excel/transactions`, args, false, true)
 }
 
 

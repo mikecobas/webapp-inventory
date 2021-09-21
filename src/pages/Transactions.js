@@ -72,7 +72,7 @@ const Transactions = () => {
     }
 
     const downloadExcel = async () => {
-        const res = await Api.downLoadExcel(from, to);
+        const res = await Api.downLoadExcel(newFrom, newTo);
         console.log('RES +', res)
     }
 
@@ -87,14 +87,14 @@ const Transactions = () => {
     }
 
     return (
-        <div className="px-20 pb-16 pt-4 h-full overflow-auto">
+        <div className="px-10 pb-16 pt-4 h-full overflow-auto text-base">
             <div className="flex flex-col lg:flex-row justify-between  items-stretch sm:items-center print:items-start mb-4">
                 <div>
                     <h1 className="text-3xl font-bold">Transacciones </h1>
                     <p >Total {total}</p>
                 </div>
                 <div className="flex flex-col md:flex-row justify-end mt-2 mb-6 print:hidden">
-                {/* {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <Form.Group className="mx-2 my-2 sm:my-0" controlId="startDate">
+                    {/* {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <Form.Group className="mx-2 my-2 sm:my-0" controlId="startDate">
                         <Form.Label>Compañias</Form.Label>
                         <Form.Control type="text" name='company' value='GC COM'  />
                     </Form.Group> : null
@@ -125,19 +125,19 @@ const Transactions = () => {
             </div>
             <div className="flex flex-col md:flex-row justify-end mt-2 mb-6">
                 <Tooltip title="Descargar Excel" placement="bottom">
-
-                    <Button variant="success" onClick={() => downloadExcel()} >
-                        <FontAwesomeIcon icon={faFileExcel} color='white' className="text-xl" />
-                        <span className="text-white mx-1 hidden sm:contents">  Descargar Excel</span>
+                    <Button variant="success" onClick={() => downloadExcel()}  className="m-1">
+                        <FontAwesomeIcon icon={faFileExcel} color='white' className="text-base" />
+                        <span className="text-white mx-2">Descargar</span>
                     </Button>
                 </Tooltip>
-                <Tooltip title="Agregar transacción" placement="bottom">
-
-                    <Button variant="primary" onClick={() => edit()}  className="mx-2">
-                        <FontAwesomeIcon icon={faPlus} color='white' className="text-sm" />
-                        <span className="text-white mx-1 hidden sm:contents"> Agregar transacción</span>
-                    </Button>
-                </Tooltip>
+                {user.role !== 'CLIENT' ?
+                    <Tooltip title="Agregar transacción" placement="bottom">
+                        <Button variant="primary" onClick={() => edit()}  className="m-1">
+                            <FontAwesomeIcon icon={faPlus} color='white' className="text-base" />
+                            <span className="text-white mx-2">Agregar transacción</span>
+                        </Button>
+                    </Tooltip>
+                    : null}
 
             </div>
             <div className="rounded-3xl shadow p-4 max-h-full  overflow-scroll">
@@ -164,20 +164,20 @@ const Transactions = () => {
 
                             </tr>
                         </thead>
-                        <tbody >
+                        <tbody className="text-base">
 
                             {map(transactions, (transaction, index) => {
                                 return (
                                     <tr key={transaction._id} >
-                                        <td className="align-middle">{index + 1}</td>
-                                        <td className="align-middle">{transaction.product_name}</td>
-                                        <td className="align-middle text-center">{transaction.status ? <span style={{ color: green[500] }}>+ ${transaction.cnt}</span> : <span style={{ color: red[500] }}>- ${transaction.cnt}</span>}</td>
-                                        <td className="align-middle text-center">{transaction.timestamp && moment(transaction.timestamp).format('DD/MM/YYYY HH:mm a')}</td>
-                                        <td className="align-middle text-center">{transaction.code}</td>
-                                        {user.role === "SUPER_ADMIN" || user.role === "SUPPORT" ? <td className="align-middle">{transaction.company.name}</td> : null}
-                                        <td className="align-middle">{transaction.client.name}</td>
-                                        <td className="align-middle">{transaction.user?.name}</td>
-                                        <td className="align-middle text-center">{transaction.status ? <ArrowUpwardIcon style={{ color: green[500] }} /> : <ArrowDownwardIcon color="error" />}</td>
+                                        <td className="align-middle text-sm">{index + 1}</td>
+                                        <td className="align-middle text-sm">{transaction.product_name}</td>
+                                        <td className="align-middle text-sm text-center">{transaction.status ? <span style={{ color: green[500] }}>+ {transaction.cnt}</span> : <span style={{ color: red[500] }}>- {transaction.cnt}</span>}</td>
+                                        <td className="align-middle text-sm text-center">{transaction.timestamp && moment(transaction.timestamp).format('DD/MM/YYYY HH:mm a')}</td>
+                                        <td className="align-middle text-sm text-center">{transaction.code}</td>
+                                        {user.role === "SUPER_ADMIN" || user.role === "SUPPORT" ? <td className="align-middle text-sm">{transaction.company.name}</td> : null}
+                                        <td className="align-middle text-sm">{transaction.client.name}</td>
+                                        <td className="align-middle text-sm">{transaction.user?.name}</td>
+                                        <td className="align-middle text-sm text-center">{transaction.status ? <ArrowUpwardIcon style={{ color: green[500] }} /> : <ArrowDownwardIcon color="error" />}</td>
 
                                     </tr>
                                 )
@@ -193,7 +193,7 @@ const Transactions = () => {
 
                 </div>}
             </div>
-            <AddTransaction show={modalShow} onHide={()=>{closeModal()}} />
+            <AddTransaction show={modalShow} onHide={() => { closeModal() }} />
         </div>
     )
 }

@@ -4,10 +4,10 @@ import React, { useState, useEffect, useContext } from 'react'
 import { map } from 'lodash'
 import moment from 'moment'
 
-  /**
-   * MATERIAL UI
-   */
-   import Button from '@material-ui/core/Button';
+/**
+ * MATERIAL UI
+ */
+import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { green, red } from '@material-ui/core/colors';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
@@ -15,10 +15,12 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 import Tooltip from '@material-ui/core/Tooltip';
+import AddIcon from '@material-ui/icons/Add';
+import SearchIcon from '@mui/icons-material/Search';
 
-  /**
-   * BOOTSTRAP
-   */
+/**
+ * BOOTSTRAP
+ */
 import Table from 'react-bootstrap/Table'
 import Spinner from 'react-bootstrap/Spinner'
 import Alert from 'react-bootstrap/Alert'
@@ -52,7 +54,7 @@ const Locations = (props) => {
             } else {
                 await getLocations()
             }
-            
+
             if (message) {
                 mostrarAlerta(message.msg, message.categoria)
             }
@@ -106,14 +108,24 @@ const Locations = (props) => {
                             <Form.Group className="mx-2" controlId="name">
                                 <Form.Control type="text" placeholder="Buscar Ubicación" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                             </Form.Group>
-                            <Button color="primary" variant="outlined" onClick={() => search()}>
-                                Buscar
-                            </Button>
+                            <Tooltip title="Buscar" placement="bottom">
+                                <Button color="primary" variant="outlined" onClick={() => search()}>
+                                    <span className="block md:hidden">  <SearchIcon /></span>
+                                    <span className="hidden md:block"> Buscar</span>
+                                </Button>
+                            </Tooltip>
                         </Form>
                     </div>
-                    <Button color="primary" variant="contained" onClick={() => edit()} >
-                        Agregar Ubicación
-                    </Button>
+                    {user.role !== 'USER' &&  user.role !== 'CLIENT' ?
+                    <Tooltip title="Agregar nueva ubicación" placement="bottom">
+                        <Button color="primary" variant="contained" onClick={() => edit()} >
+                            <span className="block md:hidden">
+                                <AddIcon />
+                            </span>
+                            <span className="hidden md:block">Agregar Ubicación</span>
+                        </Button>
+                    </Tooltip>
+                    :null}
                 </div>
                 <Table hover responsive size="sm">
                     <thead>
@@ -121,7 +133,7 @@ const Locations = (props) => {
                             <th>#</th>
 
                             <th>Nombre</th>
-                           
+
                             {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="">Compañia</th> : null}
                             {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="">Creado por</th> : null}
                             {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="">Fecha de creación</th> : null}
@@ -138,33 +150,35 @@ const Locations = (props) => {
                                 <tr key={location._id} >
                                     <td className="align-middle">{index + 1}</td>
                                     <td className="align-middle">{location.name}</td>
-                                    
+
                                     {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.company ? location.company.name : 'N/A'}</td> : null}
                                     {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.created_by ? location.created_by.name : 'N/A'}</td> : null}
-                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.created_date ? `${moment(location.created_date ).format('DD/MM/YY h:mm a')}` : 'N/A'}</td> : null}
+                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.created_date ? `${moment(location.created_date).format('DD/MM/YY h:mm a')}` : 'N/A'}</td> : null}
                                     {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{location.updated_by ? location.updated_by.name : 'N/A'}</td> : null}
-                                    <td className="align-middle">{location.updated_date ? `${moment(location.updated_date ).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
+                                    <td className="align-middle">{location.updated_date ? `${moment(location.updated_date).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
                                     <td className="align-middle text-center">{location.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                                     <td className="align-middle text-right">
-                                    {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' || user.role === 'ADMIN' ?
+                                        {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' || user.role === 'ADMIN' ?
+                                            <Tooltip title="Editar ubicación" placement="bottom">
                                                 <IconButton aria-label="editar" color="primary" onClick={() => edit(location)}>
                                                     <EditIcon />
                                                 </IconButton>
-                                                : ''}
-                                            {location.status ?
-                                                <Tooltip title="Borrar locatione" placement="bottom">
-                                                    <IconButton aria-label="editar" color="secondary" onClick={() => removeLocation(location._id)}>
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </Tooltip>
-                                                : null}
-                                            {!location.status && user.role === 'SUPER_ADMIN' || !location.status && user.role === 'SUPER_ADMIN' ?
-                                                <Tooltip title="Recuperar locatione" placement="bottom">
-                                                    <IconButton aria-label="editar" color="primary" onClick={() => recoverLocation(location._id)}>
-                                                        <RestoreFromTrashIcon />
-                                                    </IconButton>
-                                                </Tooltip>
-                                                : null}
+                                            </Tooltip>
+                                            : ''}
+                                        {location.status && user.role !== 'USER' ?
+                                            <Tooltip title="Borrar ubicación" placement="bottom">
+                                                <IconButton aria-label="editar" color="secondary" onClick={() => removeLocation(location._id)}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                            : null}
+                                        {!location.status && user.role === 'SUPER_ADMIN' || !location.status && user.role === 'SUPPORT' ?
+                                            <Tooltip title="Recuperar ubicación" placement="bottom">
+                                                <IconButton aria-label="editar" color="primary" onClick={() => recoverLocation(location._id)}>
+                                                    <RestoreFromTrashIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                            : null}
                                     </td>
                                 </tr>
                             )

@@ -32,7 +32,9 @@ const LocationModal = (props) => {
     useEffect(() => {
         
         (async () => {
-
+            if (company) {
+                setCompanySelected(company._id);
+            }
             if (location) {
                 setLocationName(location.name);
                 setCompanySelected(location.company._id);

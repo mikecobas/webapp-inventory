@@ -15,6 +15,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 import Tooltip from '@material-ui/core/Tooltip';
+import AddIcon from '@material-ui/icons/Add';
+import SearchIcon from '@mui/icons-material/Search';
+
 /** 
  * Boostrap
  */
@@ -43,18 +46,18 @@ const Products = () => {
 
     const productContext = useContext(ProductContext)
     const { products,
-         message,
-         total,
-         loading,
-         getProductsList,
-         deleteProduct,
-         editProduct,
+        message,
+        total,
+        loading,
+        getProductsList,
+        deleteProduct,
+        editProduct,
         searchProducts,
         restoreProduct
     } = productContext;
     const alertContext = useContext(AlertContext);
     const { alerta,
-         mostrarAlerta } = alertContext;
+        mostrarAlerta } = alertContext;
     const [searchTerm, setSearchTerm] = useState('')
     const [modalShow, setModalShow] = useState(false);
 
@@ -119,14 +122,25 @@ const Products = () => {
                             <Form.Group className="mx-2" controlId="name">
                                 <Form.Control type="text" placeholder="Buscar productos" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                             </Form.Group>
-                            <Button color="primary" variant="outlined" onClick={() => search()}>
-                                Buscar
-                            </Button>
+                            <Tooltip title="Buscar" placement="bottom">
+                                <Button color="primary" variant="outlined" onClick={() => search()}>
+                                    <span className="block md:hidden">  <SearchIcon /></span>
+                                    <span className="hidden md:block"> Buscar</span>
+                                </Button>
+                            </Tooltip>
                         </Form>
                     </div>
-                    <Button color="primary" variant="contained" onClick={() => edit()}>
-                        Agregar nuevo producto
-                    </Button>
+                    {user.role !== 'USER' && user.role !== 'CLIENT' ?
+                   
+                        <Tooltip title="Agregar nuevo producto" placement="bottom">
+                        <Button color="primary" variant="contained" onClick={() => edit()} >
+                            <span className="block md:hidden">
+                                <AddIcon />
+                            </span>
+                            <span className="hidden md:block">Agregar producto</span>
+                        </Button>
+                    </Tooltip>
+                        : null}
                 </div>
                 {loading && <div className=" text-center py-5">
                     <Spinner animation="border" role="status">
@@ -145,12 +159,12 @@ const Products = () => {
                                 <th>Código</th>
                                 <th>Ubicación</th>
                                 {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Compañía</th> : null}
-                            <th>Cliente</th>
-                            <th>Fecha de creación</th>
-                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Creado por</th> : null}
-                            <th>Fecha de actualización</th>
-                            {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Actualizado por</th> : null}
-                            
+                            {user.role !== 'CLIENT' ? <th>Cliente</th> : null}
+                                <th>Fecha de creación</th>
+                                {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Creado por</th> : null}
+                                <th>Fecha de actualización</th>
+                                {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th>Actualizado por</th> : null}
+
                                 <th className="text-center">Status</th>
                                 <th></th>
                             </tr>
@@ -166,11 +180,11 @@ const Products = () => {
                                         <td className="align-middle">{product.code}</td>
                                         <td className="align-middle">{product.location.name}</td>
                                         {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{product.company.name}</td> : null}
-                                        <td className="align-middle">{product.client.name}</td>
-                                        <td className="align-middle">{product.created_date ? `${moment(product.created_date ).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
-                                        <td className="align-middle">{product.created_by.name}</td>
-                                        <td className="align-middle">{product.updated_date ? `${moment(product.updated_date ).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
-                                        <td className="align-middle">{product.updated_by.name}</td>
+                                        {user.role !== 'CLIENT' ? <td className="align-middle">{product.client.name}</td> : null}
+                                        <td className="align-middle">{product.created_date ? `${moment(product.created_date).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
+                                        {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{product.created_by.name}</td> : null}
+                                        <td className="align-middle">{product.updated_date ? `${moment(product.updated_date).format('DD/MM/YY h:mm a')}` : 'N/A'}</td>
+                                        {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{product.updated_by.name}</td> : null}
                                         <td className="align-middle text-center">{product.status ? <FiberManualRecordIcon style={{ color: green[500] }} /> : <FiberManualRecordIcon color="secondary" />}</td>
                                         <td className="align-middle text-right">
                                             {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' || user.role === 'ADMIN' ?
@@ -178,7 +192,7 @@ const Products = () => {
                                                     <EditIcon />
                                                 </IconButton>
                                                 : ''}
-                                            {product.status ?
+                                            {product.status && user.role !== 'CLIENT' && user.role !== 'USER' ? 
                                                 <Tooltip title="Borrar producto" placement="bottom">
                                                     <IconButton aria-label="editar" color="secondary" onClick={() => removeProduct(product._id)}>
                                                         <DeleteIcon />
