@@ -134,7 +134,7 @@ const AddTransaction = (props) => {
             {!loading && <> <ModalBody>
 
                 <Form>
-                    <div className="grid grid-rows-3 grid-flow-col gap-4">
+                    <div className="grid grid-rows grid-flow-rows gap-4">
 
 
 

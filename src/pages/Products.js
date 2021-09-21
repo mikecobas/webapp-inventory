@@ -102,7 +102,7 @@ const Products = () => {
 
 
     return (
-        <div className="px-20 h-full relative">
+        <div className="px-10 h-full overflow-auto">
             {alerta ? <div className="fixed right-8 top-0 w-auto z-10">
                 <Alert variant={alerta.categoria} className="mx-auto my-4">
 

@@ -105,7 +105,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className={user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? "w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6" : "w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"}>
-        {totals?.users ? <div className="py-4 bg-green-100 col-auto	w-3/12 mx-1 my-2 rounded-3xl	flex items-center flex-col">
+        {totals?.users ? <div className="py-4 bg-green-100 col-auto mx-1 my-2 rounded-3xl	flex items-center flex-col">
           <div className=" rounded-full  w-20 h-20 justify-center items-center middle flex  bg-green-200">
             <PeopleAltTwoToneIcon style={{ color: green[800], fontSize: 48 }} />
           </div>
@@ -115,7 +115,7 @@ const Dashboard = () => {
           </div>
 
         </div> : null}
-        {totals?.clients ? <div className="py-4 bg-blue-100 col-auto	w-3/12 mx-1 my-2 rounded-3xl		flex items-center flex-col">
+        {totals?.clients ? <div className="py-4 bg-blue-100 col-auto mx-1 my-2 rounded-3xl		flex items-center flex-col">
           <div className=" rounded-full  w-20 h-20 justify-center items-center middle flex  bg-blue-200">
             <ContactsTwoToneIcon style={{ color: blue[800], fontSize: 48 }} />
           </div>
@@ -125,7 +125,7 @@ const Dashboard = () => {
           </div>
 
         </div> : null}
-        {totals?.products ? <div className="py-4 bg-red-100 col-auto	w-3/12 mx-1 my-2 rounded-3xl		flex items-center flex-col">
+        {totals?.products ? <div className="py-4 bg-red-100 col-auto mx-1 my-2 rounded-3xl		flex items-center flex-col">
           <div className=" rounded-full  w-20 h-20 justify-center items-center middle flex  bg-red-200">
             <LocalOfferTwoToneIcon style={{ color: red[800], fontSize: 48 }} />
           </div>
@@ -136,7 +136,7 @@ const Dashboard = () => {
 
         </div>
           : null}
-        {totals?.locations ? <div className="py-4 bg-yellow-100 col-auto	w-3/12 mx-1 my-2 rounded-3xl		flex items-center flex-col">
+        {totals?.locations ? <div className="py-4 bg-yellow-100 col-auto mx-1 my-2 rounded-3xl		flex items-center flex-col">
           <div className=" rounded-full  w-20 h-20 justify-center items-center middle flex  bg-yellow-200">
             <LocationCityTwoToneIcon style={{ color: yellow[800], fontSize: 48 }} />
           </div>
@@ -147,7 +147,7 @@ const Dashboard = () => {
 
         </div>
           : null}
-        {user.role === 'SUPER_ADMIN' && totals?.companies || user.role === 'SUPPORT' && totals?.companies ? <div className="py-4 bg-indigo-100 col-auto	w-3/12 mx-1 my-2 rounded-3xl		flex items-center flex-col">
+        {user.role === 'SUPER_ADMIN' && totals?.companies || user.role === 'SUPPORT' && totals?.companies ? <div className="py-4 bg-indigo-100 col-auto mx-1 my-2 rounded-3xl		flex items-center flex-col">
           <div className=" rounded-full  w-20 h-20 justify-center items-center middle flex  bg-indigo-200">
             <BusinessTwoToneIcon style={{ color: indigo[800], fontSize: 48 }} />
           </div>
@@ -158,7 +158,7 @@ const Dashboard = () => {
 
         </div>
           : null}
-        {totals?.transactions ? <div className="py-4 bg-purple-100 col-auto	w-3/12 mx-1 my-2 rounded-3xl flex items-center flex-col">
+        {totals?.transactions ? <div className="py-4 bg-purple-100 col-auto mx-1 my-2 rounded-3xl flex items-center flex-col">
           <div className=" rounded-full  w-20 h-20 justify-center items-center middle flex  bg-purple-200">
             <ImportExportTwoToneIcon style={{ color: purple[800], fontSize: 48 }} />
           </div>
