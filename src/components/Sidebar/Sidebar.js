@@ -70,9 +70,9 @@ const Sidebar = (props) => {
           {!collapse && <h2 className="text-lg mx-3  my-2 ">{user.name ? user.name : null}</h2>}
         </div>
         <nav className="flex flex-col pt-8 flex-1">
-          {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ?
+
             <NavLink to="/dashboard" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"> <DashboardRoundedIcon /> {!collapse && ' Dashboard'}</NavLink>
-            : <></>}
+         
           {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ?
             <NavLink to="/companies" className={!collapse ? "pl-7 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start" : "pl-4 py-3 hover:bg-blue-100 no-underline	text-gray-500 flex flex-row items-center justify-start"} activeClassName="bg-blue-100 text-blue-500"> <HomeWork /> {!collapse && ' Compañias'}</NavLink>
             : <></>}

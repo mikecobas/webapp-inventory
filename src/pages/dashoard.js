@@ -103,8 +103,9 @@ const Dashboard = () => {
           <h3 className="font-normal text-lg">Hola, {user.name}</h3>
         </div>
       </div>
-      <div className={user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? "w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6" : "w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"}>
-        {totals?.users ? <div className="py-4 bg-green-100 col-auto mx-1 my-2 rounded-3xl	flex items-center flex-col">
+      <div className={user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? "w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
+        : user.role === 'CLIENT' ? "w-full grid grid-cols-2" : "w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"}>
+        {totals?.users  && user.role !== 'CLIENT'? <div className="py-4 bg-green-100 col-auto mx-1 my-2 rounded-3xl	flex items-center flex-col">
           <div className=" rounded-full  w-20 h-20 justify-center items-center middle flex  bg-green-200">
             <PeopleAltTwoToneIcon style={{ color: green[800], fontSize: 48 }} />
           </div>
@@ -198,7 +199,7 @@ const Dashboard = () => {
                   <th className="uppercase text-center" >Fecha</th>
                   <th className="uppercase text-center">Código</th>
                   {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="uppercase">Compañía</th> : null}
-                  <th className="uppercase">Cliente</th>
+                  {user.role !== 'CLIENT' ? <th className="uppercase">Cliente</th> : null}
 
 
                 </tr>
@@ -211,11 +212,11 @@ const Dashboard = () => {
                       {/* <td className="align-middle">{index + 1}</td> */}
                       <td className="align-middle text-center">{transaction.status ? <ArrowUpwardIcon style={{ color: green[500] }} /> : <ArrowDownwardIcon color="error" />}</td>
                       <td className="align-middle">{transaction.product_name}</td>
-                      <td className="align-middle text-center">{transaction.status ? <span style={{ color: green[500] }}>+ ${transaction.cnt}</span> : <span style={{ color: red[500] }}>- ${transaction.cnt}</span>}</td>
+                      <td className="align-middle text-center">{transaction.status ? <span style={{ color: green[500] }}>+ {transaction.cnt}</span> : <span style={{ color: red[500] }}>- {transaction.cnt}</span>}</td>
                       <td className="align-middle text-center">{transaction.timestamp && moment(transaction.timestamp).format('DD/MM/YYYY HH:mm a')}</td>
                       <td className="align-middle text-center">{transaction.code}</td>
                       {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{transaction.company.name}</td> : null}
-                      <td className="align-middle">{transaction.client.name}</td>
+                      {user.role !== 'CLIENT' ? <td className="align-middle">{transaction.client.name}</td> : null}
 
 
                     </tr>
@@ -241,13 +242,15 @@ const Dashboard = () => {
 
       <div className="flex flex-col lg:flex-row my-4">
 
-        <div className="rounded-3xl shadow p-4  mr-0 lg:mr-3 w-12/12 lg:w-6/12 right-0">
+        {user.role !== 'CLIENT' ?
+        <div className="rounded-3xl shadow p-4  mr-0 lg:mr-3 w-full  right-0">
           <div className="py-2">
             <h1 className="text-lg font-bold">Total de productos por cliente</h1>
           </div>
           <Chart chartType="ColumnChart" width="100%" height="400px" data={!loading ? dataProductsByClients : dataCompany} />
-        </div>
-        <div className="rounded-3xl shadow p-4  mr-0 lg:mr-3 w-12/12 lg:w-6/12">
+      </div>
+        : null }
+        <div className="rounded-3xl shadow p-4  mr-0 lg:mr-3  w-full ">
           <div className="py-2">
             <h1 className="text-lg font-bold">Productos con más stock</h1>
           </div>
@@ -257,7 +260,7 @@ const Dashboard = () => {
                 <tr>
                   {/* <th>#</th> */}
                   {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <th className="uppercase">Compañía</th> : null}
-                  <th className="uppercase">Cliente</th>
+                 {user.role !== 'CLIENT'  ?<th className="uppercase">Cliente</th> : null}
                   <th className="uppercase">Producto</th>
                   <th className="uppercase text-center">Cantidad</th>
                   <th className="uppercase text-center">Código</th>
@@ -273,7 +276,7 @@ const Dashboard = () => {
                     <tr key={product._id} >
                       {/* <td className="align-middle">{index + 1}</td> */}
                       {user.role === 'SUPER_ADMIN' || user.role === 'SUPPORT' ? <td className="align-middle">{product.company.name}</td> : null}
-                      <td className="align-middle">{product.client.name}</td>
+                      {user.role !== 'CLIENT' ? <td className="align-middle">{product.client.name}</td> : null}
                       <td className="align-middle">{product.name}</td>
                       <td className="align-middle text-center">{product.cnt}</td>
                       <td className="align-middle text-center">{product.code}</td>
